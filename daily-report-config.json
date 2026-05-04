@@ -1,0 +1,276 @@
+{
+  "voice_benchmarks": {
+    "deflection_rate":          { "target": 0.60, "warn": 0.55 },
+    "engaged_deflection_rate":  { "target": 0.65, "warn": 0.60 },
+    "adjusted_deflection_rate": { "target": 0.63, "warn": 0.58 },
+    "transfer_rate":            { "target": 0.35, "warn": 0.40 },
+    "error_rate_actionable":    { "target": 0.05, "warn": 0.08 },
+    "csat":                     { "target": 4.5,  "warn": 3.5 },
+    "fcr":                      { "target": 0.60, "warn": 0.42 },
+    "margin_pct":               { "target": 0.60, "warn": 0.40 },
+    "cost_per_call":            { "target": 1.50, "warn": 3.00 }
+  },
+  "sms_benchmarks": {
+    "delivery_rate":            { "target": 0.95, "warn": 0.90 },
+    "opt_out_rate":             { "target": 0.03, "warn": 0.05 },
+    "resolution_rate":          { "target": 0.50, "warn": 0.30 },
+    "identified_rate":          { "target": 0.60, "warn": 0.40 },
+    "cost_per_conversation":    { "target": 0.20, "warn": 0.35 },
+    "margin_pct":               { "target": 0.55, "warn": 0.40 }
+  },
+  "webchat_benchmarks": {
+    "avg_messages_per_session": { "target": 6.8,  "warn": 3.0 },
+    "short_abandonment_rate":   { "target": 0.10, "warn": 0.20 },
+    "identification_rate":      { "target": 0.90, "warn": 0.70 },
+    "cost_per_session":         { "target": 0.10, "warn": 0.25 },
+    "margin_pct":               { "target": 0.55, "warn": 0.40 }
+  },
+  "combined_benchmarks": {
+    "margin_pct":               { "target": 0.55, "warn": 0.40 }
+  },
+
+  "revenue_intelligence": {
+    "under_utilization_pct": 0.75,
+    "overage_threshold_pct": 1.00,
+    "upsell_threshold_pct":  1.25
+  },
+
+  "alert_thresholds": {
+    "error_spike_multiplier":       2.0,
+    "csat_drop_threshold":          0.5,
+    "deflection_drop_pp":           5.0,
+    "delivery_drop_pct":            0.90,
+    "webchat_abandonment_spike_pct": 0.30,
+    "new_error_lookback_days":      30
+  },
+
+  "voice_cogs": {
+    "vapi_per_minute":    0.05,
+    "openai_llm_avg":     0.012,
+    "tts_per_minute":     0.015,
+    "stt_per_minute":     0.01,
+    "transfer_per_call":  0.02,
+    "platform_per_call":  0.005,
+    "cx_hourly_rate":     45.00,
+    "cx_hours_per_day":   8.0,
+    "cx_allocation_voice_pct": 0.60
+  },
+  "sms_cogs": {
+    "twilio_outbound_per_msg": 0.0083,
+    "twilio_inbound_per_msg":  0.0083,
+    "a2p_carrier_fee":         0.0025,
+    "broadcast_cost_per_recipient": 0.0108,
+    "two_way_cost_per_msg":    0.0216,
+    "fixed_per_client_month":  10.15,
+    "avg_segments_per_convo":  6
+  },
+  "webchat_cogs": {
+    "llm_per_session":      0.04,
+    "platform_per_session": 0.01,
+    "fixed_per_client_month": 5.00
+  },
+
+  "time_savings": {
+    "staff_cost_per_hour": 25.00,
+    "voice_minutes_saved_per_deflection": 4.5,
+    "sms_minutes_saved_per_resolution":   3.0
+  },
+
+  "voice_packages": {
+    "Starter":      { "included_calls": 200,  "monthly_price": 500,  "overage_per_call": 1.50 },
+    "Professional": { "included_calls": 500,  "monthly_price": 1000, "overage_per_call": 1.25 },
+    "Enterprise":   { "included_calls": 1500, "monthly_price": 2500, "overage_per_call": 1.00 }
+  },
+  "sms_pricing_tiers": {
+    "Basic":        { "included_msgs": 5000,  "monthly_price": 500,  "overage_per_msg": 0.11 },
+    "Starter":      { "included_msgs": 10000, "monthly_price": 1000, "overage_per_msg": 0.11 },
+    "Professional": { "included_msgs": 20000, "monthly_price": 2000, "overage_per_msg": 0.11 },
+    "Scale":        { "included_msgs": 40000, "monthly_price": 4000, "overage_per_msg": 0.11 },
+    "Enterprise":   { "included_msgs": 80000, "monthly_price": 8000, "overage_per_msg": 0.11 }
+  },
+
+  "sms_voice_included": {
+    "_comment": "Voice customers get SMS included free. 1 msg/door/month included, overage at $0.11/msg.",
+    "msgs_per_door": 1,
+    "overage_per_msg": 0.11
+  },
+
+  "per_customer_business_hours": {
+    "_default": { "start": 8, "end": 17, "timezone": "US/Eastern" },
+    "_comment": "Override per company below. Hours are in local timezone.",
+    "ACE Property Management":     { "start": 8, "end": 17, "timezone": "US/Eastern" },
+    "Silverleaf Management":       { "start": 8, "end": 17, "timezone": "US/Eastern" },
+    "New Vision Community Management": { "start": 8, "end": 17, "timezone": "US/Eastern" }
+  },
+
+  "per_customer_packages": {
+    "_comment": "Populate from HOAi Voice Billing spreadsheet. voice_tier / sms_tier reference the package/tier names above.",
+    "ACE Property Management":     { "voice_tier": "Starter",      "sms_tier": null, "webchat": false },
+    "Silverleaf Management":       { "voice_tier": "Professional",  "sms_tier": null, "webchat": true },
+    "New Vision Community Management": { "voice_tier": "Enterprise", "sms_tier": null, "webchat": true },
+    "PMP SMS":                     { "voice_tier": null,            "sms_tier": "Starter", "webchat": false }
+  },
+
+  "per_customer_contracts": {
+    "_comment": "Per-customer billing contracts from HOAi Voice Billing spreadsheet. pricing_model: per_call (default) or per_door. null values = internal/test or not yet contracted.",
+    "3.0 Management":                      { "included_calls": 1000, "rate_per_call": 2.25, "overage_per_call": 2.25 },
+    "ACCU":                                { "included_calls": 500,  "rate_per_call": 2.50, "overage_per_call": 2.75 },
+    "ACE":                                 { "included_calls": 500,  "rate_per_call": 2.50, "overage_per_call": 2.50 },
+    "ACE Property Management, Inc.":       { "included_calls": 200,  "rate_per_call": 2.50, "overage_per_call": 2.50 },
+    "AER Community Management":            { "included_calls": 500,  "rate_per_call": 2.50, "overage_per_call": 2.50 },
+    "AMPHOA":                              { "included_calls": 500,  "rate_per_call": 2.00, "overage_per_call": 2.20 },
+    "Action Community Management":         { "included_calls": 500,  "rate_per_call": 2.50, "overage_per_call": 2.75 },
+    "Alliance HOA Management LLC ":        { "included_calls": 500,  "rate_per_call": null, "overage_per_call": null },
+    "Alliant":                             { "included_calls": 3000, "rate_per_call": 1.33, "overage_per_call": 1.46 },
+    "Alluvia":                             { "included_calls": null, "rate_per_call": null, "overage_per_call": null, "pricing_model": "per_door" },
+    "Aspire Community Management":         { "included_calls": 500,  "rate_per_call": 2.50, "overage_per_call": 2.75 },
+    "Association Services of Washington":  { "included_calls": 1000, "rate_per_call": 2.00, "overage_per_call": 2.00 },
+    "Atmos Living Management Group":       { "included_calls": 500,  "rate_per_call": 2.50, "overage_per_call": 2.50 },
+    "Blue Door Realty":                    { "included_calls": 500,  "rate_per_call": 2.50, "overage_per_call": 2.50 },
+    "CMG":                                 { "included_calls": 1000, "rate_per_call": 2.25, "overage_per_call": 2.48 },
+    "Centennial Consulting Group":         { "included_calls": 500,  "rate_per_call": 2.50, "overage_per_call": 2.75 },
+    "Community Management Specialists Inc":{ "included_calls": 500,  "rate_per_call": 2.50, "overage_per_call": 2.75 },
+    "Compass Rose of North Texas":         { "included_calls": 400,  "rate_per_call": 2.50, "overage_per_call": 2.75 },
+    "EJF":                                 { "included_calls": 500,  "rate_per_call": 1.25, "overage_per_call": 1.50 },
+    "Eclipse Community Management":        { "included_calls": 250,  "rate_per_call": 2.50, "overage_per_call": 2.75 },
+    "FiveCircle Property Management":      { "included_calls": 2250, "rate_per_call": 1.11, "overage_per_call": 1.25 },
+    "FiveKeys Community Management":       { "included_calls": 1000, "rate_per_call": 2.00, "overage_per_call": 2.00 },
+    "Gaughan Association Management":      { "included_calls": 500,  "rate_per_call": 2.50, "overage_per_call": 2.75 },
+    "HOA Accounting Services, Inc.":       { "included_calls": 3000, "rate_per_call": 1.50, "overage_per_call": 0.00 },
+    "HOA Assist":                          { "included_calls": 500,  "rate_per_call": 2.50, "overage_per_call": 2.75 },
+    "HOA Solutions":                       { "included_calls": 250,  "rate_per_call": 2.50, "overage_per_call": 2.75 },
+    "HOALiving":                           { "included_calls": 1000, "rate_per_call": 2.50, "overage_per_call": 2.20 },
+    "IndygoCAM":                           { "included_calls": 750,  "rate_per_call": null, "overage_per_call": null, "pricing_model": "per_door" },
+    "Interpacific Asset Management":       { "included_calls": 1000, "rate_per_call": 2.25, "overage_per_call": 2.48 },
+    "Island Condo LLC":                    { "included_calls": 500,  "rate_per_call": 2.50, "overage_per_call": 2.75 },
+    "Juda, Eskew, & Associates":           { "included_calls": 3000, "rate_per_call": 1.50, "overage_per_call": 0.00 },
+    "KRJ Management, Inc":                 { "included_calls": 500,  "rate_per_call": null, "overage_per_call": null },
+    "Kentuckiana":                         { "included_calls": 500,  "rate_per_call": 2.50, "overage_per_call": 2.75 },
+    "Keys Property Management":            { "included_calls": null, "rate_per_call": null, "overage_per_call": null, "pricing_model": "per_door" },
+    "Lang Management Company":             { "included_calls": 500,  "rate_per_call": 2.50, "overage_per_call": 2.75 },
+    "MMI":                                 { "included_calls": 500,  "rate_per_call": 2.25, "overage_per_call": 2.48 },
+    "Management Plus":                     { "included_calls": 500,  "rate_per_call": 2.37, "overage_per_call": 2.61 },
+    "Mauzy Management":                    { "included_calls": 400,  "rate_per_call": 2.50, "overage_per_call": 2.50 },
+    "Mountain Valley Property Management": { "included_calls": 400,  "rate_per_call": 2.50, "overage_per_call": 2.50 },
+    "New Bedford Management Corp":         { "included_calls": 1000, "rate_per_call": 2.25, "overage_per_call": 2.48 },
+    "New Vision Community Management":     { "included_calls": 5000, "rate_per_call": 1.55, "overage_per_call": 1.55 },
+    "Park Pointe Management Services":     { "included_calls": 1000, "rate_per_call": 2.25, "overage_per_call": 2.48 },
+    "Preferred Communities":               { "included_calls": 500,  "rate_per_call": 2.00, "overage_per_call": 2.00 },
+    "Premier":                             { "included_calls": 1000, "rate_per_call": 2.50, "overage_per_call": 2.50 },
+    "Premier Community Association Management": { "included_calls": 1600, "rate_per_call": 1.88, "overage_per_call": 1.88 },
+    "Property Management Services of Maine": { "included_calls": 400, "rate_per_call": 2.50, "overage_per_call": 2.50 },
+    "RCP Management Company":              { "included_calls": 1600, "rate_per_call": 1.88, "overage_per_call": 2.00 },
+    "Sage Management LLC":                 { "included_calls": 1000, "rate_per_call": 2.15, "overage_per_call": 2.36 },
+    "Silverleaf Management":               { "included_calls": 4000, "rate_per_call": 1.25, "overage_per_call": 2.00 },
+    "The Manor Association":               { "included_calls": 0,    "rate_per_call": 0.00, "overage_per_call": 0.00 },
+    "Timmons Properties, Inc.":            { "included_calls": 1000, "rate_per_call": 2.25, "overage_per_call": 2.48 },
+    "VirtualHOA.com":                      { "included_calls": 500,  "rate_per_call": 2.50, "overage_per_call": 2.75 },
+    "WPM Real Estate Management":          { "included_calls": 500,  "rate_per_call": 2.50, "overage_per_call": 2.75 }
+  },
+
+  "per_customer_tiers": {
+    "_comment": "Available upgrade tiers per customer. Each key maps to an array of tier objects (current first, then upgrades). current_tier_name identifies the customer's active tier. Companies not listed use _default_tier_ladder based on included_calls.",
+    "Alliant": {
+      "current_tier_name": "Growth",
+      "tiers": [
+        { "name": "Growth",  "included_calls": 1600, "monthly_price": 3000, "rate_per_call": 1.88, "overage_per_call": 2.00 },
+        { "name": "Scale",   "included_calls": 4000, "monthly_price": 5000, "rate_per_call": 1.25, "overage_per_call": 2.00 }
+      ]
+    },
+    "Timmons Properties, Inc.": {
+      "current_tier_name": "Starter",
+      "tiers": [
+        { "name": "Starter",      "included_calls": 1000, "monthly_price": 2250, "rate_per_call": 2.25, "overage_per_call": 2.48 },
+        { "name": "Professional", "included_calls": 2000, "monthly_price": 4000, "rate_per_call": 2.00, "overage_per_call": 2.20 }
+      ]
+    },
+    "Management Plus": {
+      "current_tier_name": "Basic",
+      "tiers": [
+        { "name": "Basic",        "included_calls": 500,  "monthly_price": 1187, "rate_per_call": 2.38, "overage_per_call": 2.61 },
+        { "name": "Starter",      "included_calls": 1000, "monthly_price": 2250, "rate_per_call": 2.25, "overage_per_call": 2.48 },
+        { "name": "Professional", "included_calls": 2000, "monthly_price": 4000, "rate_per_call": 2.00, "overage_per_call": 2.20 }
+      ]
+    },
+    "Premier": {
+      "current_tier_name": "Starter",
+      "tiers": [
+        { "name": "Starter",      "included_calls": 1000, "monthly_price": 2250, "rate_per_call": 2.25, "overage_per_call": 2.25 },
+        { "name": "Professional", "included_calls": 2000, "monthly_price": 4000, "rate_per_call": 2.00, "overage_per_call": 2.00 }
+      ]
+    },
+    "Premier Community Association Management": {
+      "current_tier_name": "Starter",
+      "tiers": [
+        { "name": "Starter",      "included_calls": 1000, "monthly_price": 2250, "rate_per_call": 2.25, "overage_per_call": 2.25 },
+        { "name": "Professional", "included_calls": 2000, "monthly_price": 4000, "rate_per_call": 2.00, "overage_per_call": 2.00 }
+      ]
+    },
+    "WPM Real Estate Management": {
+      "current_tier_name": "Basic",
+      "tiers": [
+        { "name": "Basic",   "included_calls": 500,  "monthly_price": 1250, "rate_per_call": 2.50, "overage_per_call": 2.75 },
+        { "name": "Starter", "included_calls": 1000, "monthly_price": 2250, "rate_per_call": 2.25, "overage_per_call": 2.48 }
+      ]
+    },
+    "ACCU": {
+      "current_tier_name": "Basic",
+      "tiers": [
+        { "name": "Basic",   "included_calls": 500,  "monthly_price": 1250, "rate_per_call": 2.50, "overage_per_call": 2.75 },
+        { "name": "Starter", "included_calls": 1000, "monthly_price": 2250, "rate_per_call": 2.25, "overage_per_call": 2.48 }
+      ]
+    },
+    "_default_tier_ladder": [
+      { "name": "Basic",        "included_calls": 500,  "monthly_price": 1250, "rate_per_call": 2.50, "overage_per_call": 2.75 },
+      { "name": "Starter",      "included_calls": 1000, "monthly_price": 2250, "rate_per_call": 2.25, "overage_per_call": 2.48 },
+      { "name": "Professional", "included_calls": 2000, "monthly_price": 4000, "rate_per_call": 2.00, "overage_per_call": 2.20 },
+      { "name": "Scale",        "included_calls": 4000, "monthly_price": 6600, "rate_per_call": 1.65, "overage_per_call": 1.82 },
+      { "name": "Enterprise",   "included_calls": 6000, "monthly_price": 7500, "rate_per_call": 1.25, "overage_per_call": 1.38 }
+    ]
+  },
+
+  "utilization_thresholds": {
+    "_comment": "Thresholds for Status column: Under / Watch / On Track / Over",
+    "under_pct": 0.75,
+    "watch_low_pct": 0.85,
+    "watch_high_pct": 1.15,
+    "over_pct": 1.30
+  },
+
+  "brand": {
+    "navy":       "#1B2A4A",
+    "blue":       "#2563EB",
+    "light_blue": "#3B82F6",
+    "teal":       "#0D9488",
+    "green":      "#059669",
+    "amber":      "#D97706",
+    "red":        "#DC2626",
+    "gray":       "#6B7280",
+    "dark":       "#111827",
+    "surface":    "#F3F4F6",
+    "white":      "#FFFFFF",
+    "font_family": "'Avenir Next LT Pro', 'Inter', system-ui, sans-serif"
+  },
+
+  "email": {
+    "enabled": false,
+    "smtp_server": "smtp.office365.com",
+    "smtp_port": 587,
+    "from_address": "",
+    "recipients": ["mike.guerin@hoai.com"],
+    "subject_prefix": "HOAi Daily Report"
+  },
+
+  "trend_thresholds": {
+    "wow_flat_band_pct": 10,
+    "mom_flat_band_pct": 10,
+    "forecast_above_ratio": 1.15,
+    "forecast_below_ratio": 0.85,
+    "min_month_pct_for_projection": 0.10
+  },
+
+  "test_companies": [
+    "Test Company",
+    "Vantaca Internal"
+  ]
+}

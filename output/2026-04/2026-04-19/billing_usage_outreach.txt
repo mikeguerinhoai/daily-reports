@@ -1,0 +1,843 @@
+========================================================================
+HOAi Voice -- Billing & Usage Overage Report
+Report Date: 2026-04-19
+========================================================================
+
+EXECUTIVE SUMMARY
+------------------------------------------------------------------------
+  Companies flagged:     26
+  Critical (3+ months):  9
+  High (2 months):       9
+  Moderate (1 month):    8
+  Watch (projected):     0
+  Avg monthly overage:   $35,563
+  Projected overage:     $27,512 (this month)
+
+========================================================================
+  Timmons Properties, Inc.
+  Urgency: [CRITICAL] Chronic Overage (3/4 months)
+  Current Tier: Enterprise
+========================================================================
+
+  Contract:  1000 calls/mo @ $2.48/overage call
+  Base cost: $2,250/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026          318      1,000        0 $           0       OK
+  Feb 2026        1,489      1,000      489 $       1,213     OVER
+  Mar 2026        2,459      1,000    1,459 $       3,618     OVER
+  Apr 2026        2,572      1,000    1,572 $       3,899     OVER
+
+  MTD Actual:    1,629 calls
+  Projected EOM: 2,572 calls
+  Projected Over: 1,572 calls = $3,899 overage
+
+  Avg Monthly Overage Cost: $2,910
+  Effective Monthly Cost:   $5,160 (base + avg overage)
+
+  Recommended Action:
+  >> Schedule upgrade discussion immediately -- chronic overage pattern
+
+
+========================================================================
+  Premier Community Association Management
+  Urgency: [CRITICAL] Chronic Overage (4/4 months)
+  Current Tier: Custom
+========================================================================
+
+  Contract:  1600 calls/mo @ $1.88/overage call
+  Base cost: $3,008/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026        3,094      1,600    1,494 $       2,809     OVER
+  Feb 2026        2,584      1,600      984 $       1,850     OVER
+  Mar 2026        3,254      1,600    1,654 $       3,110     OVER
+  Apr 2026        3,378      1,600    1,778 $       3,343     OVER
+
+  MTD Actual:    2,140 calls
+  Projected EOM: 3,378 calls
+  Projected Over: 1,778 calls = $3,343 overage
+
+  Avg Monthly Overage Cost: $2,778
+  Effective Monthly Cost:   $5,786 (base + avg overage)
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Starter                 200 $     500             No       $5,286
+  Professional            500 $   1,000             No       $4,786
+  Enterprise            1,500 $   2,500             No       $3,286
+
+  Recommended Action:
+  >> Schedule upgrade discussion immediately -- chronic overage pattern
+
+
+========================================================================
+  Island Condo LLC
+  Urgency: [CRITICAL] Chronic Overage (3/4 months)
+  Current Tier: Professional
+========================================================================
+
+  Contract:  500 calls/mo @ $2.75/overage call
+  Base cost: $1,250/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026            2        500        0 $           0       OK
+  Feb 2026          758        500      258 $         710     OVER
+  Mar 2026        1,653        500    1,153 $       3,171     OVER
+  Apr 2026        1,195        500      695 $       1,911     OVER
+
+  MTD Actual:    757 calls
+  Projected EOM: 1,195 calls
+  Projected Over: 695 calls = $1,911 overage
+
+  Avg Monthly Overage Cost: $1,930
+  Effective Monthly Cost:   $3,180 (base + avg overage)
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Enterprise            1,500 $   2,500            Yes         $680
+
+  Recommended Action:
+  >> UPGRADE to Enterprise tier -- saves $680/mo
+     1,500 included calls covers projected 1,195
+
+
+========================================================================
+  CMG
+  Urgency: [CRITICAL] Chronic Overage (4/4 months)
+  Current Tier: Enterprise
+========================================================================
+
+  Contract:  1000 calls/mo @ $2.48/overage call
+  Base cost: $2,250/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026        1,580      1,000      580 $       1,438     OVER
+  Feb 2026        1,238      1,000      238 $         590     OVER
+  Mar 2026        1,499      1,000      499 $       1,238     OVER
+  Apr 2026        1,356      1,000      356 $         883     OVER
+
+  MTD Actual:    859 calls
+  Projected EOM: 1,356 calls
+  Projected Over: 356 calls = $883 overage
+
+  Avg Monthly Overage Cost: $1,037
+  Effective Monthly Cost:   $3,287 (base + avg overage)
+
+  Recommended Action:
+  >> Schedule upgrade discussion immediately -- chronic overage pattern
+
+
+========================================================================
+  FiveKeys Community Management
+  Urgency: [CRITICAL] Chronic Overage (4/4 months)
+  Current Tier: Enterprise
+========================================================================
+
+  Contract:  1000 calls/mo @ $2.00/overage call
+  Base cost: $2,000/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026        1,391      1,000      391 $         782     OVER
+  Feb 2026        1,280      1,000      280 $         560     OVER
+  Mar 2026        1,670      1,000      670 $       1,340     OVER
+  Apr 2026        1,376      1,000      376 $         752     OVER
+
+  MTD Actual:    872 calls
+  Projected EOM: 1,376 calls
+  Projected Over: 376 calls = $752 overage
+
+  Avg Monthly Overage Cost: $858
+  Effective Monthly Cost:   $2,858 (base + avg overage)
+
+  Recommended Action:
+  >> Schedule upgrade discussion immediately -- chronic overage pattern
+
+
+========================================================================
+  RCP Management Company
+  Urgency: [CRITICAL] Chronic Overage (4/4 months)
+  Current Tier: Custom
+========================================================================
+
+  Contract:  1600 calls/mo @ $2.00/overage call
+  Base cost: $3,008/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026        2,143      1,600      543 $       1,086     OVER
+  Feb 2026        2,084      1,600      484 $         968     OVER
+  Mar 2026        1,909      1,600      309 $         618     OVER
+  Apr 2026        1,935      1,600      335 $         670     OVER
+
+  MTD Actual:    1,226 calls
+  Projected EOM: 1,935 calls
+  Projected Over: 335 calls = $670 overage
+
+  Avg Monthly Overage Cost: $836
+  Effective Monthly Cost:   $3,844 (base + avg overage)
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Starter                 200 $     500             No       $3,344
+  Professional            500 $   1,000             No       $2,844
+  Enterprise            1,500 $   2,500             No       $1,344
+
+  Recommended Action:
+  >> Schedule upgrade discussion immediately -- chronic overage pattern
+
+
+========================================================================
+  Sage Management LLC
+  Urgency: [CRITICAL] Chronic Overage (4/4 months)
+  Current Tier: Enterprise
+========================================================================
+
+  Contract:  1000 calls/mo @ $2.36/overage call
+  Base cost: $2,150/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026        1,384      1,000      384 $         906     OVER
+  Feb 2026        1,177      1,000      177 $         418     OVER
+  Mar 2026        1,431      1,000      431 $       1,017     OVER
+  Apr 2026        1,255      1,000      255 $         602     OVER
+
+  MTD Actual:    795 calls
+  Projected EOM: 1,255 calls
+  Projected Over: 255 calls = $602 overage
+
+  Avg Monthly Overage Cost: $736
+  Effective Monthly Cost:   $2,886 (base + avg overage)
+
+  Recommended Action:
+  >> Schedule upgrade discussion immediately -- chronic overage pattern
+
+
+========================================================================
+  ACE
+  Urgency: [CRITICAL] Chronic Overage (3/4 months)
+  Current Tier: Professional
+========================================================================
+
+  Contract:  500 calls/mo @ $2.50/overage call
+  Base cost: $1,250/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026          109        500        0 $           0       OK
+  Feb 2026          662        500      162 $         405     OVER
+  Mar 2026          743        500      243 $         608     OVER
+  Apr 2026          573        500       73 $         182     OVER
+
+  MTD Actual:    363 calls
+  Projected EOM: 573 calls
+  Projected Over: 73 calls = $182 overage
+
+  Avg Monthly Overage Cost: $398
+  Effective Monthly Cost:   $1,648 (base + avg overage)
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Enterprise            1,500 $   2,500            Yes        -$852
+
+  Recommended Action:
+  >> Schedule upgrade discussion immediately -- chronic overage pattern
+
+
+========================================================================
+  Compass Rose of North Texas
+  Urgency: [CRITICAL] Chronic Overage (3/4 months)
+  Current Tier: Professional
+========================================================================
+
+  Contract:  400 calls/mo @ $2.75/overage call
+  Base cost: $1,000/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026          339        400        0 $           0       OK
+  Feb 2026          506        400      106 $         292     OVER
+  Mar 2026          611        400      211 $         580     OVER
+  Apr 2026          413        400       13 $          36     OVER
+
+  MTD Actual:    262 calls
+  Projected EOM: 413 calls
+  Projected Over: 13 calls = $36 overage
+
+  Avg Monthly Overage Cost: $302
+  Effective Monthly Cost:   $1,302 (base + avg overage)
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Enterprise            1,500 $   2,500            Yes      -$1,198
+
+  Recommended Action:
+  >> Schedule upgrade discussion immediately -- chronic overage pattern
+
+
+========================================================================
+  Management Plus
+  Urgency: [HIGH] Recurring Overage (2/4 months)
+  Current Tier: Professional
+========================================================================
+
+  Contract:  500 calls/mo @ $2.61/overage call
+  Base cost: $1,185/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026            0        500        0 $           0       OK
+  Feb 2026            2        500        0 $           0       OK
+  Mar 2026        1,188        500      688 $       1,796     OVER
+  Apr 2026        1,831        500    1,331 $       3,474     OVER
+
+  MTD Actual:    1,160 calls
+  Projected EOM: 1,831 calls
+  Projected Over: 1,331 calls = $3,474 overage
+
+  Avg Monthly Overage Cost: $2,635
+  Effective Monthly Cost:   $3,820 (base + avg overage)
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Enterprise            1,500 $   2,500             No       $1,320
+
+  Recommended Action:
+  >> Proactive outreach -- recurring overage suggests tier mismatch
+
+
+========================================================================
+  WPM Real Estate Management
+  Urgency: [HIGH] Recurring Overage (2/4 months)
+  Current Tier: Professional
+========================================================================
+
+  Contract:  500 calls/mo @ $2.75/overage call
+  Base cost: $1,250/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026            0        500        0 $           0       OK
+  Feb 2026          266        500        0 $           0       OK
+  Mar 2026          809        500      309 $         850     OVER
+  Apr 2026          991        500      491 $       1,350     OVER
+
+  MTD Actual:    628 calls
+  Projected EOM: 991 calls
+  Projected Over: 491 calls = $1,350 overage
+
+  Avg Monthly Overage Cost: $1,100
+  Effective Monthly Cost:   $2,350 (base + avg overage)
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Enterprise            1,500 $   2,500            Yes        -$150
+
+  Recommended Action:
+  >> Proactive outreach -- recurring overage suggests tier mismatch
+     Enterprise tier (1,500 calls) would cover current usage
+
+
+========================================================================
+  ACCU
+  Urgency: [HIGH] Recurring Overage (2/4 months)
+  Current Tier: Professional
+========================================================================
+
+  Contract:  500 calls/mo @ $2.75/overage call
+  Base cost: $1,250/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026            1        500        0 $           0       OK
+  Feb 2026          122        500        0 $           0       OK
+  Mar 2026        1,218        500      718 $       1,974     OVER
+  Apr 2026          928        500      428 $       1,177     OVER
+
+  MTD Actual:    588 calls
+  Projected EOM: 928 calls
+  Projected Over: 428 calls = $1,177 overage
+
+  Avg Monthly Overage Cost: $1,576
+  Effective Monthly Cost:   $2,826 (base + avg overage)
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Enterprise            1,500 $   2,500            Yes         $326
+
+  Recommended Action:
+  >> Proactive outreach -- recurring overage suggests tier mismatch
+     Enterprise tier (1,500 calls) would cover current usage
+
+
+========================================================================
+  ACE Property Management, Inc.
+  Urgency: [HIGH] Recurring Overage (2/4 months)
+  Current Tier: Starter
+========================================================================
+
+  Contract:  200 calls/mo @ $2.50/overage call
+  Base cost: $500/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026          160        200        0 $           0       OK
+  Feb 2026          107        200        0 $           0       OK
+  Mar 2026          406        200      206 $         515     OVER
+  Apr 2026          489        200      289 $         722     OVER
+
+  MTD Actual:    310 calls
+  Projected EOM: 489 calls
+  Projected Over: 289 calls = $722 overage
+
+  Avg Monthly Overage Cost: $619
+  Effective Monthly Cost:   $1,119 (base + avg overage)
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Professional            500 $   1,000            Yes         $119
+  Enterprise            1,500 $   2,500            Yes      -$1,381
+
+  Recommended Action:
+  >> Proactive outreach -- recurring overage suggests tier mismatch
+     Professional tier (500 calls) would cover current usage
+
+
+========================================================================
+  Atmos Living Management Group
+  Urgency: [HIGH] Recurring Overage (2/4 months)
+  Current Tier: Professional
+========================================================================
+
+  Contract:  500 calls/mo @ $2.50/overage call
+  Base cost: $1,250/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026            3        500        0 $           0       OK
+  Feb 2026            3        500        0 $           0       OK
+  Mar 2026          583        500       83 $         208     OVER
+  Apr 2026          653        500      153 $         382     OVER
+
+  MTD Actual:    414 calls
+  Projected EOM: 653 calls
+  Projected Over: 153 calls = $382 overage
+
+  Avg Monthly Overage Cost: $295
+  Effective Monthly Cost:   $1,545 (base + avg overage)
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Enterprise            1,500 $   2,500            Yes        -$955
+
+  Recommended Action:
+  >> Proactive outreach -- recurring overage suggests tier mismatch
+     Enterprise tier (1,500 calls) would cover current usage
+
+
+========================================================================
+  Association Services of Washington
+  Urgency: [HIGH] Recurring Overage (2/4 months)
+  Current Tier: Enterprise
+========================================================================
+
+  Contract:  1000 calls/mo @ $2.00/overage call
+  Base cost: $2,000/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026        1,303      1,000      303 $         606     OVER
+  Feb 2026          994      1,000        0 $           0       OK
+  Mar 2026        1,018      1,000       18 $          36     OVER
+  Apr 2026          901      1,000        0 $           0       OK
+
+  MTD Actual:    571 calls
+  Projected EOM: 901 calls
+  Projected: Within contract
+
+  Avg Monthly Overage Cost: $321
+  Effective Monthly Cost:   $2,321 (base + avg overage)
+
+  Recommended Action:
+  >> Proactive outreach -- recurring overage suggests tier mismatch
+
+
+========================================================================
+  Juda, Eskew, & Associates
+  Urgency: [HIGH] Recurring Overage (2/4 months)
+  Current Tier: Custom
+========================================================================
+
+  Contract:  3000 calls/mo @ $0.00/overage call
+  Base cost: $4,500/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026           16      3,000        0 $           0       OK
+  Feb 2026          849      3,000        0 $           0       OK
+  Mar 2026        4,166      3,000    1,166 $           0     OVER
+  Apr 2026        4,108      3,000    1,108 $           0     OVER
+
+  MTD Actual:    2,602 calls
+  Projected EOM: 4,108 calls
+  Projected Over: 1,108 calls = $0 overage
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Starter                 200 $     500             No       $4,000
+  Professional            500 $   1,000             No       $3,500
+  Enterprise            1,500 $   2,500             No       $2,000
+
+  Recommended Action:
+  >> Proactive outreach -- recurring overage suggests tier mismatch
+
+
+========================================================================
+  New Vision Community Management
+  Urgency: [HIGH] Recurring Overage (2/4 months)
+  Current Tier: Enterprise
+========================================================================
+
+  Contract:  5000 calls/mo @ $1.55/overage call
+  Base cost: $7,750/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026       12,992      5,000    7,992 $      12,388     OVER
+  Feb 2026        6,517      5,000    1,517 $       2,351     OVER
+  Mar 2026          373      5,000        0 $           0       OK
+  Apr 2026           22      5,000        0 $           0       OK
+
+  MTD Actual:    14 calls
+  Projected EOM: 22 calls
+  Projected: Within contract
+
+  Avg Monthly Overage Cost: $7,369
+  Effective Monthly Cost:   $15,119 (base + avg overage)
+
+  Recommended Action:
+  >> Proactive outreach -- recurring overage suggests tier mismatch
+
+
+========================================================================
+  Preferred Communities
+  Urgency: [HIGH] Recurring Overage (2/4 months)
+  Current Tier: Professional
+========================================================================
+
+  Contract:  500 calls/mo @ $2.00/overage call
+  Base cost: $1,000/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026          904        500      404 $         808     OVER
+  Feb 2026          425        500        0 $           0       OK
+  Mar 2026          704        500      204 $         408     OVER
+  Apr 2026           64        500        0 $           0       OK
+
+  MTD Actual:    41 calls
+  Projected EOM: 64 calls
+  Projected: Within contract
+
+  Avg Monthly Overage Cost: $608
+  Effective Monthly Cost:   $1,608 (base + avg overage)
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Enterprise            1,500 $   2,500            Yes        -$892
+
+  Recommended Action:
+  >> Proactive outreach -- recurring overage suggests tier mismatch
+     Enterprise tier (1,500 calls) would cover current usage
+
+
+========================================================================
+  Alliant
+  Urgency: [MODERATE] Previous Overage (1/4 months)
+  Current Tier: Custom
+========================================================================
+
+  Contract:  3000 calls/mo @ $1.46/overage call
+  Base cost: $3,990/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026            0      3,000        0 $           0       OK
+  Feb 2026            0      3,000        0 $           0       OK
+  Mar 2026        1,217      3,000        0 $           0       OK
+  Apr 2026        6,745      3,000    3,745 $       5,468     OVER
+
+  MTD Actual:    4,272 calls
+  Projected EOM: 6,745 calls
+  Projected Over: 3,745 calls = $5,468 overage
+
+  Avg Monthly Overage Cost: $5,468
+  Effective Monthly Cost:   $9,458 (base + avg overage)
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Starter                 200 $     500             No       $8,958
+  Professional            500 $   1,000             No       $8,458
+  Enterprise            1,500 $   2,500             No       $6,958
+
+  Recommended Action:
+  >> Monitor -- single previous overage, watch for pattern
+
+
+========================================================================
+  Premier
+  Urgency: [MODERATE] Previous Overage (1/4 months)
+  Current Tier: Enterprise
+========================================================================
+
+  Contract:  1000 calls/mo @ $2.50/overage call
+  Base cost: $2,500/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026            2      1,000        0 $           0       OK
+  Feb 2026           47      1,000        0 $           0       OK
+  Mar 2026          113      1,000        0 $           0       OK
+  Apr 2026        1,643      1,000      643 $       1,608     OVER
+
+  MTD Actual:    1,041 calls
+  Projected EOM: 1,643 calls
+  Projected Over: 643 calls = $1,608 overage
+
+  Avg Monthly Overage Cost: $1,608
+  Effective Monthly Cost:   $4,108 (base + avg overage)
+
+  Recommended Action:
+  >> Monitor -- single previous overage, watch for pattern
+
+
+========================================================================
+  Interpacific Asset Management
+  Urgency: [MODERATE] Previous Overage (1/4 months)
+  Current Tier: Enterprise
+========================================================================
+
+  Contract:  1000 calls/mo @ $2.48/overage call
+  Base cost: $2,250/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026            0      1,000        0 $           0       OK
+  Feb 2026            0      1,000        0 $           0       OK
+  Mar 2026           36      1,000        0 $           0       OK
+  Apr 2026        1,234      1,000      234 $         580     OVER
+
+  MTD Actual:    782 calls
+  Projected EOM: 1,234 calls
+  Projected Over: 234 calls = $580 overage
+
+  Avg Monthly Overage Cost: $580
+  Effective Monthly Cost:   $2,830 (base + avg overage)
+
+  Recommended Action:
+  >> Monitor -- single previous overage, watch for pattern
+
+
+========================================================================
+  HOALiving
+  Urgency: [MODERATE] Previous Overage (1/4 months)
+  Current Tier: Enterprise
+========================================================================
+
+  Contract:  1000 calls/mo @ $2.20/overage call
+  Base cost: $2,500/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026          218      1,000        0 $           0       OK
+  Feb 2026          312      1,000        0 $           0       OK
+  Mar 2026          798      1,000        0 $           0       OK
+  Apr 2026        1,215      1,000      215 $         473     OVER
+
+  MTD Actual:    770 calls
+  Projected EOM: 1,215 calls
+  Projected Over: 215 calls = $473 overage
+
+  Avg Monthly Overage Cost: $473
+  Effective Monthly Cost:   $2,973 (base + avg overage)
+
+  Recommended Action:
+  >> Monitor -- single previous overage, watch for pattern
+
+
+========================================================================
+  Community Management Specialists Inc
+  Urgency: [MODERATE] Previous Overage (1/4 months)
+  Current Tier: Professional
+========================================================================
+
+  Contract:  500 calls/mo @ $2.75/overage call
+  Base cost: $1,250/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026            1        500        0 $           0       OK
+  Feb 2026          388        500        0 $           0       OK
+  Mar 2026          808        500      308 $         847     OVER
+  Apr 2026           47        500        0 $           0       OK
+
+  MTD Actual:    30 calls
+  Projected EOM: 47 calls
+  Projected: Within contract
+
+  Avg Monthly Overage Cost: $847
+  Effective Monthly Cost:   $2,097 (base + avg overage)
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Enterprise            1,500 $   2,500            Yes        -$403
+
+  Recommended Action:
+  >> Monitor -- single previous overage, watch for pattern
+
+
+========================================================================
+  EJF
+  Urgency: [MODERATE] Previous Overage (1/4 months)
+  Current Tier: Professional
+========================================================================
+
+  Contract:  500 calls/mo @ $1.50/overage call
+  Base cost: $625/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026           95        500        0 $           0       OK
+  Feb 2026          624        500      124 $         186     OVER
+  Mar 2026          340        500        0 $           0       OK
+  Apr 2026           52        500        0 $           0       OK
+
+  MTD Actual:    33 calls
+  Projected EOM: 52 calls
+  Projected: Within contract
+
+  Avg Monthly Overage Cost: $186
+  Effective Monthly Cost:   $811 (base + avg overage)
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Enterprise            1,500 $   2,500            Yes      -$1,689
+
+  Recommended Action:
+  >> Monitor -- single previous overage, watch for pattern
+
+
+========================================================================
+  Silverleaf Management
+  Urgency: [MODERATE] Previous Overage (1/4 months)
+  Current Tier: Professional
+========================================================================
+
+  Contract:  4000 calls/mo @ $2.00/overage call
+  Base cost: $5,000/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026        4,012      4,000       12 $          24     OVER
+  Feb 2026        3,790      4,000        0 $           0       OK
+  Mar 2026        2,723      4,000        0 $           0       OK
+  Apr 2026        3,836      4,000        0 $           0       OK
+
+  MTD Actual:    2,430 calls
+  Projected EOM: 3,836 calls
+  Projected: Within contract
+
+  Avg Monthly Overage Cost: $24
+  Effective Monthly Cost:   $5,024 (base + avg overage)
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Enterprise            1,500 $   2,500             No       $2,524
+
+  Recommended Action:
+  >> Monitor -- single previous overage, watch for pattern
+
+
+========================================================================
+  VirtualHOA.com
+  Urgency: [MODERATE] Previous Overage (1/4 months)
+  Current Tier: Professional
+========================================================================
+
+  Contract:  500 calls/mo @ $2.75/overage call
+  Base cost: $1,250/mo
+
+  Monthly History:
+  Month           Calls   Included     Over   Overage Cost     Status
+  ------------------------------------------------------------------
+  Jan 2026          525        500       25 $          69     OVER
+  Feb 2026          428        500        0 $           0       OK
+  Mar 2026          497        500        0 $           0       OK
+  Apr 2026          236        500        0 $           0       OK
+
+  MTD Actual:    150 calls
+  Projected EOM: 236 calls
+  Projected: Within contract
+
+  Avg Monthly Overage Cost: $69
+  Effective Monthly Cost:   $1,319 (base + avg overage)
+
+  Upgrade Options:
+  Tier               Included      Price   Covers Proj?  Mo. Savings
+  ------------------------------------------------------------------
+  Enterprise            1,500 $   2,500            Yes      -$1,181
+
+  Recommended Action:
+  >> Monitor -- single previous overage, watch for pattern
+
+
+========================================================================
+END OF REPORT
+========================================================================

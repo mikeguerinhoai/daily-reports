@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HOAi Daily Report — {{ report_date }}</title>
+<style>
+  /* ── Page Setup ─────────────────────────────────────────────────── */
+  @page {
+    size: 11in 8.5in;  /* landscape */
+    margin: 0.4in 0.5in 0.4in 0.5in;
+    @bottom-center {
+      content: "HOAi Daily Report — {{ report_date }}  |  Page " counter(page) " of 4";
+      font-size: 7pt;
+      color: #6B7280;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    font-size: 8pt;
+    color: #111827;
+    line-height: 1.35;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── Colors (matching brand tokens) ─────────────────────────────── */
+  :root {
+    --navy:   #1B2A4A;
+    --blue:   #2563EB;
+    --lblue:  #3B82F6;
+    --teal:   #0D9488;
+    --green:  #059669;
+    --amber:  #D97706;
+    --red:    #DC2626;
+    --gray:   #6B7280;
+    --dark:   #111827;
+    --surface:#F3F4F6;
+    --white:  #FFFFFF;
+  }
+
+  /* ── Page breaks ────────────────────────────────────────────────── */
+  .page { page-break-after: always; min-height: 7.5in; position: relative; }
+  .page:last-child { page-break-after: auto; }
+
+  /* ── Banner ─────────────────────────────────────────────────────── */
+  .banner {
+    background: var(--navy);
+    color: var(--white);
+    padding: 8px 14px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .banner h1 { font-size: 13pt; font-weight: 700; }
+  .banner .meta { font-size: 8pt; opacity: 0.85; }
+  .banner .kpi-strip {
+    display: flex; gap: 18px;
+  }
+  .banner .kpi-strip .kpi { text-align: center; }
+  .banner .kpi-strip .kpi-val { font-size: 14pt; font-weight: 700; }
+  .banner .kpi-strip .kpi-lbl { font-size: 7pt; opacity: 0.8; }
+
+  /* ── Section headers ────────────────────────────────────────────── */
+  .section-hdr {
+    background: var(--blue);
+    color: var(--white);
+    padding: 4px 10px;
+    font-size: 9pt;
+    font-weight: 700;
+    border-radius: 3px;
+    margin: 8px 0 5px 0;
+  }
+  .section-hdr.teal { background: var(--teal); }
+  .section-hdr.green { background: var(--green); }
+  .section-hdr.amber { background: var(--amber); }
+  .section-hdr.navy { background: var(--navy); }
+
+  /* ── Tables ─────────────────────────────────────────────────────── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 7.5pt;
+    margin-bottom: 6px;
+  }
+  th {
+    background: var(--navy);
+    color: var(--white);
+    padding: 3px 5px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 7pt;
+    white-space: nowrap;
+  }
+  td {
+    padding: 2px 5px;
+    border-bottom: 1px solid #E5E7EB;
+    white-space: nowrap;
+  }
+  tr:nth-child(even) td { background: #F9FAFB; }
+  tr.total-row td {
+    background: var(--surface);
+    font-weight: 700;
+    border-top: 2px solid var(--navy);
+  }
+
+  /* ── Conditional colors ─────────────────────────────────────────── */
+  .good { color: var(--green); font-weight: 600; }
+  .warn { color: var(--amber); font-weight: 600; }
+  .bad  { color: var(--red); font-weight: 600; }
+  .muted { color: var(--gray); }
+  .gap  { color: var(--gray); font-style: italic; font-size: 7pt; }
+
+  /* ── Flags / Badges ─────────────────────────────────────────────── */
+  .flag {
+    display: inline-block;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 7pt;
+    font-weight: 600;
+  }
+  .flag-upsell    { background: #ECFDF5; color: var(--green); }
+  .flag-overage   { background: #FEF3C7; color: var(--amber); }
+  .flag-underuse  { background: #FEF2F2; color: var(--red); }
+  .flag-high      { background: #FEF2F2; color: var(--red); }
+  .flag-medium    { background: #FEF3C7; color: var(--amber); }
+
+  /* ── Grid layouts ───────────────────────────────────────────────── */
+  .cols-2 { display: flex; gap: 10px; }
+  .cols-2 > div { flex: 1; }
+  .quadrant { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  /* ── KPI cards ──────────────────────────────────────────────────── */
+  .kpi-card {
+    background: var(--surface);
+    border-radius: 4px;
+    padding: 5px 8px;
+    text-align: center;
+  }
+  .kpi-card .val { font-size: 14pt; font-weight: 700; color: var(--navy); }
+  .kpi-card .lbl { font-size: 7pt; color: var(--gray); }
+
+  /* ── Footer strip ───────────────────────────────────────────────── */
+  .footer-strip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    padding: 4px 10px;
+    font-size: 7pt;
+    color: var(--gray);
+    border-top: 1px solid #E5E7EB;
+    display: flex;
+    gap: 20px;
+  }
+  .footer-strip strong { color: var(--dark); }
+
+  /* ── Alert severity ─────────────────────────────────────────────── */
+  .alert-high { border-left: 3px solid var(--red); padding-left: 6px; }
+  .alert-medium { border-left: 3px solid var(--amber); padding-left: 6px; }
+
+  /* ── Mini chart placeholder ─────────────────────────────────────── */
+  .mini-bar {
+    display: inline-block;
+    height: 10px;
+    border-radius: 2px;
+    vertical-align: middle;
+  }
+
+  /* ── Trend indicators ──────────────────────────────────────────── */
+  .trend-up   { color: var(--green); font-weight: 700; }
+  .trend-down { color: var(--red); font-weight: 700; }
+  .trend-flat { color: var(--gray); }
+  .forecast-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 7pt;
+    font-weight: 600;
+  }
+  .fc-above    { background: #ECFDF5; color: var(--green); }
+  .fc-ontrack  { background: var(--surface); color: var(--dark); }
+  .fc-below    { background: #FEF2F2; color: var(--red); }
+  .fc-new      { background: var(--surface); color: var(--gray); }
+  .sparkbar-wrap { display: inline-flex; gap: 2px; align-items: flex-end; height: 16px; }
+  .sparkbar-wrap .bar {
+    display: inline-block;
+    width: 12px;
+    border-radius: 1px;
+    min-height: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ PAGE 1: Daily Pulse + Revenue Intelligence ═══════════════ -->
+<div class="page">
+  <div class="banner">
+    <div>
+      <h1>HOAi Daily Report</h1>
+      <div class="meta">{{ mtd_start_display }} &ndash; {{ report_date }} ({{ days_elapsed }}d MTD) &middot; Generated {{ generated_at_short }}</div>
+    </div>
+    <div class="kpi-strip">
+      <div class="kpi">
+        <div class="kpi-val">{{ voice_plat.total_calls | commafy }}</div>
+        <div class="kpi-lbl">Voice Calls</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">{{ voice_plat.deflection_rate | pctfmt }}</div>
+        <div class="kpi-lbl">Deflection</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">{{ voice_plat.hours_saved }}</div>
+        <div class="kpi-lbl">Hours Saved</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section A: Voice Summary -->
+  <div class="section-hdr">Voice Summary</div>
+  <table>
+    <tr><th colspan="2" style="background:var(--blue)">Voice</th></tr>
+    <tr><td>Total Calls</td><td><strong>{{ voice_plat.total_calls | commafy }}</strong></td></tr>
+    <tr><td>Deflection Rate</td><td class="{{ voice_plat.deflection_rate | rate_class('deflection_rate', 'voice') }}">{{ voice_plat.deflection_rate | pctfmt }}</td></tr>
+    <tr><td>Transfer Rate</td><td>{{ voice_plat.transfer_rate | pctfmt }}</td></tr>
+    <tr><td>Error Rate</td><td>{{ voice_plat.error_rate_actionable | pctfmt }}</td></tr>
+    <tr><td>Hours Saved</td><td>{{ voice_plat.hours_saved }}</td></tr>
+  </table>
+
+  <!-- Section B: Revenue Intelligence Flags -->
+  <div class="section-hdr amber">Revenue Intelligence Flags</div>
+  {% if revenue_intelligence %}
+  <table>
+    <tr>
+      <th>Company</th><th>Flag</th><th>MTD Volume</th>
+      <th>Included</th><th>Pace %</th><th>Projected EOM</th><th>Action</th>
+    </tr>
+    {% for ri in revenue_intelligence %}
+    <tr>
+      <td>{{ ri.company }}</td>
+      <td><span class="flag flag-{{ ri.flag | lower | replace('-', '') }}">{{ ri.flag }}</span></td>
+      <td>{{ ri.mtd | commafy }}</td>
+      <td>{{ ri.included | commafy }}</td>
+      <td>{{ ri.pace_pct }}%</td>
+      <td>{{ ri.projected_eom | commafy }}</td>
+      <td><em>{{ ri.action }}</em></td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="muted" style="padding:6px;">All customers tracking within package.</p>
+  {% endif %}
+</div>
+
+<!-- ═══════════════ PAGE 2: Per-Client Scorecard ═══════════════════════════ -->
+<div class="page">
+  <div class="banner">
+    <div><h1>Per-Client Scorecard</h1></div>
+    <div class="meta">{{ report_date }}</div>
+  </div>
+
+  <!-- Performance Scorecard -->
+  <div class="section-hdr">Performance Scorecard</div>
+  <table>
+    <tr>
+      <th>Company</th><th>Calls</th><th>Defl %</th>
+      <th>Xfer %</th><th>Err %</th><th>CSAT</th><th>ID Rate</th>
+      <th>Daily Avg</th><th>vs M-1</th><th>Status</th>
+    </tr>
+    {% for name, v in voice.items() %}
+    <tr>
+      <td>{{ name }}</td>
+      <td>{{ v.total_calls | commafy }}</td>
+      <td class="{{ v.deflection_rate | rate_class('deflection_rate', 'voice') }}">
+        {{ v.deflection_rate | pctfmt }}
+      </td>
+      <td>{{ v.transfer_rate | pctfmt }}</td>
+      <td>{{ v.error_rate_actionable | pctfmt }}</td>
+      <td>{{ v.avg_csat | round(1) if v.avg_csat else '—' }}</td>
+      <td>{{ v.identified_rate | pctfmt }}</td>
+      <td>{{ v.daily_avg }}</td>
+      <td>
+        {% set pct = v.vs_prior_month %}
+        {% if pct > 0.001 %}<span class="good">+{{ "%.1f"|format(pct * 100) }}%</span>
+        {% elif pct < -0.001 %}<span class="bad">{{ "%.1f"|format(pct * 100) }}%</span>
+        {% else %}<span class="muted">—</span>{% endif %}
+      </td>
+      <td>
+        {% set status = namespace(val='On Track') %}
+        {% if v.deflection_rate < 0.55 %}{% set status.val = 'Below' %}
+        {% elif v.deflection_rate < 0.60 %}{% set status.val = 'Watch' %}
+        {% endif %}
+        <span class="flag flag-{{ 'high' if status.val == 'Below' else 'medium' if status.val == 'Watch' else 'upsell' }}">{{ status.val }}</span>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <!-- Billing Projection -->
+  <div class="section-hdr navy">Billing Projection</div>
+  <table>
+    <tr>
+      <th>Company</th><th>Included</th><th>Proj EOM</th><th>Proj Overage</th><th>Proj Bill $</th>
+    </tr>
+    {% for name, v in voice.items() %}
+    {% set ct = contracts.get(name, {}) %}
+    {% set inc = ct.get('included_calls') %}
+    {% set rpc = ct.get('rate_per_call') %}
+    {% set opc = ct.get('overage_per_call') %}
+    {% set is_per_door = ct.get('pricing_model') == 'per_door' %}
+    {% set ht_voice = historical_trends.get('per_company', {}).get(name, {}).get('voice', {}) %}
+    {% set proj_eom = ht_voice.get('projected_eom', 0) %}
+    {% set proj_ov = [0, proj_eom - inc]|max if inc and inc > 0 else 0 %}
+    <tr>
+      <td>{{ name }}</td>
+      {% if is_per_door %}
+      <td class="muted">Per Door</td>
+      <td class="muted">{{ proj_eom | commafy }}</td>
+      <td class="muted">—</td>
+      <td class="muted">Per Door</td>
+      {% elif inc is not none and rpc is number %}
+      <td>{{ inc | commafy }}</td>
+      <td>{{ proj_eom | commafy }}</td>
+      <td class="{{ 'warn' if proj_ov > 0 else 'good' }}">{{ proj_ov | commafy }}</td>
+      <td class="{{ 'warn' if proj_ov > 0 else 'good' }}">
+        ${{ (inc * rpc + proj_ov * (opc if opc is number else 0)) | int | commafy }}
+      </td>
+      {% else %}
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<!-- ═══════════════ PAGE 3: Voice Detail ══════════════════════════════════ -->
+<div class="page">
+  <div class="banner" style="background:var(--blue);">
+    <div><h1>Voice Detail</h1></div>
+    <div class="kpi-strip">
+      <div class="kpi">
+        <div class="kpi-val">{{ voice_plat.total_calls | commafy }}</div>
+        <div class="kpi-lbl">Calls</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">{{ voice_plat.deflection_rate | pctfmt }}</div>
+        <div class="kpi-lbl">Deflection</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">{{ voice_plat.hours_saved }}</div>
+        <div class="kpi-lbl">Hours Saved</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cols-2">
+    <!-- Left: CSAT Deep Dive -->
+    <div>
+      <div class="section-hdr">CSAT Deep Dive</div>
+      <table>
+        <tr><th>Company</th><th>CSAT</th><th>Task</th><th>ID</th><th>Fwd</th><th>Latency</th><th>Distort</th><th>Repeat</th><th>Interrupt</th><th>TechFail</th><th>Cov %</th></tr>
+        {% for name, v in voice.items() %}
+        {% set dims = v.get('csat_dimensions', {}) %}
+        <tr>
+          <td>{{ name }}</td>
+          <td class="{{ 'good' if v.avg_csat and v.avg_csat >= 4.5 else 'warn' if v.avg_csat and v.avg_csat >= 3.5 else 'bad' if v.avg_csat else 'muted' }}">
+            {{ "%.1f"|format(v.avg_csat) if v.avg_csat else '—' }}
+          </td>
+          <td>{{ "%.1f"|format(dims.task_completion) if dims.get('task_completion') else '—' }}</td>
+          <td>{{ "%.1f"|format(dims.caller_identification) if dims.get('caller_identification') else '—' }}</td>
+          <td>{{ "%.1f"|format(dims.call_forwarding) if dims.get('call_forwarding') else '—' }}</td>
+          <td>{{ "%.1f"|format(dims.latency_and_filler_words) if dims.get('latency_and_filler_words') else '—' }}</td>
+          <td>{{ "%.1f"|format(dims.distortion) if dims.get('distortion') else '—' }}</td>
+          <td>{{ "%.1f"|format(dims.repetition) if dims.get('repetition') else '—' }}</td>
+          <td>{{ "%.1f"|format(dims.interruptions) if dims.get('interruptions') else '—' }}</td>
+          <td>{{ "%.1f"|format(dims.technical_failure) if dims.get('technical_failure') else '—' }}</td>
+          <td class="muted">{{ (v.get('csat_coverage_pct', 0) or 0) | pctfmt }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <!-- Right: Topics -->
+    <div>
+      <div class="section-hdr">Topics</div>
+      <table>
+        <tr><th>Company</th><th>Top Topic</th><th>%</th><th>2nd Topic</th><th>%</th><th>Uncat %</th></tr>
+        {% for name, v in voice.items() %}
+        {% set topics = v.get('topics', []) %}
+        {% set vtotal = v.total_calls or 1 %}
+        <tr>
+          <td>{{ name }}</td>
+          <td>{{ topics[0].topic if topics else '—' }}</td>
+          <td>{{ "%.0f"|format(100 * topics[0].count / vtotal) if topics else '—' }}{{ '%' if topics else '' }}</td>
+          <td>{{ topics[1].topic if topics|length > 1 else '—' }}</td>
+          <td>{{ "%.0f"|format(100 * topics[1].count / vtotal) if topics|length > 1 else '—' }}{{ '%' if topics|length > 1 else '' }}</td>
+          <td class="muted">
+            {% set uncat = topics|selectattr('topic','equalto','Uncategorized')|list %}
+            {{ "%.0f"|format(100 * uncat[0].count / vtotal) if uncat else '0' }}%
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+
+  <div class="footer-strip">
+    <div><strong>Time Saved:</strong> {{ voice_plat.hours_saved }}h (${{ voice_plat.dollar_saved | commafy }})</div>
+    <div><strong>Active:</strong> {{ voice_plat.active_companies }} companies</div>
+    <div><strong>Avg CSAT:</strong> {{ voice_plat.get('avg_csat', '—') }}</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 4: Usage Trends & Forecast                                        -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="banner">
+    <div>
+      <h1>Usage Trends & Forecast</h1>
+      <div class="meta">4-Week WoW + 4-Month MoM | Forecast vs 3-Month Trailing Average</div>
+    </div>
+    {% set pt_voice = historical_trends.get('platform', {}).get('voice', {}) %}
+    <div class="kpi-strip">
+      {% if pt_voice %}
+      <div class="kpi">
+        <div class="kpi-val {% if pt_voice.wow_trend == 'up' %}trend-up{% elif pt_voice.wow_trend == 'down' %}trend-down{% else %}trend-flat{% endif %}">
+          {{ pt_voice.wow_pct_change }}%
+        </div>
+        <div class="kpi-lbl">Voice WoW</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val {% if pt_voice.mom_trend == 'up' %}trend-up{% elif pt_voice.mom_trend == 'down' %}trend-down{% else %}trend-flat{% endif %}">
+          {{ pt_voice.mom_pct_change }}%
+        </div>
+        <div class="kpi-lbl">Voice MoM</div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Week-over-Week Volume -->
+  <div class="section-hdr navy">Week-over-Week Volume (Last 4 Weeks)</div>
+  {% set wlabels = historical_trends.get('weekly_labels', ['W-3', 'W-2', 'W-1', 'W0']) %}
+  <table>
+    <tr>
+      <th>Company</th>
+      <th>{{ wlabels[0] if wlabels|length > 0 else 'W-3' }}</th>
+      <th>{{ wlabels[1] if wlabels|length > 1 else 'W-2' }}</th>
+      <th>{{ wlabels[2] if wlabels|length > 2 else 'W-1' }}</th>
+      <th>{{ wlabels[3] if wlabels|length > 3 else 'W0' }}</th>
+      <th>Trend</th>
+      <th>WoW %</th>
+      <th>Spark</th>
+    </tr>
+    {% for company, channels in historical_trends.get('per_company', {}).items() | sort %}
+    {% set t = channels.get('voice') %}
+    {% if t %}
+    {% set wv = t.get('weekly_values', [0, 0, 0, 0]) %}
+    {% set max_wv = [wv|max, 1]|max %}
+    <tr>
+      <td>{{ company }}</td>
+      <td style="text-align:right">{{ wv[0] | commafy }}</td>
+      <td style="text-align:right">{{ wv[1] | commafy }}</td>
+      <td style="text-align:right">{{ wv[2] | commafy }}</td>
+      <td style="text-align:right"><strong>{{ wv[3] | commafy }}</strong></td>
+      <td class="{% if t.wow_trend == 'up' %}trend-up{% elif t.wow_trend == 'down' %}trend-down{% else %}trend-flat{% endif %}">
+        {% if t.wow_trend == 'up' %}&#9650;{% elif t.wow_trend == 'down' %}&#9660;{% else %}&#9644;{% endif %}
+      </td>
+      <td class="{% if t.wow_trend == 'up' %}trend-up{% elif t.wow_trend == 'down' %}trend-down{% else %}trend-flat{% endif %}" style="text-align:right">
+        {{ '%+.1f' | format(t.wow_pct_change) }}%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          {% for v in wv %}
+          <span class="bar" style="height:{{ (v / max_wv * 14)|int + 2 }}px; background:var(--blue);"></span>
+          {% endfor %}
+        </span>
+      </td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+  </table>
+
+  <!-- Month-over-Month Forecast -->
+  <div class="section-hdr navy">Month-over-Month Forecast (Last 4 Months)</div>
+  {% set mlabels = historical_trends.get('monthly_labels', ['M-3', 'M-2', 'M-1', 'Current']) %}
+  <table>
+    <tr>
+      <th>Company</th>
+      <th>{{ mlabels[0] if mlabels|length > 0 else 'M-3' }}</th>
+      <th>{{ mlabels[1] if mlabels|length > 1 else 'M-2' }}</th>
+      <th>{{ mlabels[2] if mlabels|length > 2 else 'M-1' }}</th>
+      <th>Proj EOM</th>
+      <th>3M Avg</th>
+      <th>MoM %</th>
+      <th>Forecast</th>
+    </tr>
+    {% for company, channels in historical_trends.get('per_company', {}).items() | sort %}
+    {% set t = channels.get('voice') %}
+    {% if t %}
+    {% set mv = t.get('monthly_values', [0, 0, 0, 0]) %}
+    <tr>
+      <td>{{ company }}</td>
+      <td style="text-align:right">{{ mv[0] | commafy }}</td>
+      <td style="text-align:right">{{ mv[1] | commafy }}</td>
+      <td style="text-align:right">{{ mv[2] | commafy }}</td>
+      <td style="text-align:right"><strong>{{ t.projected_eom | commafy }}</strong></td>
+      <td style="text-align:right" class="muted">{{ t.trailing_3m_avg | commafy }}</td>
+      <td class="{% if t.mom_trend == 'up' %}trend-up{% elif t.mom_trend == 'down' %}trend-down{% else %}trend-flat{% endif %}" style="text-align:right">
+        {{ '%+.1f' | format(t.mom_pct_change) }}%
+      </td>
+      <td>
+        {% set fc = t.forecast_vs_avg %}
+        <span class="forecast-badge fc-{{ fc | lower | replace(' ', '') }}">{{ fc }}</span>
+      </td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+  </table>
+
+  <!-- Trend Alerts: companies declining or below forecast -->
+  <div class="section-hdr amber">Trend Alerts</div>
+  {% set trend_alerts = [] %}
+  {% for company, channels in historical_trends.get('per_company', {}).items() | sort %}
+  {% set t = channels.get('voice') %}
+  {% if t and (t.forecast_vs_avg == 'Below' or t.wow_pct_change < -25) %}
+  {% set _ = trend_alerts.append({'company': company, 'forecast': t.forecast_vs_avg, 'wow': t.wow_pct_change, 'mom': t.mom_pct_change, 'projected': t.projected_eom, 'avg': t.trailing_3m_avg}) %}
+  {% endif %}
+  {% endfor %}
+
+  {% if trend_alerts %}
+  <table>
+    <tr><th>Company</th><th>Forecast</th><th>WoW %</th><th>MoM %</th><th>Proj EOM</th><th>3M Avg</th><th>Signal</th></tr>
+    {% for ta in trend_alerts %}
+    <tr>
+      <td>{{ ta.company }}</td>
+      <td><span class="forecast-badge fc-{{ ta.forecast | lower | replace(' ', '') }}">{{ ta.forecast }}</span></td>
+      <td class="{% if ta.wow < -25 %}bad{% endif %}" style="text-align:right">{{ '%+.1f' | format(ta.wow) }}%</td>
+      <td style="text-align:right">{{ '%+.1f' | format(ta.mom) }}%</td>
+      <td style="text-align:right">{{ ta.projected | commafy }}</td>
+      <td style="text-align:right" class="muted">{{ ta.avg | commafy }}</td>
+      <td class="muted">
+        {% if ta.wow < -25 %}Steep weekly decline{% endif %}
+        {% if ta.forecast == 'Below' %}{% if ta.wow < -25 %} + {% endif %}Below 3M trend{% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="muted" style="padding:6px;">All companies trending at or above historical averages.</p>
+  {% endif %}
+</div>
+
+</body>
+</html>

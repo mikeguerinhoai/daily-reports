@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HOAi Outreach — Action Community Management — 2026-04-27</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    font-size: 10pt;
+    color: #111827;
+    line-height: 1.5;
+    background: #f9fafb;
+    padding: 2rem;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  :root {
+    --navy: #1B2A4A;
+    --blue: #2563EB;
+    --teal: #0D9488;
+    --green: #059669;
+    --amber: #D97706;
+    --red: #DC2626;
+    --gray: #6B7280;
+    --surface: #F3F4F6;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+
+  /* Banner */
+  .banner {
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    color: #fff;
+    padding: 1.25rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .banner h1 { font-size: 16pt; font-weight: 700; }
+  .banner .date { font-size: 10pt; opacity: 0.85; }
+
+  /* Status Badge */
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 9pt;
+    font-weight: 600;
+    color: #fff;
+  }
+  .badge-overage { background: var(--red); }
+  .badge-proj-overage { background: var(--amber); }
+  .badge-on-track { background: var(--green); }
+  .badge-under-use { background: var(--gray); }
+  .badge-no-contract { background: var(--navy); }
+
+  /* Sections */
+  .section {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .section h2 {
+    font-size: 12pt;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 0.75rem;
+    border-bottom: 2px solid var(--blue);
+    padding-bottom: 0.4rem;
+  }
+
+  /* Metric Cards */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .metric-card {
+    background: var(--surface);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    text-align: center;
+  }
+  .metric-card .label { font-size: 8pt; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; }
+  .metric-card .value { font-size: 18pt; font-weight: 700; color: var(--navy); }
+  .metric-card .sub { font-size: 8pt; color: var(--gray); margin-top: 2px; }
+
+  /* Usage Bar */
+  .usage-bar-wrap { margin: 1rem 0; }
+  .usage-bar-label { display: flex; justify-content: space-between; font-size: 9pt; color: var(--gray); margin-bottom: 4px; }
+  .usage-bar { height: 24px; background: #e5e7eb; border-radius: 12px; overflow: hidden; position: relative; }
+  .usage-bar-fill { height: 100%; border-radius: 12px; transition: width 0.3s; }
+  .usage-bar-fill.green { background: var(--green); }
+  .usage-bar-fill.amber { background: var(--amber); }
+  .usage-bar-fill.red { background: var(--red); }
+  .usage-bar-threshold { position: absolute; top: 0; height: 100%; width: 2px; background: var(--navy); }
+
+  /* Alerts */
+  .alert-item {
+    padding: 0.6rem 0.75rem;
+    border-left: 4px solid var(--red);
+    background: #fef2f2;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 0.5rem;
+    font-size: 9pt;
+  }
+  .alert-item.amber { border-left-color: var(--amber); background: #fffbeb; }
+  .alert-item .alert-metric { font-weight: 600; }
+
+  /* Recommendations */
+  .rec-item {
+    padding: 0.75rem 1rem;
+    background: #eff6ff;
+    border-left: 4px solid var(--blue);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 0.5rem;
+    font-size: 9.5pt;
+  }
+  .rec-item strong { color: var(--navy); }
+
+  /* Trend tag */
+  .trend-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 8pt;
+    font-weight: 600;
+  }
+  .trend-tag.accelerating { background: #ecfdf5; color: var(--green); }
+  .trend-tag.stable { background: var(--surface); color: var(--gray); }
+  .trend-tag.declining { background: #fef2f2; color: var(--red); }
+
+  /* Billing Analysis */
+  .billing-urgency {
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-size: 9.5pt;
+    margin-bottom: 1rem;
+  }
+  .billing-urgency.critical { background: #fef2f2; border-left: 5px solid var(--red); }
+  .billing-urgency.high { background: #fffbeb; border-left: 5px solid var(--amber); }
+  .billing-urgency.moderate { background: #eff6ff; border-left: 5px solid var(--blue); }
+  .billing-urgency .urgency-label { font-weight: 700; font-size: 10pt; }
+  .billing-urgency.critical .urgency-label { color: var(--red); }
+  .billing-urgency.high .urgency-label { color: var(--amber); }
+  .billing-urgency.moderate .urgency-label { color: var(--blue); }
+
+  .history-table { width: 100%; border-collapse: collapse; font-size: 9pt; margin: 0.75rem 0; }
+  .history-table th { text-align: left; padding: 0.4rem 0.6rem; background: var(--surface); font-weight: 600; color: var(--navy); border-bottom: 2px solid var(--navy); }
+  .history-table td { padding: 0.4rem 0.6rem; border-bottom: 1px solid #e5e7eb; }
+  .history-table .over { color: var(--red); font-weight: 600; }
+  .history-table .ok { color: var(--green); }
+  .history-table .projected { font-style: italic; }
+
+  .upgrade-card {
+    background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+    border: 2px solid var(--green);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-top: 0.75rem;
+  }
+  .upgrade-card.neutral { background: var(--surface); border-color: var(--gray); }
+  .upgrade-card h3 { font-size: 11pt; color: var(--green); margin-bottom: 0.5rem; }
+  .upgrade-card.neutral h3 { color: var(--navy); }
+  .upgrade-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 9pt; }
+  .upgrade-grid .ug-col { padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.7); border-radius: 6px; }
+  .upgrade-grid .ug-label { font-size: 8pt; color: var(--gray); text-transform: uppercase; }
+  .upgrade-grid .ug-value { font-size: 14pt; font-weight: 700; color: var(--navy); }
+  .upgrade-grid .ug-value.savings { color: var(--green); }
+  .upgrade-grid .ug-value.cost { color: var(--red); }
+
+  .upgrade-options-table { width: 100%; border-collapse: collapse; font-size: 9pt; margin-top: 0.75rem; }
+  .upgrade-options-table th { text-align: left; padding: 0.3rem 0.5rem; background: var(--surface); font-weight: 600; font-size: 8pt; text-transform: uppercase; }
+  .upgrade-options-table td { padding: 0.3rem 0.5rem; border-bottom: 1px solid #e5e7eb; }
+  .upgrade-options-table .best { background: #f0fdf4; font-weight: 600; }
+
+  /* Topic Table */
+  .topic-table { width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 0.75rem; }
+  .topic-table th { text-align: left; padding: 0.4rem 0.6rem; background: var(--surface); font-weight: 600; color: var(--navy); border-bottom: 2px solid var(--navy); }
+  .topic-table td { padding: 0.4rem 0.6rem; border-bottom: 1px solid #e5e7eb; }
+  .topic-table .rate-bad { color: var(--red); font-weight: 600; }
+  .topic-table .rate-ok { color: var(--amber); font-weight: 600; }
+  .topic-rec { font-size: 8.5pt; color: var(--gray); margin-top: 2px; padding-left: 0.6rem; border-left: 2px solid var(--blue); margin-bottom: 0.5rem; }
+
+  /* Hour Strip */
+  .hour-strip { display: grid; grid-template-columns: repeat(24, 1fr); gap: 1px; height: 28px; border-radius: 4px; overflow: hidden; margin: 0.5rem 0; }
+  .hour-cell { background: var(--surface); position: relative; }
+  .hour-cell.active { background: var(--blue); }
+  .hour-cell.peak { background: var(--navy); }
+  .hour-labels { display: grid; grid-template-columns: repeat(24, 1fr); gap: 1px; font-size: 6pt; color: var(--gray); }
+  .hour-labels span { text-align: center; }
+  .timing-insight { font-size: 9pt; margin-top: 0.5rem; padding: 0.5rem 0.75rem; background: #eff6ff; border-radius: 4px; }
+
+  /* CSAT Bars */
+  .csat-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; font-size: 9pt; }
+  .csat-label { width: 130px; text-align: right; color: var(--gray); flex-shrink: 0; }
+  .csat-bar-wrap { flex: 1; height: 18px; background: #e5e7eb; border-radius: 9px; overflow: hidden; }
+  .csat-bar-fill { height: 100%; border-radius: 9px; }
+  .csat-bar-fill.good { background: var(--green); }
+  .csat-bar-fill.mid { background: var(--amber); }
+  .csat-bar-fill.low { background: var(--red); }
+  .csat-score { width: 35px; font-weight: 600; font-size: 9pt; }
+
+  /* Revenue Intel Card */
+  .rev-intel-card {
+    background: linear-gradient(135deg, #eff6ff, #f0fdf4);
+    border: 1px solid var(--blue);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+  }
+  .rev-intel-card .flag { font-size: 11pt; font-weight: 700; color: var(--blue); margin-bottom: 0.5rem; }
+  .rev-intel-card .action-text { font-size: 9.5pt; font-weight: 600; color: var(--navy); margin-top: 0.5rem; }
+  .rev-intel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; font-size: 9pt; }
+  .rev-intel-grid .ri-label { color: var(--gray); font-size: 8pt; }
+  .rev-intel-grid .ri-value { font-weight: 700; color: var(--navy); }
+
+  /* Footer */
+  .footer { text-align: center; color: var(--gray); font-size: 8pt; margin-top: 1.5rem; }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .container { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Banner -->
+  <div class="banner">
+    <div>
+      <h1>Action Community Management</h1>
+      <div class="date">Outreach Brief &mdash; 2026-04-27</div>
+    </div>
+    <div>
+      <span class="badge badge-under-use">Under-Use</span>
+      
+      <span class="trend-tag accelerating">Accelerating</span>
+      
+    </div>
+  </div>
+
+  <!-- Key Metrics -->
+  <div class="section">
+    <h2>Key Metrics (MTD)</h2>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="label">Calls MTD</div>
+        <div class="value">109</div>
+        <div class="sub">4/day avg</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Deflection</div>
+        <div class="value" style="color: var(--amber)">45.9%</div>
+        <div class="sub">Book avg: 43.6%</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">CSAT</div>
+        <div class="value">4.0</div>
+        <div class="sub">7-point scale</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Transfer Rate</div>
+        <div class="value">51.4%</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Proj. EOM</div>
+        <div class="value">121</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">MoM Change</div>
+        <div class="value" style="color: var(--green)">15.2%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Usage vs Contract -->
+  
+  <div class="section">
+    <h2>Usage vs. Contract</h2>
+    <div class="usage-bar-wrap">
+      <div class="usage-bar-label">
+        <span>0</span>
+        <span>Included: 500</span>
+        <span>Projected: 121</span>
+      </div>
+      <div class="usage-bar">
+        <div class="usage-bar-fill green" style="width: 24%"></div>
+        <div class="usage-bar-threshold" style="left: 100%"></div>
+      </div>
+    </div>
+    
+  </div>
+  
+
+  <!-- Billing & Upgrade Analysis -->
+  
+
+  <!-- Action Items / Alerts -->
+  
+  <div class="section">
+    <h2>Active Alerts (1)</h2>
+    
+    <div class="alert-item ">
+      <span class="alert-metric">Deflection Rate</span>: 45.9%
+      <span style="color: var(--gray);">(threshold: <55%)</span>
+    </div>
+    
+  </div>
+  
+
+  <!-- Outreach Recommendations -->
+  <div class="section">
+    <h2>Outreach Recommendations</h2>
+    
+    <div class="rec-item">
+      <strong>Engagement & Activation</strong><br>
+      Only 109 calls MTD — well below contract capacity. Review call routing configuration and ensure the HOAi number is prominently listed. Consider a homeowner communication campaign to drive awareness.
+    </div>
+    
+    <div class="rec-item">
+      <strong>Capitalize on Growth</strong><br>
+      Volume is accelerating (MoM: +15.2%). This is a great time to discuss expanded capabilities or upsell SMS/Webchat.
+    </div>
+    
+    <div class="rec-item">
+      <strong>SMS Cross-Sell Opportunity</strong><br>
+      This customer has Voice but no SMS. With their call volume, SMS broadcast and two-way messaging could deflect additional routine inquiries.
+    </div>
+    
+    <div class="rec-item">
+      <strong>Webchat Cross-Sell Opportunity</strong><br>
+      No Webchat channel active. Adding Webchat can capture after-hours and younger-demographic homeowner interactions.
+    </div>
+    
+  </div>
+
+  <!-- Section 1: Top Transfer Topics -->
+  
+  <div class="section">
+    <h2>Top Transfer Topics — Improvement Opportunities</h2>
+    <table class="topic-table">
+      <thead>
+        <tr><th>Topic</th><th>Calls</th><th>Transfer Rate</th><th>Est. Deflectable</th></tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>Transfer Requests</td>
+          <td>32</td>
+          <td class="rate-bad">93.8%</td>
+          <td>+4/mo</td>
+        </tr>
+        
+        <tr>
+          <td>Billing & Payments</td>
+          <td>14</td>
+          <td class="rate-ok">42.9%</td>
+          <td>+0/mo</td>
+        </tr>
+        
+        <tr>
+          <td>Maintenance & Violations</td>
+          <td>6</td>
+          <td class="rate-bad">83.3%</td>
+          <td>+0/mo</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    
+    <div class="topic-rec"><strong>Transfer Requests:</strong> Review transfer routing rules — some "transfer requests" may be resolvable if the agent has the right tools or extensions.</div>
+    
+    <div class="topic-rec"><strong>Billing & Payments:</strong> Ensure the agent has access to payment status, balance lookups, and payment portal links. Add a "make a payment" action item.</div>
+    
+    <div class="topic-rec"><strong>Maintenance & Violations:</strong> Add work order submission and violation status lookup as action items. These are high-deflection opportunities.</div>
+    
+  </div>
+  
+
+  <!-- Section 2: Call Timing Pattern -->
+  
+  <div class="section">
+    <h2>Call Timing Pattern</h2>
+    
+    <div class="hour-strip">
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="0:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="1:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="2:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="3:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="4:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="5:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="6:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="7:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="8:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="9:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="10:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="11:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="12:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="13:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="14:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="15:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell peak" style="opacity: 0.0" title="16:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="17:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="18:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="19:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="20:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="21:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="22:00 — 0 calls"></div>
+      
+      
+      
+      <div class="hour-cell " style="opacity: 0.0" title="23:00 — 0 calls"></div>
+      
+    </div>
+    <div class="hour-labels">
+      
+      <span>0</span>
+      
+      <span></span>
+      
+      <span></span>
+      
+      <span></span>
+      
+      <span>4</span>
+      
+      <span></span>
+      
+      <span></span>
+      
+      <span></span>
+      
+      <span>8</span>
+      
+      <span></span>
+      
+      <span></span>
+      
+      <span></span>
+      
+      <span>12</span>
+      
+      <span></span>
+      
+      <span></span>
+      
+      <span></span>
+      
+      <span>16</span>
+      
+      <span></span>
+      
+      <span></span>
+      
+      <span></span>
+      
+      <span>20</span>
+      
+      <span></span>
+      
+      <span></span>
+      
+      <span></span>
+      
+    </div>
+    
+    <div class="timing-insight">
+      
+      <strong>39% after-hours.</strong> Mixed business/after-hours coverage. Busiest hour: 16:00.
+      
+    </div>
+    
+  </div>
+  
+
+  <!-- Section 3: Caller Identification Gap -->
+  
+
+  <!-- Section 4: CSAT Deep Dive -->
+  
+  <div class="section">
+    <h2>CSAT Dimensions</h2>
+    
+    
+    
+    
+    <div class="csat-row">
+      <span class="csat-label">Task Completion</span>
+      <div class="csat-bar-wrap">
+        <div class="csat-bar-fill mid" style="width: 55.0%"></div>
+      </div>
+      <span class="csat-score" style="color: var(--amber)">3.9</span>
+    </div>
+    
+    
+    
+    
+    <div class="csat-row">
+      <span class="csat-label">Caller ID</span>
+      <div class="csat-bar-wrap">
+        <div class="csat-bar-fill good" style="width: 82.0%"></div>
+      </div>
+      <span class="csat-score" style="color: var(--green)">5.8</span>
+    </div>
+    
+    
+    
+    
+    <div class="csat-row">
+      <span class="csat-label">Call Forwarding</span>
+      <div class="csat-bar-wrap">
+        <div class="csat-bar-fill mid" style="width: 69.0%"></div>
+      </div>
+      <span class="csat-score" style="color: var(--amber)">4.8</span>
+    </div>
+    
+    
+    
+    
+    <div class="csat-row">
+      <span class="csat-label">Audio Quality</span>
+      <div class="csat-bar-wrap">
+        <div class="csat-bar-fill good" style="width: 95.0%"></div>
+      </div>
+      <span class="csat-score" style="color: var(--green)">6.7</span>
+    </div>
+    
+    
+    
+    
+    <div class="csat-row">
+      <span class="csat-label">Repetition</span>
+      <div class="csat-bar-wrap">
+        <div class="csat-bar-fill good" style="width: 81.0%"></div>
+      </div>
+      <span class="csat-score" style="color: var(--green)">5.7</span>
+    </div>
+    
+    
+    
+    
+    <div class="csat-row">
+      <span class="csat-label">Interruptions</span>
+      <div class="csat-bar-wrap">
+        <div class="csat-bar-fill good" style="width: 100.0%"></div>
+      </div>
+      <span class="csat-score" style="color: var(--green)">7.0</span>
+    </div>
+    
+    
+    
+    
+    <div class="csat-row">
+      <span class="csat-label">Technical</span>
+      <div class="csat-bar-wrap">
+        <div class="csat-bar-fill good" style="width: 98.0%"></div>
+      </div>
+      <span class="csat-score" style="color: var(--green)">6.9</span>
+    </div>
+    
+    
+    
+    <div class="rec-item" style="margin-top: 0.75rem;">
+      <strong>Focus Area: Task Completion (3.9/7)</strong><br>
+      Task completion is low — the agent may lack sufficient knowledge or tools to resolve requests. Review the AOP for missing action items.
+    </div>
+    
+  </div>
+  
+
+  <!-- Section 5: Efficiency Metrics -->
+  
+  <div class="section">
+    <h2>Efficiency</h2>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="label">Deflected Avg</div>
+        <div class="value">207.8s</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Transferred Avg</div>
+        <div class="value">91.7s</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Saved per Defl.</div>
+        <div class="value" style="color: var(--green)">-116.1s</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Hours Saved MTD</div>
+        <div class="value" style="color: var(--green)">2.9h</div>
+      </div>
+    </div>
+    
+  </div>
+  
+
+  <!-- Section 6: Revenue Intelligence -->
+  
+  <div class="section">
+    <h2>Revenue Intelligence</h2>
+    <div class="rev-intel-card">
+      <div class="flag">Under-Use</div>
+      <div class="rev-intel-grid">
+        <div><div class="ri-label">Tier</div><div class="ri-value">Contract</div></div>
+        <div><div class="ri-label">Included</div><div class="ri-value">500</div></div>
+        <div><div class="ri-label">MTD Actual</div><div class="ri-value">109</div></div>
+        <div><div class="ri-label">Pace</div><div class="ri-value">24%</div></div>
+      </div>
+      <div class="action-text">→ Reach out to drive adoption</div>
+    </div>
+  </div>
+  
+
+  <!-- Volume Context -->
+  
+  <div class="section">
+    <h2>Volume Trend (3-Month)</h2>
+    <div class="metrics-grid">
+      
+      <div class="metric-card">
+        <div class="label">This Month</div>
+        <div class="value">0</div>
+      </div>
+      
+      <div class="metric-card">
+        <div class="label">Last Month</div>
+        <div class="value">0</div>
+      </div>
+      
+      <div class="metric-card">
+        <div class="label">2 Months Ago</div>
+        <div class="value">105</div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  <div class="footer">
+    HOAi Daily Outreach Brief &bull; 2026-04-27 &bull; Auto-generated
+  </div>
+
+</div>
+</body>
+</html>

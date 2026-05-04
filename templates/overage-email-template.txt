@@ -1,0 +1,29 @@
+Subject: HOAi Voice — {month} Usage Update & Package Options
+
+In the spirit of partnership and transparency, we wanted to flag that you have exceeded the {included_calls} monthly included calls in your current HOAi Voice {current_tier} package. As of today ({today_date}), your call volume is approximately {mtd_calls}, and based on your current daily average, we are projecting roughly {projected_calls} calls by month-end.
+
+At your current overage rate of ${overage_rate}/call, that projects approximately {overage_calls} overage calls and ${overage_charges} in overage charges, bringing your projected {month} total to ${projected_total}.
+
+Since {month} is your first month live, this is exactly the kind of usage insight we want to surface early so we can right-size your package and protect you from excessive overage charges. If you'd like to adjust your package, we'll honor the updated pricing for this current billing period. Based on your signed HOAi Voice contract, I have outlined below how the same projected volume of {projected_calls} calls breaks down across the available packages.
+
+Projected {month} Cost Breakdown (based on ~{projected_calls} projected calls):
+
+| | {current_tier} (Current) | {upgrade_tier_1} | {upgrade_tier_2} |
+|---|---|---|---|
+| Included Calls | {current_included} | {tier1_included} | {tier2_included} |
+| Base Rate | ${current_base_rate}/call | ${tier1_base_rate}/call | ${tier2_base_rate}/call |
+| Monthly Min. | ${current_monthly_min} | ${tier1_monthly_min} | ${tier2_monthly_min} |
+| Projected Calls | {projected_calls} | {projected_calls} | {projected_calls} |
+| Overage Calls | {current_overage_calls} | {tier1_overage_calls} | {tier2_overage_calls} |
+| Overage Rate | ${current_overage_rate}/call | ${tier1_overage_rate}/call | ${tier2_overage_rate}/call |
+| Overage Charges | ${current_overage_charges} | ${tier1_overage_charges} | ${tier2_overage_charges} |
+| Projected Total | ${current_projected_total} | ${tier1_projected_total} | ${tier2_projected_total} |
+| Savings vs. Current | - | ${tier1_savings}/mo ({tier1_savings_pct}%) | ${tier2_savings}/mo ({tier2_savings_pct}%) |
+
+The {upgrade_tier_1} package (${tier1_monthly_min}/mo) increases your included calls to {tier1_included} and reduces your overage exposure to {tier1_overage_calls} calls — a modest savings of ${tier1_savings}/month at your current volume.
+
+The {upgrade_tier_2} package (${tier2_monthly_min}/mo) is the strongest fit given your trajectory. It includes {tier2_included} calls at a lower base rate of ${tier2_base_rate}/call, drops your overage rate to ${tier2_overage_rate}/call, and reduces overage charges from ${current_overage_charges} down to just ${tier2_overage_charges} — a total savings of ${tier2_savings}/month. It also gives you significantly more headroom as your usage continues to ramp.
+
+Please give me a call if you would like to talk through this.
+
+Thank you,

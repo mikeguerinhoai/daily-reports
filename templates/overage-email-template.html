@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{{ company }} — HOAi Voice {{ month_name }} Usage Update</title>
+</head>
+<body style="font-family: Calibri, Arial, sans-serif; font-size: 14px; color: #333; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px;">
+
+<p>In the spirit of partnership and transparency, we wanted to make you aware that you have exceeded the {{ current_tier.included_calls | commafy }} monthly included calls in your current HOAi Voice {{ current_tier.name }} package. As of today ({{ today_label }}), your call volume is approximately {{ mtd_actual | commafy }}, and based on your current daily average, we are projecting roughly {{ projected_calls | commafy }} calls by month-end.</p>
+
+<p>At your current overage rate of ${{ "%.2f" | format(current_tier.overage_per_call) }}/call, that projects approximately {{ projected_overage_calls | commafy }} overage calls and ${{ "%.0f" | format(projected_overage_cost) | commafy_raw }} in overage charges, bringing your projected {{ month_name }} total to ${{ "%.0f" | format(projected_total_current) | commafy_raw }}.</p>
+
+{% if history_rows | length > 0 %}
+<p>{{ history_narrative }}</p>
+
+<table style="border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 13px;">
+  <tr style="background-color: #1a3a5c; color: white;">
+    <th style="padding: 10px 14px; text-align: left; border: 1px solid #ccc;">Month</th>
+    <th style="padding: 10px 14px; text-align: right; border: 1px solid #ccc;">Calls</th>
+    <th style="padding: 10px 14px; text-align: right; border: 1px solid #ccc;">Overage Calls</th>
+  </tr>
+  {% for row in history_rows %}
+  <tr{% if loop.index is odd %} style="background-color: #f9f9f9;"{% endif %}>
+    <td style="padding: 8px 14px; border: 1px solid #ccc;">{{ row.label }}</td>
+    <td style="padding: 8px 14px; text-align: right; border: 1px solid #ccc;">{{ row.calls | commafy }}</td>
+    <td style="padding: 8px 14px; text-align: right; border: 1px solid #ccc;{% if row.overage > 0 %} color: #c0392b; font-weight: bold;{% endif %}">{{ row.overage | commafy }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<p>This is exactly the kind of usage insight we want to surface so we can right-size your package and to help reduce overage costs going forward. If you'd like to adjust your package, we'll honor the updated pricing for this current billing period. Based on your signed HOAi Voice contract, I have outlined below how the same projected volume of {{ projected_calls | commafy }} calls breaks down across the available packages.</p>
+
+<p><strong>Projected {{ month_name }} Cost Breakdown</strong> (based on ~{{ projected_calls | commafy }} projected calls):</p>
+
+<table style="border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 13px;">
+  <tr style="background-color: #1a3a5c; color: white;">
+    <th style="padding: 10px 14px; text-align: left; border: 1px solid #ccc;"></th>
+    {% for col in comparison_tiers %}
+    <th style="padding: 10px 14px; text-align: center; border: 1px solid #ccc;">{{ col.name }}{% if col.is_current %} (Current){% endif %}</th>
+    {% endfor %}
+  </tr>
+  <tr style="background-color: #f9f9f9;">
+    <td style="padding: 8px 14px; border: 1px solid #ccc; font-weight: bold;">Included Calls</td>
+    {% for col in comparison_tiers %}
+    <td style="padding: 8px 14px; text-align: center; border: 1px solid #ccc;">{{ col.included_calls | commafy }}</td>
+    {% endfor %}
+  </tr>
+  <tr>
+    <td style="padding: 8px 14px; border: 1px solid #ccc; font-weight: bold;">Base Rate</td>
+    {% for col in comparison_tiers %}
+    <td style="padding: 8px 14px; text-align: center; border: 1px solid #ccc;">${{ "%.2f" | format(col.rate_per_call) }}/call</td>
+    {% endfor %}
+  </tr>
+  <tr style="background-color: #f9f9f9;">
+    <td style="padding: 8px 14px; border: 1px solid #ccc; font-weight: bold;">Monthly Min.</td>
+    {% for col in comparison_tiers %}
+    <td style="padding: 8px 14px; text-align: center; border: 1px solid #ccc;">${{ col.monthly_price | commafy }}</td>
+    {% endfor %}
+  </tr>
+  <tr>
+    <td style="padding: 8px 14px; border: 1px solid #ccc; font-weight: bold;">Overage Calls</td>
+    {% for col in comparison_tiers %}
+    <td style="padding: 8px 14px; text-align: center; border: 1px solid #ccc;{% if col.overage_calls == 0 %} color: #27ae60; font-weight: bold;{% elif col.is_current %} color: #c0392b; font-weight: bold;{% elif col.overage_calls > 0 %} color: #e67e22; font-weight: bold;{% endif %}">{{ col.overage_calls | commafy }}</td>
+    {% endfor %}
+  </tr>
+  <tr style="background-color: #f9f9f9;">
+    <td style="padding: 8px 14px; border: 1px solid #ccc; font-weight: bold;">Overage Rate</td>
+    {% for col in comparison_tiers %}
+    <td style="padding: 8px 14px; text-align: center; border: 1px solid #ccc;">${{ "%.2f" | format(col.overage_per_call) }}/call</td>
+    {% endfor %}
+  </tr>
+  <tr>
+    <td style="padding: 8px 14px; border: 1px solid #ccc; font-weight: bold;">Overage Charges</td>
+    {% for col in comparison_tiers %}
+    <td style="padding: 8px 14px; text-align: center; border: 1px solid #ccc;{% if col.overage_cost == 0 %} color: #27ae60; font-weight: bold;{% elif col.is_current %} color: #c0392b; font-weight: bold;{% elif col.overage_cost > 0 %} color: #e67e22; font-weight: bold;{% endif %}">${{ col.overage_cost | commafy_raw }}</td>
+    {% endfor %}
+  </tr>
+  <tr style="background-color: #eaf2f8; font-weight: bold;">
+    <td style="padding: 10px 14px; border: 1px solid #ccc;">Projected Total</td>
+    {% for col in comparison_tiers %}
+    <td style="padding: 10px 14px; text-align: center; border: 1px solid #ccc;">${{ col.projected_total | commafy_raw }}</td>
+    {% endfor %}
+  </tr>
+  {% if upgrade_tiers | length > 0 %}
+  <tr style="background-color: #e8f8f5; font-weight: bold;">
+    <td style="padding: 10px 14px; border: 1px solid #ccc;">Savings vs. Current</td>
+    {% for col in comparison_tiers %}
+    {% if col.is_current %}
+    <td style="padding: 10px 14px; text-align: center; border: 1px solid #ccc;">—</td>
+    {% else %}
+    <td style="padding: 10px 14px; text-align: center; border: 1px solid #ccc;{% if col.savings > 0 %} color: #27ae60;{% endif %}">{% if col.savings > 0 %}${{ col.savings | commafy_raw }}/mo ({{ "%.1f" | format(col.savings_pct) }}%){% elif col.savings == 0 %}—{% else %}+${{ (col.savings * -1) | int | commafy_raw }}/mo{% endif %}</td>
+    {% endif %}
+    {% endfor %}
+  </tr>
+  {% endif %}
+</table>
+
+{% for tier in upgrade_tiers %}
+<p>The <strong>{{ tier.name }} package</strong> (${{ tier.monthly_price | commafy }}/mo) includes {{ tier.included_calls | commafy }} calls at a lower base rate of ${{ "%.2f" | format(tier.rate_per_call) }}/call{% if tier.overage_calls == 0 %} and at your current volume would completely eliminate your overage charges{% if tier.savings > 0 %} — a total savings of ${{ tier.savings | commafy_raw }}/mo ({{ "%.1f" | format(tier.savings_pct) }}%){% endif %}.{% elif tier.savings > 0 %}, drops your overage rate to ${{ "%.2f" | format(tier.overage_per_call) }}/call, and reduces overage charges from ${{ projected_overage_cost | int | commafy_raw }} down to ${{ tier.overage_cost | commafy_raw }} — a total savings of ${{ tier.savings | commafy_raw }}/mo ({{ "%.1f" | format(tier.savings_pct) }}%).{% else %}.{% endif %}{% if tier.overage_calls == 0 %} It also gives you significantly more headroom as your usage continues to ramp.{% endif %}</p>
+{% endfor %}
+
+<p>Please give me a call if you would like to talk through this.</p>
+
+<p>Thank you,</p>
+
+</body>
+</html>

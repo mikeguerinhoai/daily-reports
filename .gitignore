@@ -1,0 +1,8 @@
+data/
+__pycache__/
+node_modules/
+.env
+*.pyc
+_test_*
+_tmp_*
+_diag*

@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOAi Daily Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+/* ── CSS Variables ────────────────────────────────────────────────── */
+:root {
+  --bg: #ffffff;
+  --card: #f9fafb;
+  --surface: #f3f4f6;
+  --hover: #f0f0f5;
+  --border: #e5e7eb;
+  --border-strong: #d1d5db;
+  --text: #111827;
+  --muted: #6b7280;
+  --navy: #1B2A4A;
+  --blue: #2563EB;
+  --light-blue: #3B82F6;
+  --teal: #0D9488;
+  --green: #059669;
+  --green-light: #ecfdf5;
+  --red: #DC2626;
+  --red-light: #fef2f2;
+  --amber: #D97706;
+  --amber-light: #fffbeb;
+  --radius: .5rem;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Avenir Next LT Pro', 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; font-size: 14px; }
+.container { max-width: 1500px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* ── Header ───────────────────────────────────────────────────────── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #1B2A4A, #2563EB); color: #fff;
+  padding: .7rem 0;
+}
+header .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .75rem; }
+header h1 { font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: .5rem; }
+header .meta { color: rgba(255,255,255,.7); font-size: .78rem; text-align: right; }
+
+/* ── Main ─────────────────────────────────────────────────────────── */
+main { padding: .5rem 0 3rem; }
+
+/* ── Grid ─────────────────────────────────────────────────────────── */
+.grid { display: grid; gap: 1rem; }
+.gc3 { grid-template-columns: repeat(3, 1fr); }
+.gc4 { grid-template-columns: repeat(4, 1fr); }
+.gc6 { grid-template-columns: repeat(6, 1fr); }
+@media (max-width: 1200px) { .gc4, .gc6 { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) { .gc3, .gc4, .gc6 { grid-template-columns: repeat(2, 1fr); } }
+
+/* ── Cards ────────────────────────────────────────────────────────── */
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.1rem 1rem; text-align: center;
+}
+.card-accent { border-top: 3px solid; }
+.card h3 { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: .5rem; }
+.card .big-num { font-size: 2rem; font-weight: 800; line-height: 1.1; }
+.card .sub { color: var(--muted); font-size: .78rem; margin-top: .2rem; }
+
+/* ── Tables ───────────────────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); }
+table { width: 100%; border-collapse: collapse; font-size: .78rem; white-space: nowrap; line-height: 1.6; }
+thead th {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--navy); color: #fff;
+  text-align: right; padding: .55rem .65rem;
+  border-bottom: 2px solid var(--border-strong);
+  text-transform: uppercase; font-size: .65rem; font-weight: 600; letter-spacing: .03em;
+  cursor: pointer; user-select: none;
+}
+thead th:first-child { text-align: left; position: sticky; left: 0; z-index: 20; background: var(--navy); color: #fff; min-width: 170px; }
+thead th:hover { color: rgba(255,255,255,.7); }
+tbody td { padding: .45rem .65rem; border-bottom: 1px solid var(--border); text-align: right; }
+tbody td:first-child { text-align: left; font-weight: 500; position: sticky; left: 0; background: var(--bg); z-index: 5; }
+tbody tr:nth-child(even):not(.detail-row) td { background: #F9FAFB; }
+tbody tr:nth-child(even):not(.detail-row) td:first-child { background: #F9FAFB; }
+tbody tr:hover:not(.detail-row) td { background: var(--hover); }
+tbody tr:hover:not(.detail-row) td:first-child { background: var(--hover); }
+tfoot td {
+  padding: .55rem .65rem; border-top: 2px solid var(--navy);
+  font-weight: 700; text-align: right; background: var(--surface);
+}
+tfoot td:first-child { text-align: left; position: sticky; left: 0; z-index: 5; background: var(--surface); }
+
+/* ── Expandable rows ──────────────────────────────────────────────── */
+.expand-row { cursor: pointer; }
+.expand-row:hover td { background: rgba(37,99,235,.04); }
+.expand-row td:first-child { font-weight: 600; }
+.detail-row td { background: #F0F4FF !important; border-left: 4px solid var(--blue); padding: .75rem 1rem; }
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .5rem .75rem; font-size: .75rem; }
+.detail-grid .dl { display: flex; flex-direction: column; }
+.detail-grid .dl-label { color: var(--muted); font-size: .65rem; text-transform: uppercase; }
+.detail-grid .dl-value { font-weight: 600; }
+
+/* ── Badges ───────────────────────────────────────────────────────── */
+.badge {
+  display: inline-block; padding: .1rem .45rem; border-radius: 999px;
+  font-size: .65rem; font-weight: 600; white-space: nowrap;
+}
+.badge-green  { background: rgba(5,150,105,.12); color: #059669; }
+.badge-amber  { background: rgba(217,119,6,.12); color: #D97706; }
+.badge-red    { background: rgba(220,38,38,.12); color: #DC2626; }
+.badge-blue   { background: rgba(37,99,235,.12); color: #2563EB; }
+.badge-teal   { background: rgba(13,148,136,.12); color: #0D9488; }
+.badge-gray   { background: rgba(107,114,128,.12); color: #6B7280; }
+.badge-navy   { background: rgba(27,42,74,.12); color: #1B2A4A; }
+
+/* ── Delta badge ──────────────────────────────────────────────────── */
+.delta-badge {
+  display: inline-flex; align-items: center; gap: .2rem;
+  padding: .1rem .4rem; border-radius: 999px;
+  font-size: .65rem; font-weight: 600; white-space: nowrap;
+}
+.delta-up   { background: rgba(5,150,105,.1); color: #059669; }
+.delta-down { background: rgba(220,38,38,.1); color: #dc2626; }
+.delta-flat { background: rgba(100,116,139,.1); color: #64748b; }
+
+/* ── Sparkline ────────────────────────────────────────────────────── */
+.sparkline { display: inline-flex; align-items: flex-end; gap: 2px; height: 20px; }
+.sparkline .bar { width: 10px; border-radius: 1px; min-height: 2px; transition: height .3s; }
+
+/* ── Channel badges ───────────────────────────────────────────────── */
+.ch-badge { display: inline-block; width: 18px; height: 18px; line-height: 18px; text-align: center;
+  border-radius: 3px; font-size: .6rem; font-weight: 700; }
+.ch-v { background: var(--blue); color: #fff; }
+.ch-s { background: var(--teal); color: #fff; }
+.ch-w { background: var(--green); color: #fff; }
+
+/* ── Channel outline badges (white space indicator) ──────────────── */
+.ch-badge-outline { display: inline-block; width: 18px; height: 18px; line-height: 16px; text-align: center; border-radius: 3px; font-size: .6rem; font-weight: 700; border: 1.5px dashed; background: transparent; }
+.ch-badge-outline.ch-v { color: var(--blue); border-color: var(--blue); }
+.ch-badge-outline.ch-s { color: var(--teal); border-color: var(--teal); }
+.ch-badge-outline.ch-w { color: var(--green); border-color: var(--green); }
+
+/* ── Filter bar ───────────────────────────────────────────────────── */
+.filter-bar { display: flex; gap: .5rem; margin-bottom: .75rem; flex-wrap: wrap; align-items: center; }
+.filter-bar input {
+  padding: .4rem .75rem; border: 1px solid var(--border); border-radius: var(--radius);
+  font-family: inherit; font-size: .8rem; width: 220px; background: var(--card);
+}
+.filter-bar input:focus { outline: none; border-color: var(--blue); }
+.filter-bar select {
+  padding: .4rem .6rem; border: 1px solid var(--border); border-radius: var(--radius);
+  font-family: inherit; font-size: .78rem; background: var(--card); cursor: pointer;
+}
+
+/* ── Action Queue ─────────────────────────────────────────────────── */
+.action-queue {
+  display: flex; overflow-x: auto; gap: .75rem; padding: .75rem 0;
+  scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+}
+.action-queue::-webkit-scrollbar { height: 4px; }
+.action-queue::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 2px; }
+.action-card {
+  min-width: 240px; max-width: 280px; flex-shrink: 0;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  border-left: 4px solid var(--muted);
+  padding: .6rem .75rem; font-size: .75rem;
+  scroll-snap-align: start; position: relative;
+  transition: opacity .2s;
+}
+.action-card.sev-red    { border-left-color: var(--red); }
+.action-card.sev-amber  { border-left-color: var(--amber); }
+.action-card.sev-blue   { border-left-color: var(--blue); }
+.action-card.sev-gray   { border-left-color: var(--muted); }
+.action-card.acked      { opacity: 0.4; }
+.action-card .ac-header  { display: flex; align-items: center; gap: .35rem; margin-bottom: .25rem; }
+.action-card .ac-company { font-weight: 700; font-size: .78rem; }
+.action-card .ac-desc    { color: var(--muted); line-height: 1.35; }
+.action-card .ac-ack {
+  position: absolute; top: .4rem; right: .5rem;
+  background: none; border: 1px solid var(--border); border-radius: 3px;
+  width: 22px; height: 22px; font-size: .7rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted);
+}
+.action-card .ac-ack:hover { background: var(--surface); color: var(--green); }
+.action-card .ac-ack.done { color: var(--green); background: var(--green-light); border-color: var(--green); }
+
+/* ── Portfolio summary bar ────────────────────────────────────────── */
+.portfolio-bar {
+  display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;
+  background: var(--surface); border-radius: var(--radius); padding: .5rem 1rem;
+  margin-bottom: .75rem; font-size: .78rem;
+}
+.portfolio-bar .pb-stat { display: flex; flex-direction: column; align-items: center; }
+.portfolio-bar .pb-label { color: var(--muted); font-size: .65rem; text-transform: uppercase; letter-spacing: .03em; }
+.portfolio-bar .pb-value { font-weight: 700; font-size: 1rem; }
+
+/* ── Detail 3-column layout ───────────────────────────────────────── */
+.detail-3col {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;
+  margin-bottom: .75rem;
+}
+.detail-3col .col-header {
+  font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+  margin-bottom: .5rem; padding-bottom: .25rem; border-bottom: 2px solid;
+}
+.detail-3col .col-header.voice-h  { color: var(--blue); border-color: var(--blue); }
+.detail-3col .col-header.sms-h    { color: var(--teal); border-color: var(--teal); }
+.detail-3col .col-header.wc-h     { color: var(--green); border-color: var(--green); }
+.detail-3col .col-inactive { opacity: 0.45; font-style: italic; }
+.detail-3col .metric-row { display: flex; justify-content: space-between; padding: .15rem 0; font-size: .75rem; }
+.detail-3col .metric-label { color: var(--muted); }
+.detail-3col .metric-value { font-weight: 600; }
+
+/* ── Channel pipeline ─────────────────────────────────────────────── */
+.channel-pipeline {
+  display: flex; align-items: center; gap: .5rem; padding: .5rem 0;
+}
+.pipeline-node {
+  width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: .7rem; font-weight: 700;
+}
+.pipeline-node.active { color: #fff; }
+.pipeline-node.gap { background: transparent; border: 2px dashed; }
+.pipeline-node.active.node-v { background: var(--blue); }
+.pipeline-node.active.node-s { background: var(--teal); }
+.pipeline-node.active.node-w { background: var(--green); }
+.pipeline-node.gap.node-v { color: var(--blue); border-color: var(--blue); }
+.pipeline-node.gap.node-s { color: var(--teal); border-color: var(--teal); }
+.pipeline-node.gap.node-w { color: var(--green); border-color: var(--green); }
+.pipeline-arrow { color: var(--border-strong); font-size: .8rem; }
+.pipeline-label { font-size: .65rem; color: var(--muted); margin-left: .25rem; }
+
+/* ── Health bar in table ──────────────────────────────────────────── */
+.health-bar-wrap { display: flex; align-items: center; gap: .35rem; justify-content: flex-end; }
+.health-bar { width: 30px; height: 8px; border-radius: 4px; background: var(--surface); overflow: hidden; }
+.health-bar-fill { height: 100%; border-radius: 4px; }
+
+/* ── Alert / repeat in detail ─────────────────────────────────────── */
+.detail-alerts { margin-top: .5rem; }
+.detail-alerts h5 { font-size: .7rem; text-transform: uppercase; color: var(--muted); margin-bottom: .25rem; }
+.detail-alert-item {
+  font-size: .73rem; padding: .25rem .5rem; border-left: 3px solid;
+  margin-bottom: .2rem; background: var(--card); border-radius: 0 var(--radius) var(--radius) 0;
+}
+.detail-alert-item.sev-high { border-left-color: var(--red); }
+.detail-alert-item.sev-medium { border-left-color: var(--amber); }
+
+/* ── Section title ────────────────────────────────────────────────── */
+.section-title { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin: 1.25rem 0 .65rem; padding-bottom: .4rem; border-bottom: 2px solid var(--blue); }
+
+/* ── Footer ───────────────────────────────────────────────────────── */
+footer { text-align: center; color: var(--muted); font-size: .72rem; padding: 1.5rem 0; border-top: 1px solid var(--border); }
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .detail-3col { grid-template-columns: 1fr; }
+  .action-card { min-width: 200px; }
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useMemo, useCallback } = React;
+
+// ─── DATA INJECTION ──────────────────────────────────────────────────
+const DAILY_DATA = {};
+
+// ─── FORMATTERS ──────────────────────────────────────────────────────
+const fmt  = (v, d = 1) => v != null && !isNaN(v) ? Number(v).toFixed(d) : '\u2014';
+const fmtPct = (v) => v != null && !isNaN(v) ? `${(Number(v) * 100).toFixed(1)}%` : '\u2014';
+const fmtPctRaw = (v) => v != null && !isNaN(v) ? `${Number(v).toFixed(1)}%` : '\u2014';
+const fmtInt = (v) => v != null && !isNaN(v) ? Number(v).toLocaleString() : '\u2014';
+
+// ─── SORT HOOK ───────────────────────────────────────────────────────
+const useSort = (defaultKey, defaultAsc = false) => {
+  const [sortKey, setSortKey] = useState(defaultKey);
+  const [sortAsc, setSortAsc] = useState(defaultAsc);
+  const toggleSort = (key) => {
+    if (sortKey === key) setSortAsc(!sortAsc);
+    else { setSortKey(key); setSortAsc(false); }
+  };
+  const sortIcon = (key) => sortKey === key ? (sortAsc ? ' \u2191' : ' \u2193') : '';
+  const sortFn = useCallback((rows) => [...rows].sort((a, b) => {
+    let av = a[sortKey], bv = b[sortKey];
+    if (av == null) av = sortAsc ? Infinity : -Infinity;
+    if (bv == null) bv = sortAsc ? Infinity : -Infinity;
+    if (typeof av === 'string' && typeof bv === 'string') {
+      return sortAsc ? av.localeCompare(bv) : bv.localeCompare(av);
+    }
+    const na = typeof av === 'number' ? av : -Infinity;
+    const nb = typeof bv === 'number' ? bv : -Infinity;
+    return sortAsc ? (na > nb ? 1 : -1) : (na < nb ? 1 : -1);
+  }), [sortKey, sortAsc]);
+  return { sortKey, toggleSort, sortIcon, sortFn };
+};
+
+// ─── BENCHMARK COLOR ─────────────────────────────────────────────────
+const rateColor = (value, benchmark, higherIsBetter = true) => {
+  if (!benchmark || value == null) return 'var(--muted)';
+  const { target, warn } = benchmark;
+  if (higherIsBetter) {
+    if (value >= target) return 'var(--green)';
+    if (value >= warn)   return 'var(--amber)';
+    return 'var(--red)';
+  } else {
+    if (value <= target) return 'var(--green)';
+    if (value <= warn)   return 'var(--amber)';
+    return 'var(--red)';
+  }
+};
+
+// ─── COMPUTATION: ADOPTION SIGNAL ────────────────────────────────────
+const adoptionSignal = (tData) => {
+  if (!tData) return '\u2014';
+  const raw = (tData.monthly_values || [0, 0, 0]).slice(0, 3);
+  const mv = raw.map(v => v || 0);
+  const forecast = tData.forecast_vs_avg || 'New';
+  if (mv[0] === 0 && mv[1] === 0 && mv[2] === 0) return 'New';
+  if (forecast === 'New' && mv[2] === 0) return 'New';
+  const [m1, m2, m3] = mv;
+  let growth3m;
+  if (m1 > 0) growth3m = (m3 - m1) / m1;
+  else if (m3 > 0) growth3m = 1.0;
+  else growth3m = 0;
+  const mom = tData.mom_pct_change || 0;
+  if (growth3m > 0.15 && mom > -60) return 'Growing';
+  if (growth3m < -0.20 || mom < -60) return 'Declining';
+  if (mom < -40) return 'Declining';
+  return 'Stable';
+};
+
+// ─── COMPUTATION: HEALTH SCORE (0-100) ───────────────────────────────
+const normalize = (v, min, max) => {
+  if (v == null || isNaN(v)) return 0.5;
+  return Math.max(0, Math.min(1, (v - min) / (max - min)));
+};
+
+const computeHealthScore = (voiceData, smsData, trendData) => {
+  const v = voiceData || {};
+  const s = smsData || {};
+  const t = trendData || {};
+
+  // For SMS-only companies (no voice data), use SMS metrics
+  const hasVoice = v.total_calls > 0 || v.deflection_rate != null;
+  const hasSms = s.total_calls > 0 || s.total_conversations > 0 || (s.deflection_rate != null || s.resolution_rate != null);
+
+  if (!hasVoice && !hasSms) return 50; // No data = neutral
+
+  let score;
+  if (hasVoice) {
+    const defl = normalize(v.deflection_rate, 0.30, 0.80) * 30;
+    const xfer = (1 - normalize(v.transfer_rate, 0.20, 0.60)) * 20;
+    const err  = (1 - normalize(v.error_rate_actionable, 0, 0.10)) * 15;
+    const csat = normalize(v.avg_csat, 1.0, 7.0) * 15;
+    const mom  = normalize(t.mom_pct_change || 0, -50, 50) * 10;
+    const vol  = ((t.mtd_actual || 0) > 0 ? 1 : 0) * 10;
+    score = defl + xfer + err + csat + mom + vol;
+  } else {
+    // SMS-only
+    const res  = normalize(s.deflection_rate || s.resolution_rate, 0.20, 0.70) * 40;
+    const csat = normalize(s.avg_csat, 1.0, 7.0) * 25;
+    const mom  = normalize(t.mom_pct_change || 0, -50, 50) * 20;
+    const vol  = ((t.mtd_actual || 0) > 0 ? 1 : 0) * 15;
+    score = res + csat + mom + vol;
+  }
+  return Math.round(Math.max(0, Math.min(100, score)));
+};
+
+const healthColor = (score) => {
+  if (score >= 80) return 'var(--green)';
+  if (score >= 60) return 'var(--amber)';
+  return 'var(--red)';
+};
+
+// ─── LOCALSTORAGE HELPERS ────────────────────────────────────────────
+const ackKey = (date, company) => `aq_ack_${date}_${company}`;
+const isAcked = (date, company) => {
+  try { return localStorage.getItem(ackKey(date, company)) === '1'; } catch { return false; }
+};
+const toggleAck = (date, company) => {
+  try {
+    const k = ackKey(date, company);
+    localStorage.getItem(k) === '1' ? localStorage.removeItem(k) : localStorage.setItem(k, '1');
+  } catch {}
+};
+
+// ─── STATUS BADGE ────────────────────────────────────────────────────
+const StatusBadge = ({ status }) => {
+  const map = {
+    'Under': 'badge-red', 'Over': 'badge-blue', 'Watch': 'badge-amber', 'On Track': 'badge-green',
+    'New': 'badge-gray', 'Growing': 'badge-green', 'Stable': 'badge-navy', 'Declining': 'badge-red',
+    'Above': 'badge-green', 'Below': 'badge-red',
+    'high': 'badge-red', 'medium': 'badge-amber',
+    'Upsell': 'badge-blue', 'Under-Use': 'badge-amber',
+    '\u2014': 'badge-gray'
+  };
+  return <span className={`badge ${map[status] || 'badge-gray'}`}>{status}</span>;
+};
+
+// ─── USAGE STATUS BADGE ─────────────────────────────────────────────
+const UsageStatusBadge = ({ status }) => {
+  if (!status) return <span style={{ color: 'var(--muted)' }}>{'\u2014'}</span>;
+  const map = {
+    'Overage': { cls: 'badge-red', icon: '\u26A0' },
+    'Proj. Overage': { cls: 'badge-amber', icon: '\u2191' },
+    'On Track': { cls: 'badge-green', icon: '\u2713' },
+    'Under-Use': { cls: 'badge-gray', icon: '\u2193' },
+  };
+  const m = map[status] || { cls: 'badge-gray', icon: '' };
+  return <span className={`badge ${m.cls}`}>{m.icon} {status}</span>;
+};
+
+// ─── CHANNEL BADGE ───────────────────────────────────────────────────
+const ChannelBadge = ({ channel }) => {
+  const ch = (channel || '').charAt(0).toUpperCase();
+  const cls = ch === 'V' ? 'ch-v' : ch === 'S' ? 'ch-s' : 'ch-w';
+  return <span className={`ch-badge ${cls}`}>{ch}</span>;
+};
+
+// ─── DELTA BADGE ─────────────────────────────────────────────────────
+const DeltaBadge = ({ value, higherIsBetter = true }) => {
+  if (value == null || isNaN(value)) return null;
+  const v = Number(value);
+  if (Math.abs(v) < 0.5) return <span className="delta-badge delta-flat">{'\u2014'}</span>;
+  const improving = higherIsBetter ? v > 0 : v < 0;
+  const arrow = v > 0 ? '\u2191' : '\u2193';
+  const cls = improving ? 'delta-up' : 'delta-down';
+  return <span className={`delta-badge ${cls}`}>{arrow} {Math.abs(v).toFixed(1)}%</span>;
+};
+
+// ─── SPARKLINE ───────────────────────────────────────────────────────
+const Sparkline = ({ values, color = 'var(--blue)' }) => {
+  if (!values || !values.length) return null;
+  const max = Math.max(...values.filter(v => v != null), 1);
+  return (
+    <span className="sparkline">
+      {values.map((v, i) => (
+        <span key={i} className="bar" style={{
+          height: `${Math.max(((v || 0) / max) * 100, 8)}%`,
+          background: color,
+          opacity: i === values.length - 1 ? 1 : 0.5
+        }} title={fmtInt(v)} />
+      ))}
+    </span>
+  );
+};
+
+// ─── ACTION QUEUE ────────────────────────────────────────────────────
+const ActionQueue = ({ reportDate }) => {
+  const [, forceUpdate] = useState(0);
+  const alerts = DAILY_DATA.alerts || [];
+  const revIntel = DAILY_DATA.revenue_intelligence || [];
+  const repeats = DAILY_DATA.repeat_callers || [];
+  const voice = DAILY_DATA.voice || {};
+  const trends = DAILY_DATA.historical_trends?.per_company || {};
+
+  const actions = useMemo(() => {
+    const items = [];
+
+    // 1. High-severity alerts for companies with >20 MTD calls
+    alerts.forEach(a => {
+      const co = a.company;
+      const vd = voice[co] || {};
+      const t = (trends[co] || {}).voice || {};
+      const mtd = t.mtd_actual || vd.total_calls || 0;
+      if (a.severity === 'high' && mtd > 20) {
+        items.push({
+          key: `alert_${co}_${a.metric}`,
+          company: co, channel: a.channel,
+          severity: 'red', score: 100 + Math.min(mtd / 10, 50),
+          desc: `${a.metric}: ${a.value} (threshold: ${a.threshold})`
+        });
+      }
+    });
+
+    // 2. Revenue intelligence
+    revIntel.forEach(ri => {
+      items.push({
+        key: `ri_${ri.company}_${ri.flag}`,
+        company: ri.company, channel: ri.channel,
+        severity: ri.flag === 'Upsell' ? 'blue' : 'amber',
+        score: ri.flag === 'Upsell' ? 80 : 70,
+        desc: `${ri.flag}: ${ri.action} (${fmt(ri.pace_pct, 0)}% pace)`
+      });
+    });
+
+    // 3. Repeat callers with >=3 calls today
+    repeats.filter(r => r.calls_today >= 3).forEach(r => {
+      items.push({
+        key: `repeat_${r.company_name}_${r.phone}`,
+        company: r.company_name, channel: 'Voice',
+        severity: 'amber', score: 60 + r.calls_today,
+        desc: `Repeat caller: ${r.phone} (${r.calls_today} calls today)`
+      });
+    });
+
+    // 4. Declining adoption companies with m1 > 50
+    Object.entries(trends).forEach(([co, t]) => {
+      const vt = t.voice || {};
+      const mv = (vt.monthly_values || [0, 0, 0]).slice(0, 3);
+      if (mv[2] > 50 && adoptionSignal(vt) === 'Declining') {
+        items.push({
+          key: `decline_${co}`,
+          company: co, channel: 'Voice',
+          severity: 'gray', score: 40,
+          desc: `Declining adoption (${fmtInt(mv[2])} last month, MoM ${vt.mom_pct_change != null ? fmt(vt.mom_pct_change, 0) + '%' : '?'})`
+        });
+      }
+    });
+
+    // Deduplicate by company (keep highest score per company)
+    const byCompany = {};
+    items.forEach(item => {
+      if (!byCompany[item.key] || item.score > byCompany[item.key].score) {
+        byCompany[item.key] = item;
+      }
+    });
+
+    return Object.values(byCompany).sort((a, b) => {
+      const aAck = isAcked(reportDate, a.key);
+      const bAck = isAcked(reportDate, b.key);
+      if (aAck !== bAck) return aAck ? 1 : -1;
+      return b.score - a.score;
+    }).slice(0, 8);
+  }, []);
+
+  if (actions.length === 0) return null;
+
+  return (
+    <div className="action-queue">
+      {actions.map(a => {
+        const acked = isAcked(reportDate, a.key);
+        return (
+          <div key={a.key} className={`action-card sev-${a.severity} ${acked ? 'acked' : ''}`}>
+            <button className={`ac-ack ${acked ? 'done' : ''}`} onClick={(e) => {
+              e.stopPropagation();
+              toggleAck(reportDate, a.key);
+              forceUpdate(n => n + 1);
+            }} title="Acknowledge">{acked ? '\u2713' : '\u2713'}</button>
+            <div className="ac-header">
+              <span className="ac-company">{a.company}</span>
+              <ChannelBadge channel={a.channel} />
+            </div>
+            <div className="ac-desc">{a.desc}</div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+// ─── PORTFOLIO SUMMARY BAR ───────────────────────────────────────────
+const PortfolioSummaryBar = ({ rows }) => {
+  const cc = DAILY_DATA.cross_channel || {};
+  const avgHealth = rows.length > 0 ? Math.round(rows.reduce((s, r) => s + r.health, 0) / rows.length) : 0;
+  const atRisk = rows.filter(r => r.health < 60).length;
+  let smsGaps = 0, wcGaps = 0;
+  Object.values(cc).forEach(c => {
+    const ws = c.white_space || '';
+    if (ws.includes('S')) smsGaps++;
+    if (ws.includes('W')) wcGaps++;
+  });
+
+  return (
+    <div className="portfolio-bar">
+      <div className="pb-stat">
+        <span className="pb-label">Companies</span>
+        <span className="pb-value">{rows.length}</span>
+      </div>
+      <div className="pb-stat">
+        <span className="pb-label">Avg Health</span>
+        <span className="pb-value" style={{ color: healthColor(avgHealth) }}>{avgHealth}</span>
+      </div>
+      <div className="pb-stat">
+        <span className="pb-label">At Risk</span>
+        <span className="pb-value" style={{ color: atRisk > 0 ? 'var(--red)' : 'var(--green)' }}>{atRisk}</span>
+      </div>
+      <div className="pb-stat">
+        <span className="pb-label">SMS Gaps</span>
+        <span className="pb-value" style={{ color: smsGaps > 0 ? 'var(--teal)' : 'var(--muted)' }}>{smsGaps}</span>
+      </div>
+      <div className="pb-stat">
+        <span className="pb-label">Webchat Gaps</span>
+        <span className="pb-value" style={{ color: wcGaps > 0 ? 'var(--green)' : 'var(--muted)' }}>{wcGaps}</span>
+      </div>
+    </div>
+  );
+};
+
+// ─── FILTER BAR ──────────────────────────────────────────────────────
+const FilterBar = ({ search, setSearch, healthFilter, setHealthFilter, channelFilter, setChannelFilter, usageFilter, setUsageFilter }) => (
+  <div className="filter-bar">
+    <input type="text" placeholder="Search company\u2026" value={search} onChange={e => setSearch(e.target.value)} />
+    <select value={healthFilter} onChange={e => setHealthFilter(e.target.value)}>
+      <option value="">All Health</option>
+      <option value="risk">At Risk (&lt;60)</option>
+      <option value="watch">Watch (60-79)</option>
+      <option value="healthy">Healthy (80+)</option>
+    </select>
+    <select value={channelFilter} onChange={e => setChannelFilter(e.target.value)}>
+      <option value="">All Channels</option>
+      <option value="voice_only">Voice Only</option>
+      <option value="voice_sms">Voice + SMS</option>
+      <option value="voice_sms_wc">Voice + SMS + Webchat</option>
+      <option value="sms_only">SMS Only</option>
+    </select>
+    <select value={usageFilter} onChange={e => setUsageFilter(e.target.value)}>
+      <option value="">All Usage</option>
+      <option value="Overage">Overage</option>
+      <option value="Proj. Overage">Proj. Overage</option>
+      <option value="On Track">On Track</option>
+      <option value="Under-Use">Under-Use</option>
+      <option value="no_contract">No Contract</option>
+    </select>
+  </div>
+);
+
+// ─── CHANNEL PIPELINE ────────────────────────────────────────────────
+const ChannelPipeline = ({ hasVoice, hasSms, hasWc }) => {
+  const gaps = [];
+  if (!hasSms) gaps.push('SMS');
+  if (!hasWc) gaps.push('Webchat');
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '.75rem', flexWrap: 'wrap' }}>
+      <div className="channel-pipeline">
+        <div className={`pipeline-node ${hasVoice ? 'active' : 'gap'} node-v`}>V</div>
+        <span className="pipeline-arrow">&rarr;</span>
+        <div className={`pipeline-node ${hasSms ? 'active' : 'gap'} node-s`}>S</div>
+        <span className="pipeline-arrow">&rarr;</span>
+        <div className={`pipeline-node ${hasWc ? 'active' : 'gap'} node-w`}>W</div>
+      </div>
+      {gaps.length > 0 && (
+        <span className="pipeline-label">Expansion: {gaps.join(', ')}</span>
+      )}
+    </div>
+  );
+};
+
+// ─── DETAIL ROW COMPONENT ────────────────────────────────────────────
+const DetailRow = ({ row, benchmarks }) => {
+  const vb = benchmarks.voice || {};
+  const sb = benchmarks.sms || {};
+  const wb = benchmarks.webchat || {};
+  const companyAlerts = (DAILY_DATA.alerts || []).filter(a => a.company === row.company);
+  const companyRepeats = (DAILY_DATA.repeat_callers || []).filter(r => r.company_name === row.company);
+
+  // Contract billing
+  const contract = row.contract || {};
+  const hasContract = contract.included_calls != null && contract.included_calls > 0;
+  const projOverage = hasContract ? Math.max(0, row.projEom - contract.included_calls) : null;
+  const baseBill = hasContract ? contract.included_calls * (contract.rate_per_call || 0) : null;
+  const overageBill = projOverage != null ? projOverage * (contract.overage_per_call || 0) : null;
+  const totalProjBill = baseBill != null ? baseBill + (overageBill || 0) : null;
+
+  return (
+    <td colSpan={12}>
+      {/* 3-column detail grid */}
+      <div className="detail-3col">
+        {/* Voice column */}
+        <div>
+          <div className={`col-header voice-h`}>Voice</div>
+          {row.hasVoice ? (
+            <>
+              <div className="metric-row"><span className="metric-label">Calls Today</span><span className="metric-value">{fmtInt(row.vCalls)}</span></div>
+              <div className="metric-row"><span className="metric-label">7d Avg</span><span className="metric-value">{fmt(row.vAvg7d, 0)}</span></div>
+              <div className="metric-row"><span className="metric-label">Deflection %</span><span className="metric-value" style={{ color: rateColor(row.vDefl, vb.deflection_rate) }}>{fmtPct(row.vDefl)}</span></div>
+              <div className="metric-row"><span className="metric-label">Transfer %</span><span className="metric-value" style={{ color: rateColor(row.vXfer, vb.transfer_rate, false) }}>{fmtPct(row.vXfer)}</span></div>
+              <div className="metric-row"><span className="metric-label">Error %</span><span className="metric-value" style={{ color: rateColor(row.vErr, vb.error_rate_actionable, false) }}>{fmtPct(row.vErr)}</span></div>
+              <div className="metric-row"><span className="metric-label">CSAT</span><span className="metric-value" style={{ color: rateColor(row.vCsat, vb.csat) }}>{row.vCsat ? fmt(row.vCsat) : '\u2014'}</span></div>
+              <div className="metric-row"><span className="metric-label">ID Rate</span><span className="metric-value">{fmtPct(row.vIdRate)}</span></div>
+              <div className="metric-row"><span className="metric-label">Avg Duration</span><span className="metric-value">{row.vDuration ? `${fmt(row.vDuration / 60)}m` : '\u2014'}</span></div>
+              <div className="metric-row"><span className="metric-label">Action Items</span><span className="metric-value">{fmtInt(row.vActionItems)}</span></div>
+              {(row.vTopics || []).slice(0, 2).map((t, i) => (
+                <div key={i} className="metric-row"><span className="metric-label">Top {i + 1}</span><span className="metric-value">{t.topic} ({t.count})</span></div>
+              ))}
+            </>
+          ) : (
+            <div className="col-inactive">Not active</div>
+          )}
+        </div>
+
+        {/* SMS column */}
+        <div>
+          <div className={`col-header sms-h`}>SMS</div>
+          {row.hasSms ? (
+            <>
+              <div className="metric-row"><span className="metric-label">Conversations</span><span className="metric-value">{fmtInt(row.sConvos)}</span></div>
+              <div className="metric-row"><span className="metric-label">Resolved</span><span className="metric-value">{fmtInt(row.sResolved)}</span></div>
+              <div className="metric-row"><span className="metric-label">Resolution Rate</span><span className="metric-value">{row.sResolution != null ? fmtPct(row.sResolution) : '\u2014'}</span></div>
+              <div className="metric-row"><span className="metric-label">CSAT</span><span className="metric-value">{row.sCsat ? fmt(row.sCsat) : '\u2014'}</span></div>
+            </>
+          ) : (
+            <div className="col-inactive">Not active</div>
+          )}
+        </div>
+
+        {/* Webchat column */}
+        <div>
+          <div className={`col-header wc-h`}>Webchat</div>
+          {row.hasWc ? (
+            <>
+              <div className="metric-row"><span className="metric-label">Sessions</span><span className="metric-value">{fmtInt(row.wcSessions)}</span></div>
+              <div className="metric-row"><span className="metric-label">Msgs/Session</span><span className="metric-value">{fmt(row.wcMsgsPerSess)}</span></div>
+              <div className="metric-row"><span className="metric-label">Short Abandon %</span><span className="metric-value" style={{ color: rateColor(row.wcShortAbandon / 100, wb.short_abandonment_rate, false) }}>{fmtPctRaw(row.wcShortAbandon)}</span></div>
+              <div className="metric-row"><span className="metric-label">HO ID Rate</span><span className="metric-value" style={{ color: rateColor(row.wcHoIdRate / 100, wb.identification_rate) }}>{fmtPctRaw(row.wcHoIdRate)}</span></div>
+              <div className="metric-row"><span className="metric-label">Unique HOs</span><span className="metric-value">{row.wcUniqueHO}</span></div>
+              <div className="metric-row"><span className="metric-label">Unique Assocs</span><span className="metric-value">{row.wcUniqueAssoc}</span></div>
+            </>
+          ) : (
+            <div className="col-inactive">Not active</div>
+          )}
+        </div>
+      </div>
+
+      {/* Channel Pipeline */}
+      <ChannelPipeline hasVoice={row.hasVoice} hasSms={row.hasSms} hasWc={row.hasWc} />
+
+      {/* Contract & Billing */}
+      {hasContract && (
+        <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', padding: '.5rem 0', borderTop: '1px solid var(--border)', marginTop: '.5rem', fontSize: '.75rem' }}>
+          <div><span style={{ color: 'var(--muted)' }}>Included Calls:</span> <strong>{fmtInt(contract.included_calls)}</strong></div>
+          <div><span style={{ color: 'var(--muted)' }}>Base $/Call:</span> <strong>${fmt(contract.rate_per_call, 2)}</strong></div>
+          <div><span style={{ color: 'var(--muted)' }}>Overage $/Call:</span> <strong>${fmt(contract.overage_per_call, 2)}</strong></div>
+          <div style={{ borderLeft: '1px solid var(--border)', paddingLeft: '1rem' }}>
+            <span style={{ color: 'var(--muted)' }}>Proj Overage:</span>{' '}
+            <strong style={{ color: projOverage > 0 ? 'var(--amber)' : 'var(--green)' }}>{fmtInt(projOverage)} calls</strong>
+          </div>
+          <div><span style={{ color: 'var(--muted)' }}>Base Bill:</span> <strong>${fmtInt(baseBill)}</strong></div>
+          {projOverage > 0 && <div><span style={{ color: 'var(--muted)' }}>Overage Bill:</span> <strong style={{ color: 'var(--amber)' }}>${fmtInt(overageBill)}</strong></div>}
+          <div style={{ borderLeft: '1px solid var(--border)', paddingLeft: '1rem' }}>
+            <span style={{ color: 'var(--muted)' }}>Total Proj Bill:</span>{' '}
+            <strong style={{ color: 'var(--navy)', fontSize: '.85rem' }}>${fmtInt(totalProjBill)}</strong>
+          </div>
+        </div>
+      )}
+
+      {/* Alerts for this company */}
+      {companyAlerts.length > 0 && (
+        <div className="detail-alerts">
+          <h5>Alerts ({companyAlerts.length})</h5>
+          {companyAlerts.map((a, i) => (
+            <div key={i} className={`detail-alert-item ${a.severity === 'high' ? 'sev-high' : a.severity === 'medium' ? 'sev-medium' : ''}`}>
+              <ChannelBadge channel={a.channel} /> {a.metric}: {a.value} (threshold: {a.threshold})
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Repeat callers for this company */}
+      {companyRepeats.length > 0 && (
+        <div className="detail-alerts" style={{ marginTop: '.5rem' }}>
+          <h5>Repeat Callers ({companyRepeats.length})</h5>
+          {companyRepeats.map((r, i) => (
+            <div key={i} className="detail-alert-item">
+              <strong>{r.phone}</strong> &mdash; {r.total_calls} calls &mdash; {(r.summaries || []).filter(Boolean)[0]?.substring(0, 150) || ''}...
+            </div>
+          ))}
+        </div>
+      )}
+    </td>
+  );
+};
+
+// ─── UNIFIED TABLE ───────────────────────────────────────────────────
+const UnifiedTable = () => {
+  const voice = DAILY_DATA.voice || {};
+  const sms = DAILY_DATA.sms || {};
+  const webchat = DAILY_DATA.webchat || {};
+  const trends = DAILY_DATA.historical_trends?.per_company || {};
+  const cc = DAILY_DATA.cross_channel || {};
+  const benchmarks = {
+    voice: DAILY_DATA.config?.voice_benchmarks || {},
+    sms: DAILY_DATA.config?.sms_benchmarks || {},
+    webchat: DAILY_DATA.config?.webchat_benchmarks || {}
+  };
+
+  const [search, setSearch] = useState('');
+  const [healthFilter, setHealthFilter] = useState('');
+  const [channelFilter, setChannelFilter] = useState('');
+  const [usageFilter, setUsageFilter] = useState('');
+  const [expanded, setExpanded] = useState(new Set());
+  const { toggleSort, sortIcon, sortFn } = useSort('health', true); // ascending = worst first
+
+  // Build unified rows
+  const rows = useMemo(() => {
+    const allNames = new Set([
+      ...Object.keys(voice), ...Object.keys(sms), ...Object.keys(webchat),
+      ...Object.keys(trends)
+    ]);
+    const testCos = new Set(DAILY_DATA.config?.test_companies || []);
+
+    return [...allNames].filter(n => !testCos.has(n)).map(co => {
+      const vd = voice[co] || {};
+      const sd = sms[co] || {};
+      const wd = webchat[co] || {};
+      const xc = cc[co] || {};
+      const vt = (trends[co] || {}).voice || {};
+      const st = (trends[co] || {}).sms || {};
+
+      // Channel presence
+      const hasVoice = vt.mtd_actual > 0 || (vd.total_calls || 0) > 0;
+      const hasSms = (xc.channels || []).includes('S') || st.mtd_actual > 0 || (sd.total_calls || sd.total_conversations || 0) > 0;
+      const hasWc = (xc.channels || []).includes('W') || (wd.sessions || 0) > 0;
+      const channelCount = [hasVoice, hasSms, hasWc].filter(Boolean).length;
+
+      // Voice metrics
+      const vMv = (vt.monthly_values || [0, 0, 0]).slice(0, 3);
+      const vWv = vt.weekly_values || [];
+
+      // Health score
+      const health = computeHealthScore(vd, sd, hasVoice ? vt : st);
+
+      // Primary volume: voice calls > sms convos > webchat sessions
+      const todayVol = (vd.total_calls || 0) + (sd.total_calls || sd.total_conversations || 0) + (wd.sessions || 0);
+
+      // Trends (voice primary, SMS fallback)
+      const primaryTrend = hasVoice ? vt : st;
+      const projEom = primaryTrend.projected_eom || 0;
+      const mtdActual = primaryTrend.mtd_actual || 0;
+      const momPct = primaryTrend.mom_pct_change;
+      const wowPct = primaryTrend.wow_pct_change;
+      const weeklyValues = primaryTrend.weekly_values || [];
+      const monthlyValues = (primaryTrend.monthly_values || [0, 0, 0]).slice(0, 3);
+      const adoption = adoptionSignal(primaryTrend);
+
+      // Alert count
+      const alertCount = (DAILY_DATA.alerts || []).filter(a => a.company === co).length;
+
+      // Contract info
+      const contracts = DAILY_DATA.config?.contracts || {};
+      const contract = contracts[co] || {};
+
+      // Usage status
+      const includedCalls = contract.included_calls;
+      let usageStatus = null;
+      if (includedCalls != null && includedCalls > 0) {
+        if (mtdActual > includedCalls) usageStatus = 'Overage';
+        else if (projEom > includedCalls) usageStatus = 'Proj. Overage';
+        else if (projEom >= includedCalls * 0.75) usageStatus = 'On Track';
+        else usageStatus = 'Under-Use';
+      }
+
+      return {
+        company: co, health, channelCount, hasVoice, hasSms, hasWc,
+        todayVol, projEom, mtdActual, momPct, adoption, alertCount,
+        weeklyValues, monthlyValues, contract, includedCalls, usageStatus,
+        // Voice detail
+        vCalls: vd.total_calls || 0,
+        vDefl: vd.deflection_rate,
+        vXfer: vd.transfer_rate,
+        vErr: vd.error_rate_actionable,
+        vCsat: vd.avg_csat,
+        vIdRate: vd.identified_rate,
+        vDuration: vd.avg_duration_seconds,
+        vActionItems: vd.action_items_created || 0,
+        vAvg7d: vd.avg_7d,
+        vTopics: vd.topics || [],
+        // SMS detail
+        sConvos: sd.total_calls || sd.total_conversations || 0,
+        sResolved: sd.resolved || 0,
+        sResolution: sd.deflection_rate || sd.resolution_rate,
+        sCsat: sd.avg_csat,
+        // Webchat detail
+        wcSessions: wd.sessions || 0,
+        wcMsgsPerSess: parseFloat(wd.avg_messages_per_session) || 0,
+        wcShortAbandon: wd.short_abandonment_pct || 0,
+        wcHoIdRate: wd.homeowner_context?.homeownerId?.pct || 0,
+        wcUniqueHO: wd.unique_homeowners || 0,
+        wcUniqueAssoc: wd.unique_associations || 0,
+      };
+    });
+  }, []);
+
+  // Filter
+  const filtered = useMemo(() => {
+    let r = rows;
+    if (search) r = r.filter(x => x.company.toLowerCase().includes(search.toLowerCase()));
+    if (healthFilter === 'risk') r = r.filter(x => x.health < 60);
+    else if (healthFilter === 'watch') r = r.filter(x => x.health >= 60 && x.health < 80);
+    else if (healthFilter === 'healthy') r = r.filter(x => x.health >= 80);
+    if (channelFilter === 'voice_only') r = r.filter(x => x.hasVoice && !x.hasSms && !x.hasWc);
+    else if (channelFilter === 'voice_sms') r = r.filter(x => x.hasVoice && x.hasSms);
+    else if (channelFilter === 'voice_sms_wc') r = r.filter(x => x.hasVoice && x.hasSms && x.hasWc);
+    else if (channelFilter === 'sms_only') r = r.filter(x => x.hasSms && !x.hasVoice);
+    if (usageFilter === 'no_contract') r = r.filter(x => x.usageStatus == null);
+    else if (usageFilter) r = r.filter(x => x.usageStatus === usageFilter);
+    return sortFn(r);
+  }, [rows, search, healthFilter, channelFilter, usageFilter, sortFn]);
+
+  const toggle = (co) => setExpanded(prev => {
+    const next = new Set(prev);
+    next.has(co) ? next.delete(co) : next.add(co);
+    return next;
+  });
+
+  // Totals (computed from filtered subset so footer updates with filters)
+  const totals = useMemo(() => {
+    const withHealth = filtered.filter(r => r.health > 0);
+    return {
+      todayVol: filtered.reduce((s, r) => s + r.todayVol, 0),
+      avgHealth: withHealth.length > 0 ? Math.round(withHealth.reduce((s, r) => s + r.health, 0) / withHealth.length) : 0,
+      avgDefl: (() => {
+        const vRows = filtered.filter(r => r.vDefl != null);
+        return vRows.length > 0 ? vRows.reduce((s, r) => s + r.vDefl, 0) / vRows.length : null;
+      })(),
+      avgCsat: (() => {
+        const cRows = filtered.filter(r => r.vCsat != null || r.sCsat != null);
+        return cRows.length > 0 ? cRows.reduce((s, r) => s + (r.vCsat || r.sCsat || 0), 0) / cRows.length : null;
+      })(),
+      mtdActual: filtered.reduce((s, r) => s + r.mtdActual, 0),
+      projEom: filtered.reduce((s, r) => s + r.projEom, 0),
+    };
+  }, [filtered]);
+
+  return (
+    <div>
+      <PortfolioSummaryBar rows={rows} />
+      <FilterBar
+        search={search} setSearch={setSearch}
+        healthFilter={healthFilter} setHealthFilter={setHealthFilter}
+        channelFilter={channelFilter} setChannelFilter={setChannelFilter}
+        usageFilter={usageFilter} setUsageFilter={setUsageFilter}
+      />
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th onClick={() => toggleSort('company')}>Company{sortIcon('company')}</th>
+              <th onClick={() => toggleSort('health')}>Health{sortIcon('health')}</th>
+              <th>Channels</th>
+              <th onClick={() => toggleSort('todayVol')}>Today{sortIcon('todayVol')}</th>
+              <th onClick={() => toggleSort('vDefl')}>Defl%{sortIcon('vDefl')}</th>
+              <th onClick={() => toggleSort('vCsat')}>CSAT{sortIcon('vCsat')}</th>
+              <th>Trend</th>
+              <th onClick={() => toggleSort('includedCalls')}>Included{sortIcon('includedCalls')}</th>
+              <th onClick={() => toggleSort('mtdActual')}>MTD{sortIcon('mtdActual')}</th>
+              <th onClick={() => toggleSort('projEom')}>Proj EOM{sortIcon('projEom')}</th>
+              <th onClick={() => toggleSort('usageStatus')}>Usage Status{sortIcon('usageStatus')}</th>
+              <th onClick={() => toggleSort('momPct')}>MoM%{sortIcon('momPct')}</th>
+              <th onClick={() => toggleSort('adoption')}>Adoption{sortIcon('adoption')}</th>
+              <th onClick={() => toggleSort('alertCount')}>Alerts{sortIcon('alertCount')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map(r => (
+              <React.Fragment key={r.company}>
+                <tr className="expand-row" onClick={() => toggle(r.company)}>
+                  <td>{expanded.has(r.company) ? '\u25BE' : '\u25B8'} {r.company}</td>
+                  <td>
+                    <div className="health-bar-wrap">
+                      <span style={{ color: healthColor(r.health), fontWeight: 600 }}>{r.health}</span>
+                      <div className="health-bar">
+                        <div className="health-bar-fill" style={{ width: `${r.health}%`, background: healthColor(r.health) }} />
+                      </div>
+                    </div>
+                  </td>
+                  <td style={{ textAlign: 'center' }}>
+                    {r.hasVoice ? <span className="ch-badge ch-v">V</span> : <span className="ch-badge-outline ch-v">V</span>}
+                    {' '}
+                    {r.hasSms ? <span className="ch-badge ch-s">S</span> : <span className="ch-badge-outline ch-s">S</span>}
+                    {' '}
+                    {r.hasWc ? <span className="ch-badge ch-w">W</span> : <span className="ch-badge-outline ch-w">W</span>}
+                  </td>
+                  <td>{fmtInt(r.todayVol)}</td>
+                  <td style={{ color: rateColor(r.vDefl, benchmarks.voice.deflection_rate) }}>{r.vDefl != null ? fmtPct(r.vDefl) : '\u2014'}</td>
+                  <td style={{ color: rateColor(r.vCsat || r.sCsat, benchmarks.voice.csat) }}>{r.vCsat ? fmt(r.vCsat) : r.sCsat ? fmt(r.sCsat) : '\u2014'}</td>
+                  <td><Sparkline values={r.weeklyValues} color={r.hasVoice ? 'var(--blue)' : 'var(--teal)'} /></td>
+                  <td style={{ color: 'var(--muted)' }}>{r.includedCalls != null ? fmtInt(r.includedCalls) : '\u2014'}</td>
+                  <td>{fmtInt(r.mtdActual)}</td>
+                  <td style={{ fontWeight: 700 }}>{fmtInt(r.projEom)}</td>
+                  <td><UsageStatusBadge status={r.usageStatus} /></td>
+                  <td><DeltaBadge value={r.momPct} /></td>
+                  <td><StatusBadge status={r.adoption} /></td>
+                  <td style={{ color: r.alertCount > 0 ? 'var(--red)' : 'var(--muted)', fontWeight: r.alertCount > 0 ? 700 : 400 }}>
+                    {r.alertCount > 0 ? r.alertCount : '\u2014'}
+                  </td>
+                </tr>
+                {expanded.has(r.company) && (
+                  <tr className="detail-row">
+                    <DetailRow row={r} benchmarks={benchmarks} />
+                  </tr>
+                )}
+              </React.Fragment>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>{filtered.length} companies</td>
+              <td style={{ textAlign: 'right' }}>{totals.avgHealth} avg</td>
+              <td></td>
+              <td>{fmtInt(totals.todayVol)}</td>
+              <td>{totals.avgDefl != null ? fmtPct(totals.avgDefl) : '\u2014'}</td>
+              <td>{totals.avgCsat != null ? fmt(totals.avgCsat) : '\u2014'}</td>
+              <td></td>
+              <td></td>
+              <td>{fmtInt(totals.mtdActual)}</td>
+              <td style={{ fontWeight: 700 }}>{fmtInt(totals.projEom)}</td>
+              <td></td><td></td><td></td><td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+// ─── ERROR BOUNDARY ──────────────────────────────────────────────────
+class ErrorBoundary extends React.Component {
+  constructor(props) { super(props); this.state = { error: null }; }
+  static getDerivedStateFromError(error) { return { error }; }
+  render() {
+    if (this.state.error) {
+      return React.createElement('div', { style: { padding: '2rem', color: 'var(--red)', fontFamily: 'monospace' } },
+        React.createElement('h2', null, 'Dashboard Error'),
+        React.createElement('pre', { style: { whiteSpace: 'pre-wrap' } }, this.state.error.toString()),
+        React.createElement('p', null, 'Check browser console for details.')
+      );
+    }
+    return this.props.children;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// APP
+// ═══════════════════════════════════════════════════════════════════════
+const App = () => {
+  const reportDate = DAILY_DATA.report_date || '';
+  const generatedAt = DAILY_DATA.generated_at || '';
+
+  return (
+    <div>
+      <header>
+        <div className="container">
+          <h1>HOAi Daily Dashboard</h1>
+          <div className="meta">
+            {reportDate} &bull; Generated {generatedAt ? new Date(generatedAt).toLocaleString() : ''}
+          </div>
+        </div>
+      </header>
+
+      <main className="container">
+        <ActionQueue reportDate={reportDate} />
+        <UnifiedTable />
+      </main>
+
+      <footer>
+        <div className="container">HOAi Daily Dashboard &bull; Data as of {reportDate} &bull; Auto-generated</div>
+      </footer>
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<ErrorBoundary><App /></ErrorBoundary>);
+</script>
+</body>
+</html>

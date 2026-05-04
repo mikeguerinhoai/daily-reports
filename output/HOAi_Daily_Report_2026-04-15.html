@@ -1,0 +1,8020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HOAi Daily Report — 2026-04-15</title>
+<style>
+  /* ── Page Setup ─────────────────────────────────────────────────── */
+  @page {
+    size: 11in 8.5in;  /* landscape */
+    margin: 0.4in 0.5in 0.4in 0.5in;
+    @bottom-center {
+      content: "HOAi Daily Report — 2026-04-15  |  Page " counter(page) " of 4";
+      font-size: 7pt;
+      color: #6B7280;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    font-size: 8pt;
+    color: #111827;
+    line-height: 1.35;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── Colors (matching brand tokens) ─────────────────────────────── */
+  :root {
+    --navy:   #1B2A4A;
+    --blue:   #2563EB;
+    --lblue:  #3B82F6;
+    --teal:   #0D9488;
+    --green:  #059669;
+    --amber:  #D97706;
+    --red:    #DC2626;
+    --gray:   #6B7280;
+    --dark:   #111827;
+    --surface:#F3F4F6;
+    --white:  #FFFFFF;
+  }
+
+  /* ── Page breaks ────────────────────────────────────────────────── */
+  .page { page-break-after: always; min-height: 7.5in; position: relative; }
+  .page:last-child { page-break-after: auto; }
+
+  /* ── Banner ─────────────────────────────────────────────────────── */
+  .banner {
+    background: var(--navy);
+    color: var(--white);
+    padding: 8px 14px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .banner h1 { font-size: 13pt; font-weight: 700; }
+  .banner .meta { font-size: 8pt; opacity: 0.85; }
+  .banner .kpi-strip {
+    display: flex; gap: 18px;
+  }
+  .banner .kpi-strip .kpi { text-align: center; }
+  .banner .kpi-strip .kpi-val { font-size: 14pt; font-weight: 700; }
+  .banner .kpi-strip .kpi-lbl { font-size: 7pt; opacity: 0.8; }
+
+  /* ── Section headers ────────────────────────────────────────────── */
+  .section-hdr {
+    background: var(--blue);
+    color: var(--white);
+    padding: 4px 10px;
+    font-size: 9pt;
+    font-weight: 700;
+    border-radius: 3px;
+    margin: 8px 0 5px 0;
+  }
+  .section-hdr.teal { background: var(--teal); }
+  .section-hdr.green { background: var(--green); }
+  .section-hdr.amber { background: var(--amber); }
+  .section-hdr.navy { background: var(--navy); }
+
+  /* ── Tables ─────────────────────────────────────────────────────── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 7.5pt;
+    margin-bottom: 6px;
+  }
+  th {
+    background: var(--navy);
+    color: var(--white);
+    padding: 3px 5px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 7pt;
+    white-space: nowrap;
+  }
+  td {
+    padding: 2px 5px;
+    border-bottom: 1px solid #E5E7EB;
+    white-space: nowrap;
+  }
+  tr:nth-child(even) td { background: #F9FAFB; }
+  tr.total-row td {
+    background: var(--surface);
+    font-weight: 700;
+    border-top: 2px solid var(--navy);
+  }
+
+  /* ── Conditional colors ─────────────────────────────────────────── */
+  .good { color: var(--green); font-weight: 600; }
+  .warn { color: var(--amber); font-weight: 600; }
+  .bad  { color: var(--red); font-weight: 600; }
+  .muted { color: var(--gray); }
+  .gap  { color: var(--gray); font-style: italic; font-size: 7pt; }
+
+  /* ── Flags / Badges ─────────────────────────────────────────────── */
+  .flag {
+    display: inline-block;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 7pt;
+    font-weight: 600;
+  }
+  .flag-upsell    { background: #ECFDF5; color: var(--green); }
+  .flag-overage   { background: #FEF3C7; color: var(--amber); }
+  .flag-underuse  { background: #FEF2F2; color: var(--red); }
+  .flag-high      { background: #FEF2F2; color: var(--red); }
+  .flag-medium    { background: #FEF3C7; color: var(--amber); }
+
+  /* ── Grid layouts ───────────────────────────────────────────────── */
+  .cols-2 { display: flex; gap: 10px; }
+  .cols-2 > div { flex: 1; }
+  .quadrant { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  /* ── KPI cards ──────────────────────────────────────────────────── */
+  .kpi-card {
+    background: var(--surface);
+    border-radius: 4px;
+    padding: 5px 8px;
+    text-align: center;
+  }
+  .kpi-card .val { font-size: 14pt; font-weight: 700; color: var(--navy); }
+  .kpi-card .lbl { font-size: 7pt; color: var(--gray); }
+
+  /* ── Footer strip ───────────────────────────────────────────────── */
+  .footer-strip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    padding: 4px 10px;
+    font-size: 7pt;
+    color: var(--gray);
+    border-top: 1px solid #E5E7EB;
+    display: flex;
+    gap: 20px;
+  }
+  .footer-strip strong { color: var(--dark); }
+
+  /* ── Alert severity ─────────────────────────────────────────────── */
+  .alert-high { border-left: 3px solid var(--red); padding-left: 6px; }
+  .alert-medium { border-left: 3px solid var(--amber); padding-left: 6px; }
+
+  /* ── Mini chart placeholder ─────────────────────────────────────── */
+  .mini-bar {
+    display: inline-block;
+    height: 10px;
+    border-radius: 2px;
+    vertical-align: middle;
+  }
+
+  /* ── Trend indicators ──────────────────────────────────────────── */
+  .trend-up   { color: var(--green); font-weight: 700; }
+  .trend-down { color: var(--red); font-weight: 700; }
+  .trend-flat { color: var(--gray); }
+  .forecast-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 7pt;
+    font-weight: 600;
+  }
+  .fc-above    { background: #ECFDF5; color: var(--green); }
+  .fc-ontrack  { background: var(--surface); color: var(--dark); }
+  .fc-below    { background: #FEF2F2; color: var(--red); }
+  .fc-new      { background: var(--surface); color: var(--gray); }
+  .sparkbar-wrap { display: inline-flex; gap: 2px; align-items: flex-end; height: 16px; }
+  .sparkbar-wrap .bar {
+    display: inline-block;
+    width: 12px;
+    border-radius: 1px;
+    min-height: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ PAGE 1: Daily Pulse + Revenue Intelligence ═══════════════ -->
+<div class="page">
+  <div class="banner">
+    <div>
+      <h1>HOAi Daily Report</h1>
+      <div class="meta">Apr 01 &ndash; 2026-04-15 (15d MTD) &middot; Generated Apr 16, 2026 08:28 AM</div>
+    </div>
+    <div class="kpi-strip">
+      <div class="kpi">
+        <div class="kpi-val">25,134</div>
+        <div class="kpi-lbl">Voice Calls</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">43.7%</div>
+        <div class="kpi-lbl">Deflection</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">824.2</div>
+        <div class="kpi-lbl">Hours Saved</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section A: Voice Summary -->
+  <div class="section-hdr">Voice Summary</div>
+  <table>
+    <tr><th colspan="2" style="background:var(--blue)">Voice</th></tr>
+    <tr><td>Total Calls</td><td><strong>25,134</strong></td></tr>
+    <tr><td>Deflection Rate</td><td class="bad">43.7%</td></tr>
+    <tr><td>Transfer Rate</td><td>53.2%</td></tr>
+    <tr><td>Error Rate</td><td>0.2%</td></tr>
+    <tr><td>Hours Saved</td><td>824.2</td></tr>
+  </table>
+
+  <!-- Section B: Revenue Intelligence Flags -->
+  <div class="section-hdr amber">Revenue Intelligence Flags</div>
+  
+  <table>
+    <tr>
+      <th>Company</th><th>Flag</th><th>MTD Volume</th>
+      <th>Included</th><th>Pace %</th><th>Projected EOM</th><th>Action</th>
+    </tr>
+    
+    <tr>
+      <td>Silverleaf Management</td>
+      <td><span class="flag flag-upsell">Upsell</span></td>
+      <td>1,977</td>
+      <td>500</td>
+      <td>790.8%</td>
+      <td>3,954</td>
+      <td><em>Schedule upgrade conversation</em></td>
+    </tr>
+    
+    <tr>
+      <td>New Vision Community Management</td>
+      <td><span class="flag flag-underuse">Under-Use</span></td>
+      <td>14</td>
+      <td>1,500</td>
+      <td>1.9%</td>
+      <td>28</td>
+      <td><em>Reach out to drive adoption</em></td>
+    </tr>
+    
+  </table>
+  
+</div>
+
+<!-- ═══════════════ PAGE 2: Per-Client Scorecard ═══════════════════════════ -->
+<div class="page">
+  <div class="banner">
+    <div><h1>Per-Client Scorecard</h1></div>
+    <div class="meta">2026-04-15</div>
+  </div>
+
+  <!-- Performance Scorecard -->
+  <div class="section-hdr">Performance Scorecard</div>
+  <table>
+    <tr>
+      <th>Company</th><th>Calls</th><th>Defl %</th>
+      <th>Xfer %</th><th>Err %</th><th>CSAT</th><th>ID Rate</th>
+      <th>Daily Avg</th><th>vs M-1</th><th>Status</th>
+    </tr>
+    
+    <tr>
+      <td>Alliant</td>
+      <td>3,395</td>
+      <td class="good">
+        62.0%
+      </td>
+      <td>34.2%</td>
+      <td>0.4%</td>
+      <td>3.9</td>
+      <td>50.0%</td>
+      <td>226.3</td>
+      <td>
+        
+        <span class="good">+475.8%</span>
+        
+      </td>
+      <td>
+        
+        
+        <span class="flag flag-upsell">On Track</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Juda, Eskew, & Associates</td>
+      <td>2,203</td>
+      <td class="bad">
+        38.8%
+      </td>
+      <td>58.0%</td>
+      <td>0.2%</td>
+      <td>3.5</td>
+      <td>50.0%</td>
+      <td>146.9</td>
+      <td>
+        
+        <span class="good">+9.3%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Silverleaf Management</td>
+      <td>1,977</td>
+      <td class="bad">
+        30.8%
+      </td>
+      <td>64.7%</td>
+      <td>0.1%</td>
+      <td>3.7</td>
+      <td>57.6%</td>
+      <td>131.8</td>
+      <td>
+        
+        <span class="good">+50.1%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Premier Community Association Management</td>
+      <td>1,644</td>
+      <td class="bad">
+        39.7%
+      </td>
+      <td>57.9%</td>
+      <td>0.0%</td>
+      <td>3.8</td>
+      <td>64.8%</td>
+      <td>109.6</td>
+      <td>
+        
+        <span class="good">+4.4%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Timmons Properties, Inc.</td>
+      <td>1,325</td>
+      <td class="bad">
+        31.8%
+      </td>
+      <td>66.3%</td>
+      <td>0.1%</td>
+      <td>3.7</td>
+      <td>41.2%</td>
+      <td>88.3</td>
+      <td>
+        
+        <span class="good">+11.3%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>RCP Management Company</td>
+      <td>1,014</td>
+      <td class="bad">
+        41.8%
+      </td>
+      <td>54.9%</td>
+      <td>0.1%</td>
+      <td>3.6</td>
+      <td>52.7%</td>
+      <td>67.6</td>
+      <td>
+        
+        <span class="good">+9.7%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Management Plus</td>
+      <td>984</td>
+      <td class="bad">
+        42.2%
+      </td>
+      <td>55.2%</td>
+      <td>0.3%</td>
+      <td>3.9</td>
+      <td>56.8%</td>
+      <td>65.6</td>
+      <td>
+        
+        <span class="good">+71.3%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Keys Property Management</td>
+      <td>922</td>
+      <td class="bad">
+        39.4%
+      </td>
+      <td>58.5%</td>
+      <td>0.0%</td>
+      <td>3.8</td>
+      <td>53.0%</td>
+      <td>61.5</td>
+      <td>
+        
+        <span class="good">+1.7%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>The Manor Association</td>
+      <td>870</td>
+      <td class="bad">
+        33.3%
+      </td>
+      <td>64.5%</td>
+      <td>0.2%</td>
+      <td>4.0</td>
+      <td>58.7%</td>
+      <td>58.0</td>
+      <td>
+        
+        <span class="bad">-1.9%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Premier</td>
+      <td>849</td>
+      <td class="bad">
+        45.5%
+      </td>
+      <td>51.8%</td>
+      <td>0.1%</td>
+      <td>4.0</td>
+      <td>46.1%</td>
+      <td>56.6</td>
+      <td>
+        
+        <span class="good">+1472.2%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>FiveKeys Community Management</td>
+      <td>751</td>
+      <td class="bad">
+        25.8%
+      </td>
+      <td>72.4%</td>
+      <td>0.0%</td>
+      <td>3.7</td>
+      <td>55.9%</td>
+      <td>50.1</td>
+      <td>
+        
+        <span class="bad">-7.0%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>CMG</td>
+      <td>693</td>
+      <td class="bad">
+        40.4%
+      </td>
+      <td>56.0%</td>
+      <td>0.1%</td>
+      <td>3.9</td>
+      <td>41.6%</td>
+      <td>46.2</td>
+      <td>
+        
+        <span class="bad">-4.5%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>HOALiving</td>
+      <td>681</td>
+      <td class="bad">
+        54.0%
+      </td>
+      <td>44.9%</td>
+      <td>0.3%</td>
+      <td>4.0</td>
+      <td>56.4%</td>
+      <td>45.4</td>
+      <td>
+        
+        <span class="good">+76.6%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Sage Management LLC</td>
+      <td>675</td>
+      <td class="bad">
+        42.7%
+      </td>
+      <td>56.3%</td>
+      <td>0.0%</td>
+      <td>3.9</td>
+      <td>43.4%</td>
+      <td>45.0</td>
+      <td>
+        
+        <span class="bad">-2.6%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Interpacific Asset Management</td>
+      <td>673</td>
+      <td class="bad">
+        51.7%
+      </td>
+      <td>44.7%</td>
+      <td>0.0%</td>
+      <td>3.8</td>
+      <td>37.3%</td>
+      <td>44.9</td>
+      <td>
+        
+        <span class="good">+3641.7%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Island Condo LLC</td>
+      <td>595</td>
+      <td class="bad">
+        38.7%
+      </td>
+      <td>58.8%</td>
+      <td>0.3%</td>
+      <td>3.7</td>
+      <td>47.1%</td>
+      <td>39.7</td>
+      <td>
+        
+        <span class="bad">-25.5%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>ACCU</td>
+      <td>562</td>
+      <td class="bad">
+        54.6%
+      </td>
+      <td>43.4%</td>
+      <td>0.2%</td>
+      <td>3.8</td>
+      <td>53.9%</td>
+      <td>37.5</td>
+      <td>
+        
+        <span class="bad">-4.6%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>WPM Real Estate Management</td>
+      <td>503</td>
+      <td class="bad">
+        41.5%
+      </td>
+      <td>56.1%</td>
+      <td>0.2%</td>
+      <td>3.8</td>
+      <td>50.7%</td>
+      <td>33.5</td>
+      <td>
+        
+        <span class="good">+28.3%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Association Services of Washington</td>
+      <td>490</td>
+      <td class="bad">
+        33.9%
+      </td>
+      <td>63.5%</td>
+      <td>0.0%</td>
+      <td>3.8</td>
+      <td>50.4%</td>
+      <td>32.7</td>
+      <td>
+        
+        <span class="bad">-0.3%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>3.0 Management</td>
+      <td>440</td>
+      <td class="bad">
+        45.2%
+      </td>
+      <td>53.2%</td>
+      <td>0.0%</td>
+      <td>3.8</td>
+      <td>43.9%</td>
+      <td>29.3</td>
+      <td>
+        
+        <span class="bad">-9.3%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Park Pointe Management Services</td>
+      <td>354</td>
+      <td class="bad">
+        40.4%
+      </td>
+      <td>58.2%</td>
+      <td>0.0%</td>
+      <td>4.0</td>
+      <td>50.6%</td>
+      <td>23.6</td>
+      <td>
+        
+        <span class="good">+1.3%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Alluvia</td>
+      <td>348</td>
+      <td class="bad">
+        44.2%
+      </td>
+      <td>52.9%</td>
+      <td>0.3%</td>
+      <td>3.8</td>
+      <td>56.3%</td>
+      <td>23.2</td>
+      <td>
+        
+        <span class="bad">-3.3%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Atmos Living Management Group</td>
+      <td>326</td>
+      <td class="bad">
+        49.4%
+      </td>
+      <td>46.0%</td>
+      <td>0.3%</td>
+      <td>4.0</td>
+      <td>52.1%</td>
+      <td>21.7</td>
+      <td>
+        
+        <span class="good">+15.4%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>ACE</td>
+      <td>288</td>
+      <td class="bad">
+        44.1%
+      </td>
+      <td>53.8%</td>
+      <td>0.4%</td>
+      <td>3.8</td>
+      <td>49.6%</td>
+      <td>19.2</td>
+      <td>
+        
+        <span class="bad">-20.0%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>ACE Property Management, Inc.</td>
+      <td>275</td>
+      <td class="good">
+        66.5%
+      </td>
+      <td>31.6%</td>
+      <td>0.0%</td>
+      <td>3.8</td>
+      <td>38.6%</td>
+      <td>18.3</td>
+      <td>
+        
+        <span class="good">+39.7%</span>
+        
+      </td>
+      <td>
+        
+        
+        <span class="flag flag-upsell">On Track</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Lang Management Company</td>
+      <td>241</td>
+      <td class="bad">
+        46.1%
+      </td>
+      <td>34.8%</td>
+      <td>0.0%</td>
+      <td>3.4</td>
+      <td>47.3%</td>
+      <td>16.1</td>
+      <td>
+        
+        <span class="good">+5266.7%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>AMP HOA</td>
+      <td>232</td>
+      <td class="good">
+        67.2%
+      </td>
+      <td>31.5%</td>
+      <td>0.4%</td>
+      <td>4.0</td>
+      <td>47.0%</td>
+      <td>15.5</td>
+      <td>
+        
+        <span class="bad">-3.1%</span>
+        
+      </td>
+      <td>
+        
+        
+        <span class="flag flag-upsell">On Track</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Compass Rose of North Texas</td>
+      <td>212</td>
+      <td class="bad">
+        48.6%
+      </td>
+      <td>49.1%</td>
+      <td>0.0%</td>
+      <td>3.6</td>
+      <td>33.0%</td>
+      <td>14.1</td>
+      <td>
+        
+        <span class="bad">-28.4%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Blue Door Realty</td>
+      <td>211</td>
+      <td class="bad">
+        44.1%
+      </td>
+      <td>54.0%</td>
+      <td>0.0%</td>
+      <td>4.1</td>
+      <td>65.9%</td>
+      <td>14.1</td>
+      <td>
+        
+        <span class="good">+24.8%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Aspire Community Management</td>
+      <td>182</td>
+      <td class="bad">
+        30.2%
+      </td>
+      <td>64.8%</td>
+      <td>0.0%</td>
+      <td>3.7</td>
+      <td>42.3%</td>
+      <td>12.1</td>
+      <td>
+        
+        <span class="good">+290.3%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>New Bedford Management Corp</td>
+      <td>179</td>
+      <td class="bad">
+        40.2%
+      </td>
+      <td>55.9%</td>
+      <td>0.0%</td>
+      <td>3.8</td>
+      <td>56.4%</td>
+      <td>11.9</td>
+      <td>
+        
+        <span class="bad">-11.8%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>HOAi Management Company</td>
+      <td>146</td>
+      <td class="warn">
+        56.9%
+      </td>
+      <td>32.9%</td>
+      <td>0.7%</td>
+      <td>3.8</td>
+      <td>20.5%</td>
+      <td>9.7</td>
+      <td>
+        
+        <span class="good">+19.8%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-medium">Watch</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Mauzy Management</td>
+      <td>138</td>
+      <td class="bad">
+        42.8%
+      </td>
+      <td>53.6%</td>
+      <td>0.0%</td>
+      <td>3.6</td>
+      <td>29.0%</td>
+      <td>9.2</td>
+      <td>
+        
+        <span class="bad">-27.6%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>VirtualHOA.com</td>
+      <td>135</td>
+      <td class="bad">
+        27.4%
+      </td>
+      <td>70.4%</td>
+      <td>0.7%</td>
+      <td>3.7</td>
+      <td>61.5%</td>
+      <td>9.0</td>
+      <td>
+        
+        <span class="bad">-43.8%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Walston Management </td>
+      <td>113</td>
+      <td class="bad">
+        40.7%
+      </td>
+      <td>54.9%</td>
+      <td>0.0%</td>
+      <td>4.1</td>
+      <td>50.4%</td>
+      <td>7.5</td>
+      <td>
+        
+        <span class="good">+15.4%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>IndygoCAM</td>
+      <td>110</td>
+      <td class="bad">
+        45.5%
+      </td>
+      <td>52.7%</td>
+      <td>0.9%</td>
+      <td>4.4</td>
+      <td>71.8%</td>
+      <td>7.3</td>
+      <td>
+        
+        <span class="good">+102.8%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Unicorn Management Company</td>
+      <td>47</td>
+      <td class="good">
+        89.4%
+      </td>
+      <td>6.4%</td>
+      <td>0.0%</td>
+      <td>5.1</td>
+      <td>87.2%</td>
+      <td>3.1</td>
+      <td>
+        
+        <span class="bad">-69.9%</span>
+        
+      </td>
+      <td>
+        
+        
+        <span class="flag flag-upsell">On Track</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Property Management Services of Maine</td>
+      <td>45</td>
+      <td class="bad">
+        35.6%
+      </td>
+      <td>64.4%</td>
+      <td>0.0%</td>
+      <td>3.9</td>
+      <td>44.4%</td>
+      <td>3.0</td>
+      <td>
+        
+        <span class="bad">-41.2%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>HOA Accounting Services, Inc.</td>
+      <td>45</td>
+      <td class="good">
+        71.1%
+      </td>
+      <td>26.7%</td>
+      <td>0.0%</td>
+      <td>3.9</td>
+      <td>55.6%</td>
+      <td>3.0</td>
+      <td>
+        
+        <span class="bad">-11.8%</span>
+        
+      </td>
+      <td>
+        
+        
+        <span class="flag flag-upsell">On Track</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Alliance HOA Management LLC </td>
+      <td>40</td>
+      <td class="good">
+        72.5%
+      </td>
+      <td>20.0%</td>
+      <td>0.0%</td>
+      <td>3.4</td>
+      <td>15.0%</td>
+      <td>2.7</td>
+      <td>
+        
+        <span class="bad">-42.5%</span>
+        
+      </td>
+      <td>
+        
+        
+        <span class="flag flag-upsell">On Track</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Centennial Consulting Group</td>
+      <td>40</td>
+      <td class="good">
+        82.5%
+      </td>
+      <td>17.5%</td>
+      <td>0.0%</td>
+      <td>4.3</td>
+      <td>50.0%</td>
+      <td>2.7</td>
+      <td>
+        
+        <span class="good">+28.6%</span>
+        
+      </td>
+      <td>
+        
+        
+        <span class="flag flag-upsell">On Track</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>VMC (HOAi)</td>
+      <td>34</td>
+      <td class="good">
+        85.3%
+      </td>
+      <td>0.0%</td>
+      <td>2.9%</td>
+      <td>4.0</td>
+      <td>82.3%</td>
+      <td>2.3</td>
+      <td>
+        
+        <span class="good">+475.0%</span>
+        
+      </td>
+      <td>
+        
+        
+        <span class="flag flag-upsell">On Track</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Preferred Communities</td>
+      <td>31</td>
+      <td class="bad">
+        35.5%
+      </td>
+      <td>61.3%</td>
+      <td>0.0%</td>
+      <td>3.9</td>
+      <td>54.8%</td>
+      <td>2.1</td>
+      <td>
+        
+        <span class="bad">-90.8%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Action Community Management</td>
+      <td>28</td>
+      <td class="bad">
+        35.7%
+      </td>
+      <td>60.7%</td>
+      <td>0.0%</td>
+      <td>3.9</td>
+      <td>85.7%</td>
+      <td>1.9</td>
+      <td>
+        
+        <span class="bad">-44.1%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Community Management Specialists Inc</td>
+      <td>26</td>
+      <td class="bad">
+        30.8%
+      </td>
+      <td>61.5%</td>
+      <td>3.9%</td>
+      <td>4.1</td>
+      <td>30.8%</td>
+      <td>1.7</td>
+      <td>
+        
+        <span class="bad">-93.5%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>EJF</td>
+      <td>21</td>
+      <td class="bad">
+        42.9%
+      </td>
+      <td>57.1%</td>
+      <td>0.0%</td>
+      <td>4.0</td>
+      <td>42.9%</td>
+      <td>1.4</td>
+      <td>
+        
+        <span class="bad">-87.3%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Young Management Group, Inc.</td>
+      <td>15</td>
+      <td class="bad">
+        40.0%
+      </td>
+      <td>60.0%</td>
+      <td>0.0%</td>
+      <td>3.5</td>
+      <td>60.0%</td>
+      <td>1.0</td>
+      <td>
+        
+        <span class="good">+42.9%</span>
+        
+      </td>
+      <td>
+        
+        
+        
+        <span class="flag flag-high">Below</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>New Vision Community Management</td>
+      <td>14</td>
+      <td class="good">
+        92.9%
+      </td>
+      <td>7.1%</td>
+      <td>0.0%</td>
+      <td>4.3</td>
+      <td>71.4%</td>
+      <td>0.9</td>
+      <td>
+        
+        <span class="bad">-92.5%</span>
+        
+      </td>
+      <td>
+        
+        
+        <span class="flag flag-upsell">On Track</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Eclipse Community Management</td>
+      <td>6</td>
+      <td class="good">
+        83.3%
+      </td>
+      <td>16.7%</td>
+      <td>0.0%</td>
+      <td>3.0</td>
+      <td>66.7%</td>
+      <td>0.4</td>
+      <td>
+        
+        <span class="good">+300.0%</span>
+        
+      </td>
+      <td>
+        
+        
+        <span class="flag flag-upsell">On Track</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>AER Community Management</td>
+      <td>4</td>
+      <td class="good">
+        100.0%
+      </td>
+      <td>0.0%</td>
+      <td>0.0%</td>
+      <td>3.2</td>
+      <td>0.0%</td>
+      <td>0.3</td>
+      <td>
+        
+        <span class="good">+200.0%</span>
+        
+      </td>
+      <td>
+        
+        
+        <span class="flag flag-upsell">On Track</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>HOA Assist</td>
+      <td>1</td>
+      <td class="good">
+        100.0%
+      </td>
+      <td>0.0%</td>
+      <td>0.0%</td>
+      <td>4.0</td>
+      <td>0.0%</td>
+      <td>0.1</td>
+      <td>
+        
+        <span class="bad">-80.0%</span>
+        
+      </td>
+      <td>
+        
+        
+        <span class="flag flag-upsell">On Track</span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Mountain Valley Property Management</td>
+      <td>1</td>
+      <td class="good">
+        100.0%
+      </td>
+      <td>0.0%</td>
+      <td>0.0%</td>
+      <td>4.0</td>
+      <td>0.0%</td>
+      <td>0.1</td>
+      <td>
+        
+        <span class="muted">—</span>
+      </td>
+      <td>
+        
+        
+        <span class="flag flag-upsell">On Track</span>
+      </td>
+    </tr>
+    
+  </table>
+
+  <!-- Billing Projection -->
+  <div class="section-hdr navy">Billing Projection</div>
+  <table>
+    <tr>
+      <th>Company</th><th>Included</th><th>Proj EOM</th><th>Proj Overage</th><th>Proj Bill $</th>
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Alliant</td>
+      
+      <td>3,000</td>
+      <td>6,792</td>
+      <td class="warn">3,792</td>
+      <td class="warn">
+        $9,526
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Juda, Eskew, & Associates</td>
+      
+      <td>3,000</td>
+      <td>4,412</td>
+      <td class="warn">1,412</td>
+      <td class="warn">
+        $4,500
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Silverleaf Management</td>
+      
+      <td>4,000</td>
+      <td>3,954</td>
+      <td class="good">0</td>
+      <td class="good">
+        $5,000
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Premier Community Association Management</td>
+      
+      <td>1,600</td>
+      <td>3,288</td>
+      <td class="warn">1,688</td>
+      <td class="warn">
+        $6,181
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Timmons Properties, Inc.</td>
+      
+      <td>1,000</td>
+      <td>2,650</td>
+      <td class="warn">1,650</td>
+      <td class="warn">
+        $6,342
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>RCP Management Company</td>
+      
+      <td>1,600</td>
+      <td>2,028</td>
+      <td class="warn">428</td>
+      <td class="warn">
+        $3,864
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Management Plus</td>
+      
+      <td>500</td>
+      <td>1,968</td>
+      <td class="warn">1,468</td>
+      <td class="warn">
+        $5,016
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Keys Property Management</td>
+      
+      <td class="muted">Per Door</td>
+      <td class="muted">1,846</td>
+      <td class="muted">—</td>
+      <td class="muted">Per Door</td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>The Manor Association</td>
+      
+      <td>0</td>
+      <td>1,740</td>
+      <td class="good">0</td>
+      <td class="good">
+        $0
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Premier</td>
+      
+      <td>1,000</td>
+      <td>1,700</td>
+      <td class="warn">700</td>
+      <td class="warn">
+        $4,250
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>FiveKeys Community Management</td>
+      
+      <td>1,000</td>
+      <td>1,502</td>
+      <td class="warn">502</td>
+      <td class="warn">
+        $3,004
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>CMG</td>
+      
+      <td>1,000</td>
+      <td>1,386</td>
+      <td class="warn">386</td>
+      <td class="warn">
+        $3,207
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>HOALiving</td>
+      
+      <td>1,000</td>
+      <td>1,362</td>
+      <td class="warn">362</td>
+      <td class="warn">
+        $3,296
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Sage Management LLC</td>
+      
+      <td>1,000</td>
+      <td>1,350</td>
+      <td class="warn">350</td>
+      <td class="warn">
+        $2,976
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Interpacific Asset Management</td>
+      
+      <td>1,000</td>
+      <td>1,346</td>
+      <td class="warn">346</td>
+      <td class="warn">
+        $3,108
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Island Condo LLC</td>
+      
+      <td>500</td>
+      <td>1,190</td>
+      <td class="warn">690</td>
+      <td class="warn">
+        $3,147
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>ACCU</td>
+      
+      <td>500</td>
+      <td>1,124</td>
+      <td class="warn">624</td>
+      <td class="warn">
+        $2,966
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>WPM Real Estate Management</td>
+      
+      <td>500</td>
+      <td>1,006</td>
+      <td class="warn">506</td>
+      <td class="warn">
+        $2,641
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Association Services of Washington</td>
+      
+      <td>1,000</td>
+      <td>980</td>
+      <td class="good">0</td>
+      <td class="good">
+        $2,000
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>3.0 Management</td>
+      
+      <td>1,000</td>
+      <td>880</td>
+      <td class="good">0</td>
+      <td class="good">
+        $2,250
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Park Pointe Management Services</td>
+      
+      <td>1,000</td>
+      <td>708</td>
+      <td class="good">0</td>
+      <td class="good">
+        $2,250
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Alluvia</td>
+      
+      <td class="muted">Per Door</td>
+      <td class="muted">698</td>
+      <td class="muted">—</td>
+      <td class="muted">Per Door</td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Atmos Living Management Group</td>
+      
+      <td>500</td>
+      <td>652</td>
+      <td class="warn">152</td>
+      <td class="warn">
+        $1,630
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>ACE</td>
+      
+      <td>500</td>
+      <td>576</td>
+      <td class="warn">76</td>
+      <td class="warn">
+        $1,440
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>ACE Property Management, Inc.</td>
+      
+      <td>200</td>
+      <td>550</td>
+      <td class="warn">350</td>
+      <td class="warn">
+        $1,375
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Lang Management Company</td>
+      
+      <td>500</td>
+      <td>482</td>
+      <td class="good">0</td>
+      <td class="good">
+        $1,250
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>AMP HOA</td>
+      
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Compass Rose of North Texas</td>
+      
+      <td>400</td>
+      <td>424</td>
+      <td class="warn">24</td>
+      <td class="warn">
+        $1,066
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Blue Door Realty</td>
+      
+      <td>500</td>
+      <td>422</td>
+      <td class="good">0</td>
+      <td class="good">
+        $1,250
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Aspire Community Management</td>
+      
+      <td>500</td>
+      <td>364</td>
+      <td class="good">0</td>
+      <td class="good">
+        $1,250
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>New Bedford Management Corp</td>
+      
+      <td>1,000</td>
+      <td>358</td>
+      <td class="good">0</td>
+      <td class="good">
+        $2,250
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>HOAi Management Company</td>
+      
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Mauzy Management</td>
+      
+      <td>400</td>
+      <td>276</td>
+      <td class="good">0</td>
+      <td class="good">
+        $1,000
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>VirtualHOA.com</td>
+      
+      <td>500</td>
+      <td>270</td>
+      <td class="good">0</td>
+      <td class="good">
+        $1,250
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Walston Management </td>
+      
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>IndygoCAM</td>
+      
+      <td class="muted">Per Door</td>
+      <td class="muted">220</td>
+      <td class="muted">—</td>
+      <td class="muted">Per Door</td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Unicorn Management Company</td>
+      
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Property Management Services of Maine</td>
+      
+      <td>400</td>
+      <td>90</td>
+      <td class="good">0</td>
+      <td class="good">
+        $1,000
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>HOA Accounting Services, Inc.</td>
+      
+      <td>3,000</td>
+      <td>90</td>
+      <td class="good">0</td>
+      <td class="good">
+        $4,500
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Alliance HOA Management LLC </td>
+      
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Centennial Consulting Group</td>
+      
+      <td>500</td>
+      <td>80</td>
+      <td class="good">0</td>
+      <td class="good">
+        $1,250
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>VMC (HOAi)</td>
+      
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Preferred Communities</td>
+      
+      <td>500</td>
+      <td>62</td>
+      <td class="good">0</td>
+      <td class="good">
+        $1,000
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Action Community Management</td>
+      
+      <td>500</td>
+      <td>56</td>
+      <td class="good">0</td>
+      <td class="good">
+        $1,250
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Community Management Specialists Inc</td>
+      
+      <td>500</td>
+      <td>52</td>
+      <td class="good">0</td>
+      <td class="good">
+        $1,250
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>EJF</td>
+      
+      <td>500</td>
+      <td>42</td>
+      <td class="good">0</td>
+      <td class="good">
+        $625
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Young Management Group, Inc.</td>
+      
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>New Vision Community Management</td>
+      
+      <td>5,000</td>
+      <td>28</td>
+      <td class="good">0</td>
+      <td class="good">
+        $7,750
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Eclipse Community Management</td>
+      
+      <td>250</td>
+      <td>12</td>
+      <td class="good">0</td>
+      <td class="good">
+        $625
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>AER Community Management</td>
+      
+      <td>500</td>
+      <td>8</td>
+      <td class="good">0</td>
+      <td class="good">
+        $1,250
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>HOA Assist</td>
+      
+      <td>500</td>
+      <td>2</td>
+      <td class="good">0</td>
+      <td class="good">
+        $1,250
+      </td>
+      
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Mountain Valley Property Management</td>
+      
+      <td>400</td>
+      <td>2</td>
+      <td class="good">0</td>
+      <td class="good">
+        $1,000
+      </td>
+      
+    </tr>
+    
+  </table>
+</div>
+
+<!-- ═══════════════ PAGE 3: Voice Detail ══════════════════════════════════ -->
+<div class="page">
+  <div class="banner" style="background:var(--blue);">
+    <div><h1>Voice Detail</h1></div>
+    <div class="kpi-strip">
+      <div class="kpi">
+        <div class="kpi-val">25,134</div>
+        <div class="kpi-lbl">Calls</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">43.7%</div>
+        <div class="kpi-lbl">Deflection</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">824.2</div>
+        <div class="kpi-lbl">Hours Saved</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cols-2">
+    <!-- Left: CSAT Deep Dive -->
+    <div>
+      <div class="section-hdr">CSAT Deep Dive</div>
+      <table>
+        <tr><th>Company</th><th>CSAT</th><th>Task</th><th>ID</th><th>Fwd</th><th>Latency</th><th>Distort</th><th>Repeat</th><th>Interrupt</th><th>TechFail</th><th>Cov %</th></tr>
+        
+        
+        <tr>
+          <td>Alliant</td>
+          <td class="warn">
+            3.9
+          </td>
+          <td>3.8</td>
+          <td>5.5</td>
+          <td>4.9</td>
+          <td>—</td>
+          <td>6.5</td>
+          <td>5.9</td>
+          <td>7.0</td>
+          <td>6.6</td>
+          <td class="muted">97.2%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Juda, Eskew, & Associates</td>
+          <td class="warn">
+            3.5
+          </td>
+          <td>3.1</td>
+          <td>4.7</td>
+          <td>4.4</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>5.7</td>
+          <td>7.0</td>
+          <td>6.5</td>
+          <td class="muted">98.6%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Silverleaf Management</td>
+          <td class="warn">
+            3.7
+          </td>
+          <td>3.4</td>
+          <td>4.8</td>
+          <td>4.3</td>
+          <td>—</td>
+          <td>6.6</td>
+          <td>5.7</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">98.6%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Premier Community Association Management</td>
+          <td class="warn">
+            3.8
+          </td>
+          <td>3.7</td>
+          <td>5.8</td>
+          <td>4.6</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.0</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">96.6%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Timmons Properties, Inc.</td>
+          <td class="warn">
+            3.7
+          </td>
+          <td>3.6</td>
+          <td>5.3</td>
+          <td>4.3</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.1</td>
+          <td>7.0</td>
+          <td>6.8</td>
+          <td class="muted">98.0%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>RCP Management Company</td>
+          <td class="warn">
+            3.6
+          </td>
+          <td>3.5</td>
+          <td>5.3</td>
+          <td>4.2</td>
+          <td>—</td>
+          <td>6.2</td>
+          <td>6.0</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">99.0%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Management Plus</td>
+          <td class="warn">
+            3.9
+          </td>
+          <td>3.6</td>
+          <td>5.6</td>
+          <td>4.6</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.0</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">97.6%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Keys Property Management</td>
+          <td class="warn">
+            3.8
+          </td>
+          <td>3.6</td>
+          <td>5.3</td>
+          <td>4.3</td>
+          <td>—</td>
+          <td>6.6</td>
+          <td>6.3</td>
+          <td>7.0</td>
+          <td>6.8</td>
+          <td class="muted">97.4%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>The Manor Association</td>
+          <td class="warn">
+            4.0
+          </td>
+          <td>3.2</td>
+          <td>5.7</td>
+          <td>4.6</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.2</td>
+          <td>7.0</td>
+          <td>6.8</td>
+          <td class="muted">98.6%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Premier</td>
+          <td class="warn">
+            4.0
+          </td>
+          <td>3.7</td>
+          <td>5.4</td>
+          <td>4.7</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.0</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">98.0%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>FiveKeys Community Management</td>
+          <td class="warn">
+            3.7
+          </td>
+          <td>3.3</td>
+          <td>5.7</td>
+          <td>4.1</td>
+          <td>—</td>
+          <td>6.8</td>
+          <td>6.3</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">99.2%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>CMG</td>
+          <td class="warn">
+            3.9
+          </td>
+          <td>3.5</td>
+          <td>5.5</td>
+          <td>4.4</td>
+          <td>—</td>
+          <td>6.8</td>
+          <td>6.1</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">95.1%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>HOALiving</td>
+          <td class="warn">
+            4.0
+          </td>
+          <td>3.9</td>
+          <td>5.4</td>
+          <td>5.2</td>
+          <td>—</td>
+          <td>6.6</td>
+          <td>5.6</td>
+          <td>7.0</td>
+          <td>6.3</td>
+          <td class="muted">99.6%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Sage Management LLC</td>
+          <td class="warn">
+            3.9
+          </td>
+          <td>3.6</td>
+          <td>5.3</td>
+          <td>4.6</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.0</td>
+          <td>7.0</td>
+          <td>6.8</td>
+          <td class="muted">99.3%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Interpacific Asset Management</td>
+          <td class="warn">
+            3.8
+          </td>
+          <td>3.6</td>
+          <td>4.9</td>
+          <td>4.7</td>
+          <td>—</td>
+          <td>6.8</td>
+          <td>6.4</td>
+          <td>7.0</td>
+          <td>6.8</td>
+          <td class="muted">97.8%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Island Condo LLC</td>
+          <td class="warn">
+            3.7
+          </td>
+          <td>3.5</td>
+          <td>5.0</td>
+          <td>4.2</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.2</td>
+          <td>7.0</td>
+          <td>6.8</td>
+          <td class="muted">97.5%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>ACCU</td>
+          <td class="warn">
+            3.8
+          </td>
+          <td>3.6</td>
+          <td>5.3</td>
+          <td>4.5</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.0</td>
+          <td>7.0</td>
+          <td>6.6</td>
+          <td class="muted">98.8%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>WPM Real Estate Management</td>
+          <td class="warn">
+            3.8
+          </td>
+          <td>3.6</td>
+          <td>5.4</td>
+          <td>4.6</td>
+          <td>—</td>
+          <td>6.6</td>
+          <td>6.0</td>
+          <td>7.0</td>
+          <td>6.5</td>
+          <td class="muted">98.4%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Association Services of Washington</td>
+          <td class="warn">
+            3.8
+          </td>
+          <td>3.6</td>
+          <td>5.5</td>
+          <td>4.3</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.2</td>
+          <td>7.0</td>
+          <td>6.9</td>
+          <td class="muted">97.8%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>3.0 Management</td>
+          <td class="warn">
+            3.8
+          </td>
+          <td>3.5</td>
+          <td>5.1</td>
+          <td>4.5</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.0</td>
+          <td>7.0</td>
+          <td>6.8</td>
+          <td class="muted">98.6%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Park Pointe Management Services</td>
+          <td class="warn">
+            4.0
+          </td>
+          <td>3.8</td>
+          <td>5.5</td>
+          <td>4.7</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.2</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">99.2%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Alluvia</td>
+          <td class="warn">
+            3.8
+          </td>
+          <td>3.5</td>
+          <td>5.6</td>
+          <td>4.7</td>
+          <td>—</td>
+          <td>6.6</td>
+          <td>6.2</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">97.4%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Atmos Living Management Group</td>
+          <td class="warn">
+            4.0
+          </td>
+          <td>4.0</td>
+          <td>5.4</td>
+          <td>4.9</td>
+          <td>—</td>
+          <td>6.5</td>
+          <td>6.0</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">98.2%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>ACE</td>
+          <td class="warn">
+            3.8
+          </td>
+          <td>3.7</td>
+          <td>5.4</td>
+          <td>4.4</td>
+          <td>—</td>
+          <td>6.8</td>
+          <td>6.0</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">99.3%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>ACE Property Management, Inc.</td>
+          <td class="warn">
+            3.8
+          </td>
+          <td>3.7</td>
+          <td>5.0</td>
+          <td>4.6</td>
+          <td>—</td>
+          <td>6.8</td>
+          <td>6.3</td>
+          <td>7.0</td>
+          <td>6.9</td>
+          <td class="muted">96.7%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Lang Management Company</td>
+          <td class="bad">
+            3.4
+          </td>
+          <td>3.1</td>
+          <td>3.5</td>
+          <td>4.2</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>5.8</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">95.0%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>AMP HOA</td>
+          <td class="warn">
+            4.0
+          </td>
+          <td>3.9</td>
+          <td>5.4</td>
+          <td>5.1</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.3</td>
+          <td>7.0</td>
+          <td>6.8</td>
+          <td class="muted">98.3%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Compass Rose of North Texas</td>
+          <td class="warn">
+            3.6
+          </td>
+          <td>3.2</td>
+          <td>4.4</td>
+          <td>4.3</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.2</td>
+          <td>7.0</td>
+          <td>6.9</td>
+          <td class="muted">97.2%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Blue Door Realty</td>
+          <td class="warn">
+            4.1
+          </td>
+          <td>3.9</td>
+          <td>5.8</td>
+          <td>4.9</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.0</td>
+          <td>7.0</td>
+          <td>6.8</td>
+          <td class="muted">99.5%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Aspire Community Management</td>
+          <td class="warn">
+            3.7
+          </td>
+          <td>3.4</td>
+          <td>4.4</td>
+          <td>4.4</td>
+          <td>—</td>
+          <td>6.6</td>
+          <td>5.9</td>
+          <td>7.0</td>
+          <td>6.6</td>
+          <td class="muted">98.4%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>New Bedford Management Corp</td>
+          <td class="warn">
+            3.8
+          </td>
+          <td>3.5</td>
+          <td>5.3</td>
+          <td>4.7</td>
+          <td>—</td>
+          <td>6.5</td>
+          <td>5.8</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">97.2%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>HOAi Management Company</td>
+          <td class="warn">
+            3.8
+          </td>
+          <td>3.4</td>
+          <td>3.7</td>
+          <td>4.8</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>5.9</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">95.9%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Mauzy Management</td>
+          <td class="warn">
+            3.6
+          </td>
+          <td>3.1</td>
+          <td>4.4</td>
+          <td>4.2</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.2</td>
+          <td>7.0</td>
+          <td>6.9</td>
+          <td class="muted">94.9%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>VirtualHOA.com</td>
+          <td class="warn">
+            3.7
+          </td>
+          <td>3.2</td>
+          <td>5.5</td>
+          <td>4.1</td>
+          <td>—</td>
+          <td>6.8</td>
+          <td>6.5</td>
+          <td>7.0</td>
+          <td>6.9</td>
+          <td class="muted">98.5%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Walston Management </td>
+          <td class="warn">
+            4.1
+          </td>
+          <td>3.5</td>
+          <td>5.3</td>
+          <td>4.8</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.0</td>
+          <td>6.9</td>
+          <td>6.7</td>
+          <td class="muted">95.6%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>IndygoCAM</td>
+          <td class="warn">
+            4.4
+          </td>
+          <td>4.2</td>
+          <td>4.9</td>
+          <td>5.1</td>
+          <td>—</td>
+          <td>6.8</td>
+          <td>6.2</td>
+          <td>7.0</td>
+          <td>6.4</td>
+          <td class="muted">100.0%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Unicorn Management Company</td>
+          <td class="good">
+            5.1
+          </td>
+          <td>5.3</td>
+          <td>6.4</td>
+          <td>6.4</td>
+          <td>—</td>
+          <td>6.9</td>
+          <td>6.5</td>
+          <td>7.0</td>
+          <td>6.4</td>
+          <td class="muted">95.7%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Property Management Services of Maine</td>
+          <td class="warn">
+            3.9
+          </td>
+          <td>3.7</td>
+          <td>5.8</td>
+          <td>4.6</td>
+          <td>—</td>
+          <td>6.6</td>
+          <td>6.2</td>
+          <td>7.0</td>
+          <td>6.8</td>
+          <td class="muted">100.0%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>HOA Accounting Services, Inc.</td>
+          <td class="warn">
+            3.9
+          </td>
+          <td>4.2</td>
+          <td>5.8</td>
+          <td>5.7</td>
+          <td>—</td>
+          <td>6.5</td>
+          <td>6.0</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">100.0%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Alliance HOA Management LLC </td>
+          <td class="bad">
+            3.4
+          </td>
+          <td>3.4</td>
+          <td>4.1</td>
+          <td>5.4</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.5</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">90.0%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Centennial Consulting Group</td>
+          <td class="warn">
+            4.3
+          </td>
+          <td>4.6</td>
+          <td>5.3</td>
+          <td>6.0</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.3</td>
+          <td>7.0</td>
+          <td>6.9</td>
+          <td class="muted">100.0%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>VMC (HOAi)</td>
+          <td class="warn">
+            4.0
+          </td>
+          <td>4.1</td>
+          <td>5.7</td>
+          <td>6.1</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.0</td>
+          <td>7.0</td>
+          <td>6.2</td>
+          <td class="muted">91.2%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Preferred Communities</td>
+          <td class="warn">
+            3.9
+          </td>
+          <td>3.4</td>
+          <td>5.7</td>
+          <td>4.8</td>
+          <td>—</td>
+          <td>6.6</td>
+          <td>5.8</td>
+          <td>7.0</td>
+          <td>6.7</td>
+          <td class="muted">100.0%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Action Community Management</td>
+          <td class="warn">
+            3.9
+          </td>
+          <td>3.8</td>
+          <td>6.5</td>
+          <td>4.7</td>
+          <td>—</td>
+          <td>6.6</td>
+          <td>6.0</td>
+          <td>7.0</td>
+          <td>7.0</td>
+          <td class="muted">96.4%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Community Management Specialists Inc</td>
+          <td class="warn">
+            4.1
+          </td>
+          <td>4.1</td>
+          <td>4.5</td>
+          <td>4.7</td>
+          <td>—</td>
+          <td>6.3</td>
+          <td>5.9</td>
+          <td>7.0</td>
+          <td>6.4</td>
+          <td class="muted">92.3%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>EJF</td>
+          <td class="warn">
+            4.0
+          </td>
+          <td>3.7</td>
+          <td>5.1</td>
+          <td>4.4</td>
+          <td>—</td>
+          <td>6.7</td>
+          <td>6.0</td>
+          <td>7.0</td>
+          <td>6.8</td>
+          <td class="muted">100.0%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Young Management Group, Inc.</td>
+          <td class="bad">
+            3.5
+          </td>
+          <td>3.5</td>
+          <td>5.7</td>
+          <td>4.0</td>
+          <td>—</td>
+          <td>6.9</td>
+          <td>6.5</td>
+          <td>7.0</td>
+          <td>7.0</td>
+          <td class="muted">100.0%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>New Vision Community Management</td>
+          <td class="warn">
+            4.3
+          </td>
+          <td>4.1</td>
+          <td>6.6</td>
+          <td>5.8</td>
+          <td>—</td>
+          <td>6.9</td>
+          <td>6.4</td>
+          <td>7.0</td>
+          <td>6.1</td>
+          <td class="muted">100.0%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Eclipse Community Management</td>
+          <td class="bad">
+            3.0
+          </td>
+          <td>3.0</td>
+          <td>5.2</td>
+          <td>3.7</td>
+          <td>—</td>
+          <td>6.5</td>
+          <td>5.7</td>
+          <td>7.0</td>
+          <td>4.0</td>
+          <td class="muted">100.0%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>AER Community Management</td>
+          <td class="bad">
+            3.2
+          </td>
+          <td>3.2</td>
+          <td>2.8</td>
+          <td>4.5</td>
+          <td>—</td>
+          <td>6.8</td>
+          <td>5.8</td>
+          <td>7.0</td>
+          <td>7.0</td>
+          <td class="muted">100.0%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>HOA Assist</td>
+          <td class="warn">
+            4.0
+          </td>
+          <td>4.0</td>
+          <td>4.0</td>
+          <td>7.0</td>
+          <td>—</td>
+          <td>7.0</td>
+          <td>7.0</td>
+          <td>7.0</td>
+          <td>7.0</td>
+          <td class="muted">100.0%</td>
+        </tr>
+        
+        
+        <tr>
+          <td>Mountain Valley Property Management</td>
+          <td class="warn">
+            4.0
+          </td>
+          <td>4.0</td>
+          <td>4.0</td>
+          <td>4.0</td>
+          <td>—</td>
+          <td>7.0</td>
+          <td>7.0</td>
+          <td>7.0</td>
+          <td>7.0</td>
+          <td class="muted">100.0%</td>
+        </tr>
+        
+      </table>
+    </div>
+
+    <!-- Right: Topics -->
+    <div>
+      <div class="section-hdr">Topics</div>
+      <table>
+        <tr><th>Company</th><th>Top Topic</th><th>%</th><th>2nd Topic</th><th>%</th><th>Uncat %</th></tr>
+        
+        
+        
+        <tr>
+          <td>Alliant</td>
+          <td>Account & Identity</td>
+          <td>29%</td>
+          <td>Transfer Requests</td>
+          <td>22%</td>
+          <td class="muted">
+            
+            8%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Juda, Eskew, & Associates</td>
+          <td>Billing & Payments</td>
+          <td>40%</td>
+          <td>Transfer Requests</td>
+          <td>27%</td>
+          <td class="muted">
+            
+            11%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Silverleaf Management</td>
+          <td>Transfer Requests</td>
+          <td>37%</td>
+          <td>Account & Identity</td>
+          <td>25%</td>
+          <td class="muted">
+            
+            5%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Premier Community Association Management</td>
+          <td>Transfer Requests</td>
+          <td>42%</td>
+          <td>Account & Identity</td>
+          <td>17%</td>
+          <td class="muted">
+            
+            7%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Timmons Properties, Inc.</td>
+          <td>Transfer Requests</td>
+          <td>48%</td>
+          <td>Account & Identity</td>
+          <td>24%</td>
+          <td class="muted">
+            
+            5%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>RCP Management Company</td>
+          <td>Transfer Requests</td>
+          <td>28%</td>
+          <td>Account & Identity</td>
+          <td>28%</td>
+          <td class="muted">
+            
+            4%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Management Plus</td>
+          <td>Transfer Requests</td>
+          <td>38%</td>
+          <td>Account & Identity</td>
+          <td>22%</td>
+          <td class="muted">
+            
+            5%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Keys Property Management</td>
+          <td>Transfer Requests</td>
+          <td>39%</td>
+          <td>Account & Identity</td>
+          <td>21%</td>
+          <td class="muted">
+            
+            5%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>The Manor Association</td>
+          <td>Transfer Requests</td>
+          <td>38%</td>
+          <td>Billing & Payments</td>
+          <td>24%</td>
+          <td class="muted">
+            
+            5%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Premier</td>
+          <td>Transfer Requests</td>
+          <td>35%</td>
+          <td>Account & Identity</td>
+          <td>33%</td>
+          <td class="muted">
+            
+            6%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>FiveKeys Community Management</td>
+          <td>Transfer Requests</td>
+          <td>40%</td>
+          <td>Account & Identity</td>
+          <td>25%</td>
+          <td class="muted">
+            
+            6%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>CMG</td>
+          <td>Transfer Requests</td>
+          <td>35%</td>
+          <td>Account & Identity</td>
+          <td>21%</td>
+          <td class="muted">
+            
+            10%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>HOALiving</td>
+          <td>Account & Identity</td>
+          <td>43%</td>
+          <td>Billing & Payments</td>
+          <td>20%</td>
+          <td class="muted">
+            
+            10%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Sage Management LLC</td>
+          <td>Account & Identity</td>
+          <td>37%</td>
+          <td>Transfer Requests</td>
+          <td>33%</td>
+          <td class="muted">
+            
+            7%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Interpacific Asset Management</td>
+          <td>Transfer Requests</td>
+          <td>31%</td>
+          <td>Incomplete & Non-Engagement</td>
+          <td>28%</td>
+          <td class="muted">
+            
+            5%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Island Condo LLC</td>
+          <td>Transfer Requests</td>
+          <td>45%</td>
+          <td>Account & Identity</td>
+          <td>16%</td>
+          <td class="muted">
+            
+            6%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>ACCU</td>
+          <td>Account & Identity</td>
+          <td>33%</td>
+          <td>Transfer Requests</td>
+          <td>31%</td>
+          <td class="muted">
+            
+            5%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>WPM Real Estate Management</td>
+          <td>Transfer Requests</td>
+          <td>30%</td>
+          <td>Account & Identity</td>
+          <td>23%</td>
+          <td class="muted">
+            
+            8%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Association Services of Washington</td>
+          <td>Transfer Requests</td>
+          <td>38%</td>
+          <td>Account & Identity</td>
+          <td>23%</td>
+          <td class="muted">
+            
+            8%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>3.0 Management</td>
+          <td>Transfer Requests</td>
+          <td>37%</td>
+          <td>Account & Identity</td>
+          <td>29%</td>
+          <td class="muted">
+            
+            4%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Park Pointe Management Services</td>
+          <td>Transfer Requests</td>
+          <td>37%</td>
+          <td>Account & Identity</td>
+          <td>30%</td>
+          <td class="muted">
+            
+            5%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Alluvia</td>
+          <td>Transfer Requests</td>
+          <td>32%</td>
+          <td>Account & Identity</td>
+          <td>30%</td>
+          <td class="muted">
+            
+            5%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Atmos Living Management Group</td>
+          <td>Account & Identity</td>
+          <td>36%</td>
+          <td>Transfer Requests</td>
+          <td>28%</td>
+          <td class="muted">
+            
+            6%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>ACE</td>
+          <td>Transfer Requests</td>
+          <td>32%</td>
+          <td>Account & Identity</td>
+          <td>29%</td>
+          <td class="muted">
+            
+            6%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>ACE Property Management, Inc.</td>
+          <td>Incomplete & Non-Engagement</td>
+          <td>49%</td>
+          <td>Account & Identity</td>
+          <td>21%</td>
+          <td class="muted">
+            
+            5%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Lang Management Company</td>
+          <td>Transfer Requests</td>
+          <td>45%</td>
+          <td>Incomplete & Non-Engagement</td>
+          <td>24%</td>
+          <td class="muted">
+            
+            7%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>AMP HOA</td>
+          <td>Transfer Requests</td>
+          <td>25%</td>
+          <td>Account & Identity</td>
+          <td>24%</td>
+          <td class="muted">
+            
+            16%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Compass Rose of North Texas</td>
+          <td>Account & Identity</td>
+          <td>29%</td>
+          <td>Transfer Requests</td>
+          <td>28%</td>
+          <td class="muted">
+            
+            6%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Blue Door Realty</td>
+          <td>Transfer Requests</td>
+          <td>31%</td>
+          <td>Billing & Payments</td>
+          <td>26%</td>
+          <td class="muted">
+            
+            7%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Aspire Community Management</td>
+          <td>Transfer Requests</td>
+          <td>40%</td>
+          <td>Account & Identity</td>
+          <td>24%</td>
+          <td class="muted">
+            
+            9%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>New Bedford Management Corp</td>
+          <td>Billing & Payments</td>
+          <td>40%</td>
+          <td>Transfer Requests</td>
+          <td>26%</td>
+          <td class="muted">
+            
+            14%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>HOAi Management Company</td>
+          <td>Transfer Requests</td>
+          <td>43%</td>
+          <td>Uncategorized</td>
+          <td>26%</td>
+          <td class="muted">
+            
+            26%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Mauzy Management</td>
+          <td>Transfer Requests</td>
+          <td>42%</td>
+          <td>Account & Identity</td>
+          <td>23%</td>
+          <td class="muted">
+            
+            8%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>VirtualHOA.com</td>
+          <td>Transfer Requests</td>
+          <td>51%</td>
+          <td>Account & Identity</td>
+          <td>18%</td>
+          <td class="muted">
+            
+            7%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Walston Management </td>
+          <td>Transfer Requests</td>
+          <td>42%</td>
+          <td>Account & Identity</td>
+          <td>22%</td>
+          <td class="muted">
+            
+            13%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>IndygoCAM</td>
+          <td>Billing & Payments</td>
+          <td>42%</td>
+          <td>Account & Identity</td>
+          <td>21%</td>
+          <td class="muted">
+            
+            14%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Unicorn Management Company</td>
+          <td>Uncategorized</td>
+          <td>43%</td>
+          <td>Account & Identity</td>
+          <td>23%</td>
+          <td class="muted">
+            
+            43%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Property Management Services of Maine</td>
+          <td>Transfer Requests</td>
+          <td>42%</td>
+          <td>Billing & Payments</td>
+          <td>27%</td>
+          <td class="muted">
+            
+            7%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>HOA Accounting Services, Inc.</td>
+          <td>Billing & Payments</td>
+          <td>36%</td>
+          <td>Uncategorized</td>
+          <td>27%</td>
+          <td class="muted">
+            
+            27%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Alliance HOA Management LLC </td>
+          <td>Incomplete & Non-Engagement</td>
+          <td>58%</td>
+          <td>Account & Identity</td>
+          <td>15%</td>
+          <td class="muted">
+            
+            12%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Centennial Consulting Group</td>
+          <td>Billing & Payments</td>
+          <td>35%</td>
+          <td>Incomplete & Non-Engagement</td>
+          <td>20%</td>
+          <td class="muted">
+            
+            20%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>VMC (HOAi)</td>
+          <td>Uncategorized</td>
+          <td>53%</td>
+          <td>Account & Identity</td>
+          <td>15%</td>
+          <td class="muted">
+            
+            53%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Preferred Communities</td>
+          <td>Account & Identity</td>
+          <td>42%</td>
+          <td>Maintenance & Violations</td>
+          <td>23%</td>
+          <td class="muted">
+            
+            10%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Action Community Management</td>
+          <td>Account & Identity</td>
+          <td>32%</td>
+          <td>Transfer Requests</td>
+          <td>32%</td>
+          <td class="muted">
+            
+            21%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Community Management Specialists Inc</td>
+          <td>Account & Identity</td>
+          <td>54%</td>
+          <td>Billing & Payments</td>
+          <td>19%</td>
+          <td class="muted">
+            
+            8%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>EJF</td>
+          <td>Account & Identity</td>
+          <td>29%</td>
+          <td>Transfer Requests</td>
+          <td>29%</td>
+          <td class="muted">
+            
+            0%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Young Management Group, Inc.</td>
+          <td>Transfer Requests</td>
+          <td>40%</td>
+          <td>Account & Identity</td>
+          <td>20%</td>
+          <td class="muted">
+            
+            0%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>New Vision Community Management</td>
+          <td>Billing & Payments</td>
+          <td>29%</td>
+          <td>Uncategorized</td>
+          <td>29%</td>
+          <td class="muted">
+            
+            29%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Eclipse Community Management</td>
+          <td>Account & Identity</td>
+          <td>50%</td>
+          <td>Billing & Payments</td>
+          <td>17%</td>
+          <td class="muted">
+            
+            17%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>AER Community Management</td>
+          <td>Account & Identity</td>
+          <td>50%</td>
+          <td>Uncategorized</td>
+          <td>50%</td>
+          <td class="muted">
+            
+            50%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>HOA Assist</td>
+          <td>Incomplete & Non-Engagement</td>
+          <td>100%</td>
+          <td>—</td>
+          <td>—</td>
+          <td class="muted">
+            
+            0%
+          </td>
+        </tr>
+        
+        
+        
+        <tr>
+          <td>Mountain Valley Property Management</td>
+          <td>Incomplete & Non-Engagement</td>
+          <td>100%</td>
+          <td>—</td>
+          <td>—</td>
+          <td class="muted">
+            
+            0%
+          </td>
+        </tr>
+        
+      </table>
+    </div>
+  </div>
+
+  <div class="footer-strip">
+    <div><strong>Time Saved:</strong> 824.2h ($20,605.00)</div>
+    <div><strong>Active:</strong> 52 companies</div>
+    <div><strong>Avg CSAT:</strong> 3.81</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 4: Usage Trends & Forecast                                        -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="banner">
+    <div>
+      <h1>Usage Trends & Forecast</h1>
+      <div class="meta">4-Week WoW + 4-Month MoM | Forecast vs 3-Month Trailing Average</div>
+    </div>
+    
+    <div class="kpi-strip">
+      
+      <div class="kpi">
+        <div class="kpi-val trend-down">
+          -15.9%
+        </div>
+        <div class="kpi-lbl">Voice WoW</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val trend-up">
+          20.1%
+        </div>
+        <div class="kpi-lbl">Voice MoM</div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Week-over-Week Volume -->
+  <div class="section-hdr navy">Week-over-Week Volume (Last 4 Weeks)</div>
+  
+  <table>
+    <tr>
+      <th>Company</th>
+      <th>W-3</th>
+      <th>W-2</th>
+      <th>W-1</th>
+      <th>W0</th>
+      <th>Trend</th>
+      <th>WoW %</th>
+      <th>Spark</th>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>3.0 Management</td>
+      <td style="text-align:right">247</td>
+      <td style="text-align:right">271</td>
+      <td style="text-align:right">255</td>
+      <td style="text-align:right"><strong>159</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -37.6%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:10px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>ACCU</td>
+      <td style="text-align:right">324</td>
+      <td style="text-align:right">354</td>
+      <td style="text-align:right">294</td>
+      <td style="text-align:right"><strong>271</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        -7.8%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:12px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>ACE</td>
+      <td style="text-align:right">172</td>
+      <td style="text-align:right">189</td>
+      <td style="text-align:right">144</td>
+      <td style="text-align:right"><strong>135</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        -6.2%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:12px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:12px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>ACE Property Management, Inc.</td>
+      <td style="text-align:right">70</td>
+      <td style="text-align:right">133</td>
+      <td style="text-align:right">136</td>
+      <td style="text-align:right"><strong>138</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +1.5%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:9px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>AER Community Management</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>4</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>AMP HOA</td>
+      <td style="text-align:right">125</td>
+      <td style="text-align:right">152</td>
+      <td style="text-align:right">147</td>
+      <td style="text-align:right"><strong>84</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -42.9%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:9px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Action Community Management</td>
+      <td style="text-align:right">38</td>
+      <td style="text-align:right">16</td>
+      <td style="text-align:right">23</td>
+      <td style="text-align:right"><strong>5</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -78.3%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:7px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:10px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:3px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Alliance HOA Management LLC </td>
+      <td style="text-align:right">25</td>
+      <td style="text-align:right">32</td>
+      <td style="text-align:right">25</td>
+      <td style="text-align:right"><strong>13</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -48.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:12px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:12px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:7px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Alliant</td>
+      <td style="text-align:right">223</td>
+      <td style="text-align:right">1,013</td>
+      <td style="text-align:right">1,714</td>
+      <td style="text-align:right"><strong>1,455</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -15.1%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:3px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:10px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Alluvia</td>
+      <td style="text-align:right">165</td>
+      <td style="text-align:right">216</td>
+      <td style="text-align:right">174</td>
+      <td style="text-align:right"><strong>149</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -14.4%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:12px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:11px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Aspire Community Management</td>
+      <td style="text-align:right">5</td>
+      <td style="text-align:right">73</td>
+      <td style="text-align:right">90</td>
+      <td style="text-align:right"><strong>90</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Association Services of Washington</td>
+      <td style="text-align:right">228</td>
+      <td style="text-align:right">260</td>
+      <td style="text-align:right">259</td>
+      <td style="text-align:right"><strong>227</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -12.4%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Atmos Living Management Group</td>
+      <td style="text-align:right">213</td>
+      <td style="text-align:right">226</td>
+      <td style="text-align:right">158</td>
+      <td style="text-align:right"><strong>142</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -10.1%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:11px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:10px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Blue Door Realty</td>
+      <td style="text-align:right">83</td>
+      <td style="text-align:right">110</td>
+      <td style="text-align:right">96</td>
+      <td style="text-align:right"><strong>107</strong></td>
+      <td class="trend-up">
+        &#9650;
+      </td>
+      <td class="trend-up" style="text-align:right">
+        +11.5%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:12px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>CAMCO</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>CMG</td>
+      <td style="text-align:right">349</td>
+      <td style="text-align:right">371</td>
+      <td style="text-align:right">359</td>
+      <td style="text-align:right"><strong>308</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -14.2%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>CMGT</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Centennial Consulting Group</td>
+      <td style="text-align:right">24</td>
+      <td style="text-align:right">40</td>
+      <td style="text-align:right">40</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -100.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:10px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Community Management Specialists Inc</td>
+      <td style="text-align:right">29</td>
+      <td style="text-align:right">17</td>
+      <td style="text-align:right">16</td>
+      <td style="text-align:right"><strong>7</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -56.2%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:10px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:9px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:5px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Compass Rose of North Texas</td>
+      <td style="text-align:right">152</td>
+      <td style="text-align:right">158</td>
+      <td style="text-align:right">119</td>
+      <td style="text-align:right"><strong>92</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -22.7%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:12px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:10px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>EJF</td>
+      <td style="text-align:right">119</td>
+      <td style="text-align:right">46</td>
+      <td style="text-align:right">18</td>
+      <td style="text-align:right"><strong>13</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -27.8%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:7px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:4px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:3px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Eclipse Community Management</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right">3</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right"><strong>6</strong></td>
+      <td class="trend-up">
+        &#9650;
+      </td>
+      <td class="trend-up" style="text-align:right">
+        +500.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:4px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:9px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:4px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>FiveCircle Property Management</td>
+      <td style="text-align:right">2</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>FiveKeys Community Management</td>
+      <td style="text-align:right">413</td>
+      <td style="text-align:right">364</td>
+      <td style="text-align:right">422</td>
+      <td style="text-align:right"><strong>324</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -23.2%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:12px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Gaughan Association Management</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>HOA Accounting Services, Inc.</td>
+      <td style="text-align:right">21</td>
+      <td style="text-align:right">18</td>
+      <td style="text-align:right">22</td>
+      <td style="text-align:right"><strong>22</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>HOA Assist</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>HOA Solutions</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>HOALiving</td>
+      <td style="text-align:right">4</td>
+      <td style="text-align:right">522</td>
+      <td style="text-align:right">361</td>
+      <td style="text-align:right"><strong>320</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -11.4%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:11px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:10px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>HOAi Management Company</td>
+      <td style="text-align:right">65</td>
+      <td style="text-align:right">79</td>
+      <td style="text-align:right">88</td>
+      <td style="text-align:right"><strong>51</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -42.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:12px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:10px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>IndygoCAM</td>
+      <td style="text-align:right">28</td>
+      <td style="text-align:right">39</td>
+      <td style="text-align:right">60</td>
+      <td style="text-align:right"><strong>51</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -15.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:8px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:11px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Interpacific Asset Management</td>
+      <td style="text-align:right">18</td>
+      <td style="text-align:right">101</td>
+      <td style="text-align:right">454</td>
+      <td style="text-align:right"><strong>269</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -40.7%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:5px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:10px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Island Condo LLC</td>
+      <td style="text-align:right">423</td>
+      <td style="text-align:right">356</td>
+      <td style="text-align:right">269</td>
+      <td style="text-align:right"><strong>306</strong></td>
+      <td class="trend-up">
+        &#9650;
+      </td>
+      <td class="trend-up" style="text-align:right">
+        +13.8%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:10px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:12px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Juda, Eskew, & Associates</td>
+      <td style="text-align:right">1,255</td>
+      <td style="text-align:right">1,108</td>
+      <td style="text-align:right">1,214</td>
+      <td style="text-align:right"><strong>982</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -19.1%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:12px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>KRJ Management, Inc</td>
+      <td style="text-align:right">3</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Kentuckiana</td>
+      <td style="text-align:right">26</td>
+      <td style="text-align:right">14</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:9px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Keys Property Management</td>
+      <td style="text-align:right">424</td>
+      <td style="text-align:right">480</td>
+      <td style="text-align:right">500</td>
+      <td style="text-align:right"><strong>425</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -15.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Lang Management Company</td>
+      <td style="text-align:right">3</td>
+      <td style="text-align:right">2</td>
+      <td style="text-align:right">201</td>
+      <td style="text-align:right"><strong>40</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -80.1%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:4px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>MMI</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Management Plus</td>
+      <td style="text-align:right">484</td>
+      <td style="text-align:right">552</td>
+      <td style="text-align:right">592</td>
+      <td style="text-align:right"><strong>419</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -29.2%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:11px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Mauzy Management</td>
+      <td style="text-align:right">94</td>
+      <td style="text-align:right">86</td>
+      <td style="text-align:right">78</td>
+      <td style="text-align:right"><strong>67</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -14.1%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:11px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Mountain Valley Property Management</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>1</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>New Bedford Management Corp</td>
+      <td style="text-align:right">96</td>
+      <td style="text-align:right">112</td>
+      <td style="text-align:right">98</td>
+      <td style="text-align:right"><strong>72</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -26.5%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:11px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>New Vision Community Management</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right">3</td>
+      <td style="text-align:right">4</td>
+      <td style="text-align:right"><strong>8</strong></td>
+      <td class="trend-up">
+        &#9650;
+      </td>
+      <td class="trend-up" style="text-align:right">
+        +100.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:3px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:7px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:9px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Park Pointe Management Services</td>
+      <td style="text-align:right">172</td>
+      <td style="text-align:right">179</td>
+      <td style="text-align:right">213</td>
+      <td style="text-align:right"><strong>156</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -26.8%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:12px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Preferred Communities</td>
+      <td style="text-align:right">197</td>
+      <td style="text-align:right">146</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:12px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Premier</td>
+      <td style="text-align:right">21</td>
+      <td style="text-align:right">190</td>
+      <td style="text-align:right">447</td>
+      <td style="text-align:right"><strong>378</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -15.4%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:7px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Premier Community Association Management</td>
+      <td style="text-align:right">900</td>
+      <td style="text-align:right">815</td>
+      <td style="text-align:right">872</td>
+      <td style="text-align:right"><strong>780</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -10.6%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Property Management Services of Maine</td>
+      <td style="text-align:right">49</td>
+      <td style="text-align:right">60</td>
+      <td style="text-align:right">27</td>
+      <td style="text-align:right"><strong>6</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -77.8%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:8px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:3px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>RCP Management Company</td>
+      <td style="text-align:right">516</td>
+      <td style="text-align:right">516</td>
+      <td style="text-align:right">519</td>
+      <td style="text-align:right"><strong>476</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        -8.3%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Sage Management LLC</td>
+      <td style="text-align:right">361</td>
+      <td style="text-align:right">356</td>
+      <td style="text-align:right">376</td>
+      <td style="text-align:right"><strong>295</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -21.5%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:12px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Silverleaf Management</td>
+      <td style="text-align:right">3</td>
+      <td style="text-align:right">606</td>
+      <td style="text-align:right">1,045</td>
+      <td style="text-align:right"><strong>904</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -13.5%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:10px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>The Manor Association</td>
+      <td style="text-align:right">586</td>
+      <td style="text-align:right">626</td>
+      <td style="text-align:right">441</td>
+      <td style="text-align:right"><strong>397</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        -10.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:11px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:10px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Timmons Properties, Inc.</td>
+      <td style="text-align:right">637</td>
+      <td style="text-align:right">674</td>
+      <td style="text-align:right">610</td>
+      <td style="text-align:right"><strong>712</strong></td>
+      <td class="trend-up">
+        &#9650;
+      </td>
+      <td class="trend-up" style="text-align:right">
+        +16.7%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Unicorn Management Company</td>
+      <td style="text-align:right">95</td>
+      <td style="text-align:right">27</td>
+      <td style="text-align:right">17</td>
+      <td style="text-align:right"><strong>31</strong></td>
+      <td class="trend-up">
+        &#9650;
+      </td>
+      <td class="trend-up" style="text-align:right">
+        +82.4%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:5px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:4px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:6px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>VMC (HOAi)</td>
+      <td style="text-align:right">4</td>
+      <td style="text-align:right">8</td>
+      <td style="text-align:right">18</td>
+      <td style="text-align:right"><strong>20</strong></td>
+      <td class="trend-up">
+        &#9650;
+      </td>
+      <td class="trend-up" style="text-align:right">
+        +11.1%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:4px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:7px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Vantaca Pay Support</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>VirtualHOA.com</td>
+      <td style="text-align:right">93</td>
+      <td style="text-align:right">97</td>
+      <td style="text-align:right">78</td>
+      <td style="text-align:right"><strong>43</strong></td>
+      <td class="trend-down">
+        &#9660;
+      </td>
+      <td class="trend-down" style="text-align:right">
+        -44.9%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:8px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>WPM Real Estate Management</td>
+      <td style="text-align:right">272</td>
+      <td style="text-align:right">304</td>
+      <td style="text-align:right">248</td>
+      <td style="text-align:right"><strong>246</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        -0.8%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:14px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Walston Management </td>
+      <td style="text-align:right">44</td>
+      <td style="text-align:right">56</td>
+      <td style="text-align:right">55</td>
+      <td style="text-align:right"><strong>52</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        -5.5%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:13px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:15px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Wilkin Management Group</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td class="trend-flat">
+        &#9644;
+      </td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:2px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Young Management Group, Inc.</td>
+      <td style="text-align:right">5</td>
+      <td style="text-align:right">5</td>
+      <td style="text-align:right">6</td>
+      <td style="text-align:right"><strong>9</strong></td>
+      <td class="trend-up">
+        &#9650;
+      </td>
+      <td class="trend-up" style="text-align:right">
+        +50.0%
+      </td>
+      <td>
+        <span class="sparkbar-wrap">
+          
+          <span class="bar" style="height:9px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:9px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:11px; background:var(--blue);"></span>
+          
+          <span class="bar" style="height:16px; background:var(--blue);"></span>
+          
+        </span>
+      </td>
+    </tr>
+    
+    
+  </table>
+
+  <!-- Month-over-Month Forecast -->
+  <div class="section-hdr navy">Month-over-Month Forecast (Last 4 Months)</div>
+  
+  <table>
+    <tr>
+      <th>Company</th>
+      <th>Jan 2026</th>
+      <th>Feb 2026</th>
+      <th>Mar 2026</th>
+      <th>Proj EOM</th>
+      <th>3M Avg</th>
+      <th>MoM %</th>
+      <th>Forecast</th>
+    </tr>
+    
+    
+    
+    
+    <tr>
+      <td>3.0 Management</td>
+      <td style="text-align:right">259</td>
+      <td style="text-align:right">813</td>
+      <td style="text-align:right">1,000</td>
+      <td style="text-align:right"><strong>880</strong></td>
+      <td style="text-align:right" class="muted">691</td>
+      <td class="trend-down" style="text-align:right">
+        -12.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>ACCU</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right">122</td>
+      <td style="text-align:right">1,218</td>
+      <td style="text-align:right"><strong>1,124</strong></td>
+      <td style="text-align:right" class="muted">447</td>
+      <td class="trend-flat" style="text-align:right">
+        -7.7%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>ACE</td>
+      <td style="text-align:right">109</td>
+      <td style="text-align:right">662</td>
+      <td style="text-align:right">743</td>
+      <td style="text-align:right"><strong>576</strong></td>
+      <td style="text-align:right" class="muted">505</td>
+      <td class="trend-down" style="text-align:right">
+        -22.5%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-ontrack">On Track</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>ACE Property Management, Inc.</td>
+      <td style="text-align:right">160</td>
+      <td style="text-align:right">107</td>
+      <td style="text-align:right">406</td>
+      <td style="text-align:right"><strong>550</strong></td>
+      <td style="text-align:right" class="muted">224</td>
+      <td class="trend-up" style="text-align:right">
+        +35.5%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>AER Community Management</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right">4</td>
+      <td style="text-align:right"><strong>8</strong></td>
+      <td style="text-align:right" class="muted">2</td>
+      <td class="trend-up" style="text-align:right">
+        +100.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>AMP HOA</td>
+      <td style="text-align:right">689</td>
+      <td style="text-align:right">478</td>
+      <td style="text-align:right">495</td>
+      <td style="text-align:right"><strong>464</strong></td>
+      <td style="text-align:right" class="muted">554</td>
+      <td class="trend-flat" style="text-align:right">
+        -6.3%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-below">Below</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Action Community Management</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">105</td>
+      <td style="text-align:right"><strong>56</strong></td>
+      <td style="text-align:right" class="muted">105</td>
+      <td class="trend-down" style="text-align:right">
+        -46.7%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-below">Below</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Alliance HOA Management LLC </td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">55</td>
+      <td style="text-align:right">146</td>
+      <td style="text-align:right"><strong>80</strong></td>
+      <td style="text-align:right" class="muted">100</td>
+      <td class="trend-down" style="text-align:right">
+        -45.2%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-below">Below</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Alliant</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">1,217</td>
+      <td style="text-align:right"><strong>6,792</strong></td>
+      <td style="text-align:right" class="muted">1,217</td>
+      <td class="trend-up" style="text-align:right">
+        +458.1%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Alluvia</td>
+      <td style="text-align:right">640</td>
+      <td style="text-align:right">556</td>
+      <td style="text-align:right">745</td>
+      <td style="text-align:right"><strong>698</strong></td>
+      <td style="text-align:right" class="muted">647</td>
+      <td class="trend-flat" style="text-align:right">
+        -6.3%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-ontrack">On Track</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Aspire Community Management</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">11</td>
+      <td style="text-align:right">97</td>
+      <td style="text-align:right"><strong>364</strong></td>
+      <td style="text-align:right" class="muted">54</td>
+      <td class="trend-up" style="text-align:right">
+        +275.3%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Association Services of Washington</td>
+      <td style="text-align:right">1,303</td>
+      <td style="text-align:right">994</td>
+      <td style="text-align:right">1,018</td>
+      <td style="text-align:right"><strong>980</strong></td>
+      <td style="text-align:right" class="muted">1,105</td>
+      <td class="trend-flat" style="text-align:right">
+        -3.7%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-ontrack">On Track</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Atmos Living Management Group</td>
+      <td style="text-align:right">3</td>
+      <td style="text-align:right">3</td>
+      <td style="text-align:right">583</td>
+      <td style="text-align:right"><strong>652</strong></td>
+      <td style="text-align:right" class="muted">196</td>
+      <td class="trend-up" style="text-align:right">
+        +11.8%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Blue Door Realty</td>
+      <td style="text-align:right">254</td>
+      <td style="text-align:right">454</td>
+      <td style="text-align:right">350</td>
+      <td style="text-align:right"><strong>422</strong></td>
+      <td style="text-align:right" class="muted">353</td>
+      <td class="trend-up" style="text-align:right">
+        +20.6%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>CAMCO</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td style="text-align:right" class="muted">1</td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-new">New</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>CMG</td>
+      <td style="text-align:right">1,580</td>
+      <td style="text-align:right">1,238</td>
+      <td style="text-align:right">1,499</td>
+      <td style="text-align:right"><strong>1,386</strong></td>
+      <td style="text-align:right" class="muted">1,439</td>
+      <td class="trend-flat" style="text-align:right">
+        -7.5%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-ontrack">On Track</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>CMGT</td>
+      <td style="text-align:right">54</td>
+      <td style="text-align:right">16</td>
+      <td style="text-align:right">32</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td style="text-align:right" class="muted">34</td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-new">New</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Centennial Consulting Group</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right">64</td>
+      <td style="text-align:right"><strong>80</strong></td>
+      <td style="text-align:right" class="muted">32</td>
+      <td class="trend-up" style="text-align:right">
+        +25.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Community Management Specialists Inc</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right">388</td>
+      <td style="text-align:right">808</td>
+      <td style="text-align:right"><strong>52</strong></td>
+      <td style="text-align:right" class="muted">399</td>
+      <td class="trend-down" style="text-align:right">
+        -93.6%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-below">Below</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Compass Rose of North Texas</td>
+      <td style="text-align:right">339</td>
+      <td style="text-align:right">506</td>
+      <td style="text-align:right">611</td>
+      <td style="text-align:right"><strong>424</strong></td>
+      <td style="text-align:right" class="muted">485</td>
+      <td class="trend-down" style="text-align:right">
+        -30.6%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-ontrack">On Track</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>EJF</td>
+      <td style="text-align:right">95</td>
+      <td style="text-align:right">624</td>
+      <td style="text-align:right">340</td>
+      <td style="text-align:right"><strong>42</strong></td>
+      <td style="text-align:right" class="muted">353</td>
+      <td class="trend-down" style="text-align:right">
+        -87.6%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-below">Below</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Eclipse Community Management</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">4</td>
+      <td style="text-align:right"><strong>12</strong></td>
+      <td style="text-align:right" class="muted">4</td>
+      <td class="trend-up" style="text-align:right">
+        +200.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>FiveCircle Property Management</td>
+      <td style="text-align:right">4</td>
+      <td style="text-align:right">6</td>
+      <td style="text-align:right">2</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td style="text-align:right" class="muted">4</td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-new">New</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>FiveKeys Community Management</td>
+      <td style="text-align:right">1,391</td>
+      <td style="text-align:right">1,280</td>
+      <td style="text-align:right">1,670</td>
+      <td style="text-align:right"><strong>1,502</strong></td>
+      <td style="text-align:right" class="muted">1,447</td>
+      <td class="trend-down" style="text-align:right">
+        -10.1%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-ontrack">On Track</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Gaughan Association Management</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td style="text-align:right" class="muted">1</td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-new">New</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>HOA Accounting Services, Inc.</td>
+      <td style="text-align:right">57</td>
+      <td style="text-align:right">87</td>
+      <td style="text-align:right">106</td>
+      <td style="text-align:right"><strong>90</strong></td>
+      <td style="text-align:right" class="muted">83</td>
+      <td class="trend-down" style="text-align:right">
+        -15.1%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-ontrack">On Track</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>HOA Assist</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">3</td>
+      <td style="text-align:right">14</td>
+      <td style="text-align:right"><strong>2</strong></td>
+      <td style="text-align:right" class="muted">8</td>
+      <td class="trend-down" style="text-align:right">
+        -85.7%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-below">Below</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>HOA Solutions</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right">55</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td style="text-align:right" class="muted">28</td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-new">New</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>HOALiving</td>
+      <td style="text-align:right">218</td>
+      <td style="text-align:right">312</td>
+      <td style="text-align:right">798</td>
+      <td style="text-align:right"><strong>1,362</strong></td>
+      <td style="text-align:right" class="muted">443</td>
+      <td class="trend-up" style="text-align:right">
+        +70.7%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>HOAi Management Company</td>
+      <td style="text-align:right">122</td>
+      <td style="text-align:right">111</td>
+      <td style="text-align:right">251</td>
+      <td style="text-align:right"><strong>292</strong></td>
+      <td style="text-align:right" class="muted">161</td>
+      <td class="trend-up" style="text-align:right">
+        +16.3%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>IndygoCAM</td>
+      <td style="text-align:right">335</td>
+      <td style="text-align:right">119</td>
+      <td style="text-align:right">112</td>
+      <td style="text-align:right"><strong>220</strong></td>
+      <td style="text-align:right" class="muted">189</td>
+      <td class="trend-up" style="text-align:right">
+        +96.4%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Interpacific Asset Management</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">36</td>
+      <td style="text-align:right"><strong>1,346</strong></td>
+      <td style="text-align:right" class="muted">36</td>
+      <td class="trend-up" style="text-align:right">
+        +3638.9%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Island Condo LLC</td>
+      <td style="text-align:right">2</td>
+      <td style="text-align:right">758</td>
+      <td style="text-align:right">1,653</td>
+      <td style="text-align:right"><strong>1,190</strong></td>
+      <td style="text-align:right" class="muted">804</td>
+      <td class="trend-down" style="text-align:right">
+        -28.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Juda, Eskew, & Associates</td>
+      <td style="text-align:right">16</td>
+      <td style="text-align:right">849</td>
+      <td style="text-align:right">4,166</td>
+      <td style="text-align:right"><strong>4,412</strong></td>
+      <td style="text-align:right" class="muted">1,677</td>
+      <td class="trend-flat" style="text-align:right">
+        +5.9%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>KRJ Management, Inc</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">2</td>
+      <td style="text-align:right">3</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td style="text-align:right" class="muted">2</td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-new">New</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Kentuckiana</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">93</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td style="text-align:right" class="muted">93</td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-new">New</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Keys Property Management</td>
+      <td style="text-align:right">1,840</td>
+      <td style="text-align:right">1,678</td>
+      <td style="text-align:right">1,874</td>
+      <td style="text-align:right"><strong>1,846</strong></td>
+      <td style="text-align:right" class="muted">1,797</td>
+      <td class="trend-flat" style="text-align:right">
+        -1.5%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-ontrack">On Track</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Lang Management Company</td>
+      <td style="text-align:right">2</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">8</td>
+      <td style="text-align:right"><strong>482</strong></td>
+      <td style="text-align:right" class="muted">5</td>
+      <td class="trend-up" style="text-align:right">
+        +5925.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>MMI</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td style="text-align:right" class="muted">1</td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-new">New</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Management Plus</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">2</td>
+      <td style="text-align:right">1,188</td>
+      <td style="text-align:right"><strong>1,968</strong></td>
+      <td style="text-align:right" class="muted">595</td>
+      <td class="trend-up" style="text-align:right">
+        +65.7%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Mauzy Management</td>
+      <td style="text-align:right">319</td>
+      <td style="text-align:right">299</td>
+      <td style="text-align:right">393</td>
+      <td style="text-align:right"><strong>276</strong></td>
+      <td style="text-align:right" class="muted">337</td>
+      <td class="trend-down" style="text-align:right">
+        -29.8%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-below">Below</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Mountain Valley Property Management</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right">1</td>
+      <td style="text-align:right"><strong>2</strong></td>
+      <td style="text-align:right" class="muted">1</td>
+      <td class="trend-up" style="text-align:right">
+        +100.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>New Bedford Management Corp</td>
+      <td style="text-align:right">413</td>
+      <td style="text-align:right">455</td>
+      <td style="text-align:right">417</td>
+      <td style="text-align:right"><strong>358</strong></td>
+      <td style="text-align:right" class="muted">428</td>
+      <td class="trend-down" style="text-align:right">
+        -14.1%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-below">Below</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>New Vision Community Management</td>
+      <td style="text-align:right">12,992</td>
+      <td style="text-align:right">6,517</td>
+      <td style="text-align:right">373</td>
+      <td style="text-align:right"><strong>28</strong></td>
+      <td style="text-align:right" class="muted">6,627</td>
+      <td class="trend-down" style="text-align:right">
+        -92.5%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-below">Below</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Park Pointe Management Services</td>
+      <td style="text-align:right">577</td>
+      <td style="text-align:right">515</td>
+      <td style="text-align:right">721</td>
+      <td style="text-align:right"><strong>708</strong></td>
+      <td style="text-align:right" class="muted">604</td>
+      <td class="trend-flat" style="text-align:right">
+        -1.8%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Preferred Communities</td>
+      <td style="text-align:right">904</td>
+      <td style="text-align:right">425</td>
+      <td style="text-align:right">704</td>
+      <td style="text-align:right"><strong>62</strong></td>
+      <td style="text-align:right" class="muted">678</td>
+      <td class="trend-down" style="text-align:right">
+        -91.2%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-below">Below</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Premier</td>
+      <td style="text-align:right">2</td>
+      <td style="text-align:right">47</td>
+      <td style="text-align:right">113</td>
+      <td style="text-align:right"><strong>1,700</strong></td>
+      <td style="text-align:right" class="muted">54</td>
+      <td class="trend-up" style="text-align:right">
+        +1404.4%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Premier Community Association Management</td>
+      <td style="text-align:right">3,094</td>
+      <td style="text-align:right">2,584</td>
+      <td style="text-align:right">3,254</td>
+      <td style="text-align:right"><strong>3,288</strong></td>
+      <td style="text-align:right" class="muted">2,977</td>
+      <td class="trend-flat" style="text-align:right">
+        +1.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-ontrack">On Track</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+      <td>Property Management Services of Maine</td>
+      <td style="text-align:right">311</td>
+      <td style="text-align:right">152</td>
+      <td style="text-align:right">157</td>
+      <td style="text-align:right"><strong>90</strong></td>
+      <td style="text-align:right" class="muted">207</td>
+      <td class="trend-down" style="text-align:right">
+        -42.7%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-below">Below</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>RCP Management Company</td>
+      <td style="text-align:right">2,143</td>
+      <td style="text-align:right">2,084</td>
+      <td style="text-align:right">1,909</td>
+      <td style="text-align:right"><strong>2,028</strong></td>
+      <td style="text-align:right" class="muted">2,045</td>
+      <td class="trend-flat" style="text-align:right">
+        +6.2%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-ontrack">On Track</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Sage Management LLC</td>
+      <td style="text-align:right">1,384</td>
+      <td style="text-align:right">1,177</td>
+      <td style="text-align:right">1,431</td>
+      <td style="text-align:right"><strong>1,350</strong></td>
+      <td style="text-align:right" class="muted">1,331</td>
+      <td class="trend-flat" style="text-align:right">
+        -5.7%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-ontrack">On Track</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Silverleaf Management</td>
+      <td style="text-align:right">4,012</td>
+      <td style="text-align:right">3,790</td>
+      <td style="text-align:right">2,723</td>
+      <td style="text-align:right"><strong>3,954</strong></td>
+      <td style="text-align:right" class="muted">3,508</td>
+      <td class="trend-up" style="text-align:right">
+        +45.2%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-ontrack">On Track</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>The Manor Association</td>
+      <td style="text-align:right">76</td>
+      <td style="text-align:right">217</td>
+      <td style="text-align:right">1,833</td>
+      <td style="text-align:right"><strong>1,740</strong></td>
+      <td style="text-align:right" class="muted">709</td>
+      <td class="trend-flat" style="text-align:right">
+        -5.1%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Timmons Properties, Inc.</td>
+      <td style="text-align:right">318</td>
+      <td style="text-align:right">1,489</td>
+      <td style="text-align:right">2,459</td>
+      <td style="text-align:right"><strong>2,650</strong></td>
+      <td style="text-align:right" class="muted">1,422</td>
+      <td class="trend-flat" style="text-align:right">
+        +7.8%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Unicorn Management Company</td>
+      <td style="text-align:right">92</td>
+      <td style="text-align:right">241</td>
+      <td style="text-align:right">320</td>
+      <td style="text-align:right"><strong>94</strong></td>
+      <td style="text-align:right" class="muted">218</td>
+      <td class="trend-down" style="text-align:right">
+        -70.6%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-below">Below</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>VMC (HOAi)</td>
+      <td style="text-align:right">17</td>
+      <td style="text-align:right">5</td>
+      <td style="text-align:right">13</td>
+      <td style="text-align:right"><strong>68</strong></td>
+      <td style="text-align:right" class="muted">12</td>
+      <td class="trend-up" style="text-align:right">
+        +423.1%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Vantaca Pay Support</td>
+      <td style="text-align:right">17</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td style="text-align:right" class="muted">17</td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-new">New</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>VirtualHOA.com</td>
+      <td style="text-align:right">525</td>
+      <td style="text-align:right">428</td>
+      <td style="text-align:right">497</td>
+      <td style="text-align:right"><strong>270</strong></td>
+      <td style="text-align:right" class="muted">483</td>
+      <td class="trend-down" style="text-align:right">
+        -45.7%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-below">Below</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>WPM Real Estate Management</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">266</td>
+      <td style="text-align:right">809</td>
+      <td style="text-align:right"><strong>1,006</strong></td>
+      <td style="text-align:right" class="muted">538</td>
+      <td class="trend-up" style="text-align:right">
+        +24.4%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Walston Management </td>
+      <td style="text-align:right">135</td>
+      <td style="text-align:right">147</td>
+      <td style="text-align:right">203</td>
+      <td style="text-align:right"><strong>226</strong></td>
+      <td style="text-align:right" class="muted">162</td>
+      <td class="trend-up" style="text-align:right">
+        +11.3%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-above">Above</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Wilkin Management Group</td>
+      <td style="text-align:right">0</td>
+      <td style="text-align:right">2</td>
+      <td style="text-align:right">2</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td style="text-align:right" class="muted">2</td>
+      <td class="trend-flat" style="text-align:right">
+        +0.0%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-new">New</span>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+      <td>Young Management Group, Inc.</td>
+      <td style="text-align:right">57</td>
+      <td style="text-align:right">30</td>
+      <td style="text-align:right">23</td>
+      <td style="text-align:right"><strong>30</strong></td>
+      <td style="text-align:right" class="muted">37</td>
+      <td class="trend-up" style="text-align:right">
+        +30.4%
+      </td>
+      <td>
+        
+        <span class="forecast-badge fc-below">Below</span>
+      </td>
+    </tr>
+    
+    
+  </table>
+
+  <!-- Trend Alerts: companies declining or below forecast -->
+  <div class="section-hdr amber">Trend Alerts</div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  <table>
+    <tr><th>Company</th><th>Forecast</th><th>WoW %</th><th>MoM %</th><th>Proj EOM</th><th>3M Avg</th><th>Signal</th></tr>
+    
+    <tr>
+      <td>3.0 Management</td>
+      <td><span class="forecast-badge fc-above">Above</span></td>
+      <td class="bad" style="text-align:right">-37.6%</td>
+      <td style="text-align:right">-12.0%</td>
+      <td style="text-align:right">880</td>
+      <td style="text-align:right" class="muted">691</td>
+      <td class="muted">
+        Steep weekly decline
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>AMP HOA</td>
+      <td><span class="forecast-badge fc-below">Below</span></td>
+      <td class="bad" style="text-align:right">-42.9%</td>
+      <td style="text-align:right">-6.3%</td>
+      <td style="text-align:right">464</td>
+      <td style="text-align:right" class="muted">554</td>
+      <td class="muted">
+        Steep weekly decline
+         + Below 3M trend
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Action Community Management</td>
+      <td><span class="forecast-badge fc-below">Below</span></td>
+      <td class="bad" style="text-align:right">-78.3%</td>
+      <td style="text-align:right">-46.7%</td>
+      <td style="text-align:right">56</td>
+      <td style="text-align:right" class="muted">105</td>
+      <td class="muted">
+        Steep weekly decline
+         + Below 3M trend
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Alliance HOA Management LLC </td>
+      <td><span class="forecast-badge fc-below">Below</span></td>
+      <td class="bad" style="text-align:right">-48.0%</td>
+      <td style="text-align:right">-45.2%</td>
+      <td style="text-align:right">80</td>
+      <td style="text-align:right" class="muted">100</td>
+      <td class="muted">
+        Steep weekly decline
+         + Below 3M trend
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Centennial Consulting Group</td>
+      <td><span class="forecast-badge fc-above">Above</span></td>
+      <td class="bad" style="text-align:right">-100.0%</td>
+      <td style="text-align:right">+25.0%</td>
+      <td style="text-align:right">80</td>
+      <td style="text-align:right" class="muted">32</td>
+      <td class="muted">
+        Steep weekly decline
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Community Management Specialists Inc</td>
+      <td><span class="forecast-badge fc-below">Below</span></td>
+      <td class="bad" style="text-align:right">-56.2%</td>
+      <td style="text-align:right">-93.6%</td>
+      <td style="text-align:right">52</td>
+      <td style="text-align:right" class="muted">399</td>
+      <td class="muted">
+        Steep weekly decline
+         + Below 3M trend
+      </td>
+    </tr>
+    
+    <tr>
+      <td>EJF</td>
+      <td><span class="forecast-badge fc-below">Below</span></td>
+      <td class="bad" style="text-align:right">-27.8%</td>
+      <td style="text-align:right">-87.6%</td>
+      <td style="text-align:right">42</td>
+      <td style="text-align:right" class="muted">353</td>
+      <td class="muted">
+        Steep weekly decline
+         + Below 3M trend
+      </td>
+    </tr>
+    
+    <tr>
+      <td>HOA Assist</td>
+      <td><span class="forecast-badge fc-below">Below</span></td>
+      <td class="" style="text-align:right">+0.0%</td>
+      <td style="text-align:right">-85.7%</td>
+      <td style="text-align:right">2</td>
+      <td style="text-align:right" class="muted">8</td>
+      <td class="muted">
+        
+        Below 3M trend
+      </td>
+    </tr>
+    
+    <tr>
+      <td>HOAi Management Company</td>
+      <td><span class="forecast-badge fc-above">Above</span></td>
+      <td class="bad" style="text-align:right">-42.0%</td>
+      <td style="text-align:right">+16.3%</td>
+      <td style="text-align:right">292</td>
+      <td style="text-align:right" class="muted">161</td>
+      <td class="muted">
+        Steep weekly decline
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Interpacific Asset Management</td>
+      <td><span class="forecast-badge fc-above">Above</span></td>
+      <td class="bad" style="text-align:right">-40.7%</td>
+      <td style="text-align:right">+3638.9%</td>
+      <td style="text-align:right">1,346</td>
+      <td style="text-align:right" class="muted">36</td>
+      <td class="muted">
+        Steep weekly decline
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Lang Management Company</td>
+      <td><span class="forecast-badge fc-above">Above</span></td>
+      <td class="bad" style="text-align:right">-80.1%</td>
+      <td style="text-align:right">+5925.0%</td>
+      <td style="text-align:right">482</td>
+      <td style="text-align:right" class="muted">5</td>
+      <td class="muted">
+        Steep weekly decline
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Management Plus</td>
+      <td><span class="forecast-badge fc-above">Above</span></td>
+      <td class="bad" style="text-align:right">-29.2%</td>
+      <td style="text-align:right">+65.7%</td>
+      <td style="text-align:right">1,968</td>
+      <td style="text-align:right" class="muted">595</td>
+      <td class="muted">
+        Steep weekly decline
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Mauzy Management</td>
+      <td><span class="forecast-badge fc-below">Below</span></td>
+      <td class="" style="text-align:right">-14.1%</td>
+      <td style="text-align:right">-29.8%</td>
+      <td style="text-align:right">276</td>
+      <td style="text-align:right" class="muted">337</td>
+      <td class="muted">
+        
+        Below 3M trend
+      </td>
+    </tr>
+    
+    <tr>
+      <td>New Bedford Management Corp</td>
+      <td><span class="forecast-badge fc-below">Below</span></td>
+      <td class="bad" style="text-align:right">-26.5%</td>
+      <td style="text-align:right">-14.1%</td>
+      <td style="text-align:right">358</td>
+      <td style="text-align:right" class="muted">428</td>
+      <td class="muted">
+        Steep weekly decline
+         + Below 3M trend
+      </td>
+    </tr>
+    
+    <tr>
+      <td>New Vision Community Management</td>
+      <td><span class="forecast-badge fc-below">Below</span></td>
+      <td class="" style="text-align:right">+100.0%</td>
+      <td style="text-align:right">-92.5%</td>
+      <td style="text-align:right">28</td>
+      <td style="text-align:right" class="muted">6,627</td>
+      <td class="muted">
+        
+        Below 3M trend
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Park Pointe Management Services</td>
+      <td><span class="forecast-badge fc-above">Above</span></td>
+      <td class="bad" style="text-align:right">-26.8%</td>
+      <td style="text-align:right">-1.8%</td>
+      <td style="text-align:right">708</td>
+      <td style="text-align:right" class="muted">604</td>
+      <td class="muted">
+        Steep weekly decline
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Preferred Communities</td>
+      <td><span class="forecast-badge fc-below">Below</span></td>
+      <td class="" style="text-align:right">+0.0%</td>
+      <td style="text-align:right">-91.2%</td>
+      <td style="text-align:right">62</td>
+      <td style="text-align:right" class="muted">678</td>
+      <td class="muted">
+        
+        Below 3M trend
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Property Management Services of Maine</td>
+      <td><span class="forecast-badge fc-below">Below</span></td>
+      <td class="bad" style="text-align:right">-77.8%</td>
+      <td style="text-align:right">-42.7%</td>
+      <td style="text-align:right">90</td>
+      <td style="text-align:right" class="muted">207</td>
+      <td class="muted">
+        Steep weekly decline
+         + Below 3M trend
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Unicorn Management Company</td>
+      <td><span class="forecast-badge fc-below">Below</span></td>
+      <td class="" style="text-align:right">+82.4%</td>
+      <td style="text-align:right">-70.6%</td>
+      <td style="text-align:right">94</td>
+      <td style="text-align:right" class="muted">218</td>
+      <td class="muted">
+        
+        Below 3M trend
+      </td>
+    </tr>
+    
+    <tr>
+      <td>VirtualHOA.com</td>
+      <td><span class="forecast-badge fc-below">Below</span></td>
+      <td class="bad" style="text-align:right">-44.9%</td>
+      <td style="text-align:right">-45.7%</td>
+      <td style="text-align:right">270</td>
+      <td style="text-align:right" class="muted">483</td>
+      <td class="muted">
+        Steep weekly decline
+         + Below 3M trend
+      </td>
+    </tr>
+    
+    <tr>
+      <td>Young Management Group, Inc.</td>
+      <td><span class="forecast-badge fc-below">Below</span></td>
+      <td class="" style="text-align:right">+50.0%</td>
+      <td style="text-align:right">+30.4%</td>
+      <td style="text-align:right">30</td>
+      <td style="text-align:right" class="muted">37</td>
+      <td class="muted">
+        
+        Below 3M trend
+      </td>
+    </tr>
+    
+  </table>
+  
+</div>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/MikeGuerin/**)",
+      "Bash(python daily-reports/fetch-daily-data.py --date 2026-04-16)",
+      "Bash(python daily-reports/generate-daily-report.py --date 2026-04-16)",
+      "Bash(node daily-reports/generate-daily-dashboard.js --date 2026-04-16)",
+      "Bash(start \"C:\\\\Users\\\\MikeGuerin\\\\daily-reports\\\\output\\\\HOAi_Daily_Dashboard_2026-04-16.html\")"
+    ]
+  }
+}

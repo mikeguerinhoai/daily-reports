@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HOAi Outreach — {{ company }} — {{ report_date }}</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    font-size: 10pt;
+    color: #111827;
+    line-height: 1.5;
+    background: #f9fafb;
+    padding: 2rem;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  :root {
+    --navy: #1B2A4A;
+    --blue: #2563EB;
+    --teal: #0D9488;
+    --green: #059669;
+    --amber: #D97706;
+    --red: #DC2626;
+    --gray: #6B7280;
+    --surface: #F3F4F6;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+
+  /* Banner */
+  .banner {
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    color: #fff;
+    padding: 1.25rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .banner h1 { font-size: 16pt; font-weight: 700; }
+  .banner .date { font-size: 10pt; opacity: 0.85; }
+
+  /* Status Badge */
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 9pt;
+    font-weight: 600;
+    color: #fff;
+  }
+  .badge-overage { background: var(--red); }
+  .badge-proj-overage { background: var(--amber); }
+  .badge-on-track { background: var(--green); }
+  .badge-under-use { background: var(--gray); }
+  .badge-no-contract { background: var(--navy); }
+
+  /* Sections */
+  .section {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .section h2 {
+    font-size: 12pt;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 0.75rem;
+    border-bottom: 2px solid var(--blue);
+    padding-bottom: 0.4rem;
+  }
+
+  /* Metric Cards */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .metric-card {
+    background: var(--surface);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    text-align: center;
+  }
+  .metric-card .label { font-size: 8pt; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; }
+  .metric-card .value { font-size: 18pt; font-weight: 700; color: var(--navy); }
+  .metric-card .sub { font-size: 8pt; color: var(--gray); margin-top: 2px; }
+
+  /* Usage Bar */
+  .usage-bar-wrap { margin: 1rem 0; }
+  .usage-bar-label { display: flex; justify-content: space-between; font-size: 9pt; color: var(--gray); margin-bottom: 4px; }
+  .usage-bar { height: 24px; background: #e5e7eb; border-radius: 12px; overflow: hidden; position: relative; }
+  .usage-bar-fill { height: 100%; border-radius: 12px; transition: width 0.3s; }
+  .usage-bar-fill.green { background: var(--green); }
+  .usage-bar-fill.amber { background: var(--amber); }
+  .usage-bar-fill.red { background: var(--red); }
+  .usage-bar-threshold { position: absolute; top: 0; height: 100%; width: 2px; background: var(--navy); }
+
+  /* Alerts */
+  .alert-item {
+    padding: 0.6rem 0.75rem;
+    border-left: 4px solid var(--red);
+    background: #fef2f2;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 0.5rem;
+    font-size: 9pt;
+  }
+  .alert-item.amber { border-left-color: var(--amber); background: #fffbeb; }
+  .alert-item .alert-metric { font-weight: 600; }
+
+  /* Recommendations */
+  .rec-item {
+    padding: 0.75rem 1rem;
+    background: #eff6ff;
+    border-left: 4px solid var(--blue);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 0.5rem;
+    font-size: 9.5pt;
+  }
+  .rec-item strong { color: var(--navy); }
+
+  /* Trend tag */
+  .trend-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 8pt;
+    font-weight: 600;
+  }
+  .trend-tag.accelerating { background: #ecfdf5; color: var(--green); }
+  .trend-tag.stable { background: var(--surface); color: var(--gray); }
+  .trend-tag.declining { background: #fef2f2; color: var(--red); }
+
+  /* Billing Analysis */
+  .billing-urgency {
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-size: 9.5pt;
+    margin-bottom: 1rem;
+  }
+  .billing-urgency.critical { background: #fef2f2; border-left: 5px solid var(--red); }
+  .billing-urgency.high { background: #fffbeb; border-left: 5px solid var(--amber); }
+  .billing-urgency.moderate { background: #eff6ff; border-left: 5px solid var(--blue); }
+  .billing-urgency .urgency-label { font-weight: 700; font-size: 10pt; }
+  .billing-urgency.critical .urgency-label { color: var(--red); }
+  .billing-urgency.high .urgency-label { color: var(--amber); }
+  .billing-urgency.moderate .urgency-label { color: var(--blue); }
+
+  .history-table { width: 100%; border-collapse: collapse; font-size: 9pt; margin: 0.75rem 0; }
+  .history-table th { text-align: left; padding: 0.4rem 0.6rem; background: var(--surface); font-weight: 600; color: var(--navy); border-bottom: 2px solid var(--navy); }
+  .history-table td { padding: 0.4rem 0.6rem; border-bottom: 1px solid #e5e7eb; }
+  .history-table .over { color: var(--red); font-weight: 600; }
+  .history-table .ok { color: var(--green); }
+  .history-table .projected { font-style: italic; }
+
+  .upgrade-card {
+    background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+    border: 2px solid var(--green);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-top: 0.75rem;
+  }
+  .upgrade-card.neutral { background: var(--surface); border-color: var(--gray); }
+  .upgrade-card h3 { font-size: 11pt; color: var(--green); margin-bottom: 0.5rem; }
+  .upgrade-card.neutral h3 { color: var(--navy); }
+  .upgrade-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 9pt; }
+  .upgrade-grid .ug-col { padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.7); border-radius: 6px; }
+  .upgrade-grid .ug-label { font-size: 8pt; color: var(--gray); text-transform: uppercase; }
+  .upgrade-grid .ug-value { font-size: 14pt; font-weight: 700; color: var(--navy); }
+  .upgrade-grid .ug-value.savings { color: var(--green); }
+  .upgrade-grid .ug-value.cost { color: var(--red); }
+
+  .upgrade-options-table { width: 100%; border-collapse: collapse; font-size: 9pt; margin-top: 0.75rem; }
+  .upgrade-options-table th { text-align: left; padding: 0.3rem 0.5rem; background: var(--surface); font-weight: 600; font-size: 8pt; text-transform: uppercase; }
+  .upgrade-options-table td { padding: 0.3rem 0.5rem; border-bottom: 1px solid #e5e7eb; }
+  .upgrade-options-table .best { background: #f0fdf4; font-weight: 600; }
+
+  /* Topic Table */
+  .topic-table { width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 0.75rem; }
+  .topic-table th { text-align: left; padding: 0.4rem 0.6rem; background: var(--surface); font-weight: 600; color: var(--navy); border-bottom: 2px solid var(--navy); }
+  .topic-table td { padding: 0.4rem 0.6rem; border-bottom: 1px solid #e5e7eb; }
+  .topic-table .rate-bad { color: var(--red); font-weight: 600; }
+  .topic-table .rate-ok { color: var(--amber); font-weight: 600; }
+  .topic-rec { font-size: 8.5pt; color: var(--gray); margin-top: 2px; padding-left: 0.6rem; border-left: 2px solid var(--blue); margin-bottom: 0.5rem; }
+
+  /* Hour Strip */
+  .hour-strip { display: grid; grid-template-columns: repeat(24, 1fr); gap: 1px; height: 28px; border-radius: 4px; overflow: hidden; margin: 0.5rem 0; }
+  .hour-cell { background: var(--surface); position: relative; }
+  .hour-cell.active { background: var(--blue); }
+  .hour-cell.peak { background: var(--navy); }
+  .hour-labels { display: grid; grid-template-columns: repeat(24, 1fr); gap: 1px; font-size: 6pt; color: var(--gray); }
+  .hour-labels span { text-align: center; }
+  .timing-insight { font-size: 9pt; margin-top: 0.5rem; padding: 0.5rem 0.75rem; background: #eff6ff; border-radius: 4px; }
+
+  /* CSAT Bars */
+  .csat-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; font-size: 9pt; }
+  .csat-label { width: 130px; text-align: right; color: var(--gray); flex-shrink: 0; }
+  .csat-bar-wrap { flex: 1; height: 18px; background: #e5e7eb; border-radius: 9px; overflow: hidden; }
+  .csat-bar-fill { height: 100%; border-radius: 9px; }
+  .csat-bar-fill.good { background: var(--green); }
+  .csat-bar-fill.mid { background: var(--amber); }
+  .csat-bar-fill.low { background: var(--red); }
+  .csat-score { width: 35px; font-weight: 600; font-size: 9pt; }
+
+  /* Revenue Intel Card */
+  .rev-intel-card {
+    background: linear-gradient(135deg, #eff6ff, #f0fdf4);
+    border: 1px solid var(--blue);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+  }
+  .rev-intel-card .flag { font-size: 11pt; font-weight: 700; color: var(--blue); margin-bottom: 0.5rem; }
+  .rev-intel-card .action-text { font-size: 9.5pt; font-weight: 600; color: var(--navy); margin-top: 0.5rem; }
+  .rev-intel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; font-size: 9pt; }
+  .rev-intel-grid .ri-label { color: var(--gray); font-size: 8pt; }
+  .rev-intel-grid .ri-value { font-weight: 700; color: var(--navy); }
+
+  /* Footer */
+  .footer { text-align: center; color: var(--gray); font-size: 8pt; margin-top: 1.5rem; }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .container { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Banner -->
+  <div class="banner">
+    <div>
+      <h1>{{ company }}</h1>
+      <div class="date">Outreach Brief &mdash; {{ report_date }}</div>
+    </div>
+    <div>
+      <span class="badge badge-{{ usage_badge }}">{{ usage_status_label }}</span>
+      {% if adoption_signal %}
+      <span class="trend-tag {{ adoption_signal|lower }}">{{ adoption_signal }}</span>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Key Metrics -->
+  <div class="section">
+    <h2>Key Metrics (MTD)</h2>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="label">Calls MTD</div>
+        <div class="value">{{ mtd_actual|default('—') }}</div>
+        <div class="sub">{{ daily_avg }}/day avg</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Deflection</div>
+        <div class="value" style="color: {{ defl_color }}">{{ deflection_pct }}</div>
+        <div class="sub">Book avg: {{ book_avg_defl }}</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">CSAT</div>
+        <div class="value">{{ csat }}</div>
+        <div class="sub">7-point scale</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Transfer Rate</div>
+        <div class="value">{{ transfer_pct }}</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Proj. EOM</div>
+        <div class="value">{{ proj_eom }}</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">MoM Change</div>
+        <div class="value" style="color: {{ mom_color }}">{{ mom_pct }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Usage vs Contract -->
+  {% if included_calls %}
+  <div class="section">
+    <h2>Usage vs. Contract</h2>
+    <div class="usage-bar-wrap">
+      <div class="usage-bar-label">
+        <span>0</span>
+        <span>Included: {{ included_calls }}</span>
+        <span>Projected: {{ proj_eom }}</span>
+      </div>
+      <div class="usage-bar">
+        <div class="usage-bar-fill {{ usage_bar_color }}" style="width: {{ usage_pct }}%"></div>
+        <div class="usage-bar-threshold" style="left: {{ threshold_pct }}%"></div>
+      </div>
+    </div>
+    {% if overage_calls > 0 %}
+    <p style="color: var(--red); font-weight: 600; font-size: 9pt; margin-top: 0.5rem;">
+      ⚠ {{ overage_calls }} calls over contract ({{ overage_cost }})
+    </p>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Billing & Upgrade Analysis -->
+  {% if billing %}
+  <div class="section">
+    <h2>Billing &amp; Usage Analysis</h2>
+
+    <!-- Urgency Banner -->
+    <div class="billing-urgency {{ billing.urgency }}">
+      <div class="urgency-label">{{ billing.urgency_label }}</div>
+      {{ billing.urgency_detail }}
+    </div>
+
+    <!-- Monthly Overage History -->
+    <table class="history-table">
+      <thead>
+        <tr><th>Period</th><th>Volume</th><th>Included</th><th>Overage Calls</th><th>Overage Cost</th></tr>
+      </thead>
+      <tbody>
+        {% for m in billing.monthly_history %}
+        <tr class="{{ 'projected' if m.is_projected else '' }}">
+          <td>{{ m.label }}</td>
+          <td class="{{ 'over' if m.is_over else 'ok' }}">{{ m.volume }}</td>
+          <td>{{ m.included }}</td>
+          <td class="{{ 'over' if m.overage_calls > 0 else '' }}">{{ '{:,}'.format(m.overage_calls) if m.overage_calls > 0 else '—' }}</td>
+          <td class="{{ 'over' if m.overage_calls > 0 else '' }}">{{ m.overage_cost if m.overage_calls > 0 else '—' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr style="font-weight: 700; border-top: 2px solid var(--navy);">
+          <td colspan="3">Total Overage ({{ billing.overage_months }}/{{ billing.total_months }} months)</td>
+          <td></td>
+          <td class="over">{{ billing.total_overage_cost }}</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <!-- Upgrade Recommendation -->
+    {% if billing.best_upgrade %}
+    <div class="upgrade-card">
+      <h3>Recommended: Upgrade to {{ billing.best_upgrade.tier }}</h3>
+      <div class="upgrade-grid">
+        <div class="ug-col">
+          <div class="ug-label">Current Effective Cost/mo</div>
+          <div class="ug-value cost">{{ billing.current_effective }}</div>
+          <div style="font-size: 8pt; color: var(--gray);">base + avg {{ billing.avg_monthly_overage }} overage</div>
+        </div>
+        <div class="ug-col">
+          <div class="ug-label">{{ billing.best_upgrade.tier }} Tier</div>
+          <div class="ug-value savings">{{ billing.best_upgrade.total_at_tier }}</div>
+          <div style="font-size: 8pt; color: var(--gray);">{{ billing.best_upgrade.included }} calls included</div>
+        </div>
+        <div class="ug-col">
+          <div class="ug-label">Monthly Savings</div>
+          <div class="ug-value savings">{{ billing.best_upgrade.monthly_savings }}</div>
+        </div>
+        <div class="ug-col">
+          <div class="ug-label">Annual Savings</div>
+          <div class="ug-value savings">{{ billing.best_upgrade.annual_savings }}</div>
+        </div>
+      </div>
+      {% if billing.is_chronic %}
+      <div style="margin-top: 0.75rem; padding: 0.5rem 0.75rem; background: #fef2f2; border-radius: 4px; font-size: 9pt;">
+        <strong style="color: var(--red);">Action Required:</strong> This customer has been in overage {{ billing.overage_months }} consecutive months. The upgrade pays for itself immediately. Schedule an upgrade conversation this week.
+      </div>
+      {% elif billing.is_recurring %}
+      <div style="margin-top: 0.75rem; padding: 0.5rem 0.75rem; background: #fffbeb; border-radius: 4px; font-size: 9pt;">
+        <strong style="color: var(--amber);">Recommended:</strong> Overage pattern is establishing. Proactively discuss upgrade before next billing cycle to avoid continued overage charges.
+      </div>
+      {% endif %}
+    </div>
+    {% elif billing.upgrade_options %}
+    <div class="upgrade-card neutral">
+      <h3>Upgrade Options</h3>
+      <p style="font-size: 9pt; color: var(--gray); margin-bottom: 0.5rem;">
+        No standard tier covers projected volume at a savings. Consider a custom package.
+      </p>
+      <table class="upgrade-options-table">
+        <thead><tr><th>Tier</th><th>Included</th><th>Monthly Price</th><th>Proj. Overage at Tier</th><th>Total Cost</th></tr></thead>
+        <tbody>
+        {% for opt in billing.upgrade_options %}
+        <tr class="{{ 'best' if opt.covers_projected else '' }}">
+          <td>{{ opt.tier }}</td>
+          <td>{{ opt.included }}</td>
+          <td>{{ opt.monthly_price }}</td>
+          <td>{{ '{:,}'.format(opt.proj_overage_at_tier) if opt.proj_overage_at_tier > 0 else '—' }}</td>
+          <td>{{ opt.total_at_tier }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% if billing.trailing_3m_avg %}
+      <div style="margin-top: 0.5rem; font-size: 8.5pt; color: var(--gray);">
+        Trailing 3-month avg: {{ billing.trailing_3m_avg }} calls/month. Consider a custom tier at this volume.
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Action Items / Alerts -->
+  {% if alerts %}
+  <div class="section">
+    <h2>Active Alerts ({{ alerts|length }})</h2>
+    {% for alert in alerts %}
+    <div class="alert-item {{ 'amber' if alert.severity != 'high' else '' }}">
+      <span class="alert-metric">{{ alert.metric }}</span>: {{ alert.value }}
+      <span style="color: var(--gray);">(threshold: {{ alert.threshold }})</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Outreach Recommendations -->
+  <div class="section">
+    <h2>Outreach Recommendations</h2>
+    {% for rec in recommendations %}
+    <div class="rec-item">
+      <strong>{{ rec.title }}</strong><br>
+      {{ rec.detail }}
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Section 1: Top Transfer Topics -->
+  {% if top_transfer_topics %}
+  <div class="section">
+    <h2>Top Transfer Topics — Improvement Opportunities</h2>
+    <table class="topic-table">
+      <thead>
+        <tr><th>Topic</th><th>Calls</th><th>Transfer Rate</th><th>Est. Deflectable</th></tr>
+      </thead>
+      <tbody>
+        {% for t in top_transfer_topics %}
+        <tr>
+          <td>{{ t.topic }}</td>
+          <td>{{ t.count }}</td>
+          <td class="{{ 'rate-bad' if t.transfer_rate > 60 else 'rate-ok' }}">{{ t.transfer_rate }}%</td>
+          <td>+{{ t.est_deflectable }}/mo</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% for t in top_transfer_topics %}
+    <div class="topic-rec"><strong>{{ t.topic }}:</strong> {{ t.recommendation }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Section 2: Call Timing Pattern -->
+  {% if hourly_pattern %}
+  <div class="section">
+    <h2>Call Timing Pattern</h2>
+    {% set max_vol = hourly_pattern|map(attribute='total')|max %}
+    <div class="hour-strip">
+      {% for h in range(24) %}
+      {% set vol = 0 %}
+      {% for hp in hourly_pattern %}{% if hp.hour == h %}{% set vol = hp.total %}{% endif %}{% endfor %}
+      <div class="hour-cell {{ 'peak' if h == busiest_hour else ('active' if vol > 0 else '') }}" style="opacity: {{ (vol / max_vol) if max_vol > 0 else 0 }}" title="{{ h }}:00 — {{ vol }} calls"></div>
+      {% endfor %}
+    </div>
+    <div class="hour-labels">
+      {% for h in range(24) %}
+      <span>{{ h if h % 4 == 0 else '' }}</span>
+      {% endfor %}
+    </div>
+    {% if after_hours_pct is not none %}
+    <div class="timing-insight">
+      {% if after_hours_pct > 0.7 %}
+      <strong>{{ (after_hours_pct * 100)|round(0)|int }}% after-hours.</strong> This agent primarily handles calls outside business hours. Promote the after-hours number in homeowner communications and voicemail greetings.
+      {% elif after_hours_pct > 0.3 %}
+      <strong>{{ (after_hours_pct * 100)|round(0)|int }}% after-hours.</strong> Mixed business/after-hours coverage. Busiest hour: {{ busiest_hour }}:00.
+      {% else %}
+      <strong>{{ (after_hours_pct * 100)|round(0)|int }}% after-hours.</strong> Primarily business-hours calls. Consider how the agent complements live staff during peak times. Busiest hour: {{ busiest_hour }}:00.
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Section 3: Caller Identification Gap -->
+  {% if unidentified_pct > 40 %}
+  <div class="section">
+    <h2>Caller Identification Gap</h2>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="label">Unidentified</div>
+        <div class="value" style="color: var(--amber)">{{ unidentified_pct|round(1) }}%</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Identified</div>
+        <div class="value" style="color: var(--green)">{{ (100 - unidentified_pct)|round(1) }}%</div>
+      </div>
+    </div>
+    <div class="rec-item" style="margin-top: 0.75rem;">
+      <strong>Improve Caller Identification</strong><br>
+      {{ unidentified_pct|round(0)|int }}% of callers are unidentified. Improving identification (via address lookup, account number, or caller ID matching) could unlock additional auto-resolutions and improve CSAT.
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Section 4: CSAT Deep Dive -->
+  {% if csat_dimensions %}
+  <div class="section">
+    <h2>CSAT Dimensions</h2>
+    {% set dim_labels = {'task_completion': 'Task Completion', 'caller_identification': 'Caller ID', 'call_forwarding': 'Call Forwarding', 'distortion': 'Audio Quality', 'repetition': 'Repetition', 'interruptions': 'Interruptions', 'technical_failure': 'Technical'} %}
+    {% for key, label in dim_labels.items() %}
+    {% if csat_dimensions.get(key) is not none %}
+    {% set score = csat_dimensions[key] %}
+    <div class="csat-row">
+      <span class="csat-label">{{ label }}</span>
+      <div class="csat-bar-wrap">
+        <div class="csat-bar-fill {{ 'good' if score >= 5 else ('mid' if score >= 3.5 else 'low') }}" style="width: {{ (score / 7 * 100)|round(0) }}%"></div>
+      </div>
+      <span class="csat-score" style="color: {{ 'var(--green)' if score >= 5 else ('var(--amber)' if score >= 3.5 else 'var(--red)') }}">{{ score|round(1) }}</span>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% if lowest_csat_dim %}
+    <div class="rec-item" style="margin-top: 0.75rem;">
+      <strong>Focus Area: {{ lowest_csat_dim.label }} ({{ lowest_csat_dim.score }}/7)</strong><br>
+      {{ csat_dim_rec }}
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Section 5: Efficiency Metrics -->
+  {% if time_saved %}
+  <div class="section">
+    <h2>Efficiency</h2>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="label">Deflected Avg</div>
+        <div class="value">{{ time_saved.deflected_avg }}s</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Transferred Avg</div>
+        <div class="value">{{ time_saved.transferred_avg }}s</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Saved per Defl.</div>
+        <div class="value" style="color: var(--green)">{{ time_saved.saved_per_defl }}s</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Hours Saved MTD</div>
+        <div class="value" style="color: var(--green)">{{ time_saved.total_hours_saved }}h</div>
+      </div>
+    </div>
+    {% if defl_gap %}
+    <div class="rec-item" style="margin-top: 0.75rem;">
+      <strong>Engaged vs. Headline Deflection</strong><br>
+      Headline deflection is {{ headline_defl }}, but engaged deflection (excluding non-engagement calls) is {{ engaged_defl }}. The gap indicates {{ (headline_defl|replace('%','')|float - engaged_defl|replace('%','')|float)|abs|round(1) }}pp of calls are incomplete/non-engagement rather than true deflections.
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Section 6: Revenue Intelligence -->
+  {% if revenue_intel %}
+  <div class="section">
+    <h2>Revenue Intelligence</h2>
+    <div class="rev-intel-card">
+      <div class="flag">{{ revenue_intel.flag }}</div>
+      <div class="rev-intel-grid">
+        <div><div class="ri-label">Tier</div><div class="ri-value">{{ revenue_intel.tier|default('—') }}</div></div>
+        <div><div class="ri-label">Included</div><div class="ri-value">{{ '{:,}'.format(revenue_intel.included|default(0)) }}</div></div>
+        <div><div class="ri-label">MTD Actual</div><div class="ri-value">{{ '{:,}'.format(revenue_intel.mtd|default(0)) }}</div></div>
+        <div><div class="ri-label">Pace</div><div class="ri-value">{{ revenue_intel.pace_pct|default(0)|round(0)|int }}%</div></div>
+      </div>
+      <div class="action-text">→ {{ revenue_intel.action }}</div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Volume Context -->
+  {% if monthly_values %}
+  <div class="section">
+    <h2>Volume Trend (3-Month)</h2>
+    <div class="metrics-grid">
+      {% for mv in monthly_values %}
+      <div class="metric-card">
+        <div class="label">{{ mv.label }}</div>
+        <div class="value">{{ mv.value }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="footer">
+    HOAi Daily Outreach Brief &bull; {{ report_date }} &bull; Auto-generated
+  </div>
+
+</div>
+</body>
+</html>

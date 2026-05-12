@@ -251,6 +251,44 @@ tfoot td:first-child { text-align: left; position: sticky; left: 0; z-index: 5; 
 /* ── Section title ────────────────────────────────────────────────── */
 .section-title { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin: 1.25rem 0 .65rem; padding-bottom: .4rem; border-bottom: 2px solid var(--blue); }
 
+/* ── Tab Navigation ──────────────────────────────────────────────── */
+.tab-nav { display: flex; gap: 0; margin-top: .5rem; }
+.tab-btn {
+  padding: .45rem 1.1rem; font-size: .78rem; font-weight: 600;
+  background: rgba(255,255,255,.1); color: rgba(255,255,255,.7);
+  border: 1px solid rgba(255,255,255,.2); border-bottom: none;
+  border-radius: var(--radius) var(--radius) 0 0;
+  cursor: pointer; transition: all .15s;
+}
+.tab-btn:hover { background: rgba(255,255,255,.18); color: #fff; }
+.tab-btn.active { background: var(--bg); color: var(--navy); border-color: var(--border); }
+.tab-btn .tab-badge {
+  display: inline-block; margin-left: .4rem; padding: .1rem .45rem;
+  border-radius: 999px; font-size: .65rem; font-weight: 700;
+  background: rgba(255,255,255,.2); color: rgba(255,255,255,.8);
+}
+.tab-btn.active .tab-badge { background: var(--blue); color: #fff; }
+
+/* ── Onboarding Cohort ────────────────────────────────────────────── */
+.cohort-summary { display: flex; gap: 1.25rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.cohort-stat { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: .6rem 1rem; min-width: 120px; text-align: center; }
+.cohort-stat .cs-label { font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+.cohort-stat .cs-value { font-size: 1.3rem; font-weight: 700; color: var(--navy); }
+.cohort-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+.cohort-table th { background: var(--navy); color: #fff; padding: .45rem .6rem; text-align: left; font-weight: 600; font-size: .72rem; text-transform: uppercase; letter-spacing: .03em; white-space: nowrap; }
+.cohort-table td { padding: .4rem .6rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.cohort-table tr:hover td { background: var(--hover); }
+.stage-badge { display: inline-block; padding: .15rem .5rem; border-radius: 999px; font-size: .68rem; font-weight: 600; }
+.stage-activation { background: #dbeafe; color: #1e40af; }
+.stage-ramp { background: #fef3c7; color: #92400e; }
+.stage-adoption { background: #d1fae5; color: #065f46; }
+.stage-steady { background: #e0e7ff; color: #3730a3; }
+.adopt-strong { color: var(--green); font-weight: 600; }
+.adopt-ontrack { color: var(--blue); font-weight: 600; }
+.adopt-slow { color: var(--amber); font-weight: 600; }
+.adopt-atrisk { color: var(--red); font-weight: 600; }
+.cohort-empty { text-align: center; padding: 2rem; color: var(--muted); font-style: italic; }
+
 /* ── Footer ───────────────────────────────────────────────────────── */
 footer { text-align: center; color: var(--muted); font-size: .72rem; padding: 1.5rem 0; border-top: 1px solid var(--border); }
 
@@ -1025,17 +1063,124 @@ class ErrorBoundary extends React.Component {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
+// ONBOARDING COHORT
+// ═══════════════════════════════════════════════════════════════════════
+const OnboardingCohort = () => {
+  const cohort = DAILY_DATA.onboarding_cohort || {};
+  const companies = cohort.companies || [];
+  const summary = cohort.summary || {};
+
+  if (companies.length === 0) return null;
+
+  const stageClass = (s) => ({
+    'Activation': 'stage-activation', 'Ramp': 'stage-ramp',
+    'Adoption': 'stage-adoption', 'Steady State': 'stage-steady'
+  }[s] || '');
+
+  const adoptClass = (s) => ({
+    'Strong': 'adopt-strong', 'On Track': 'adopt-ontrack',
+    'Slow': 'adopt-slow', 'At Risk': 'adopt-atrisk'
+  }[s] || '');
+
+  const sb = summary.status_breakdown || {};
+
+  return (
+    <div style={{ marginTop: '1.5rem' }}>
+      <div className="section-title">New Customer Cohort (Last {cohort.lookback_days || 90} Days)</div>
+
+      <div className="cohort-summary">
+        <div className="cohort-stat">
+          <div className="cs-label">New Customers</div>
+          <div className="cs-value">{summary.count || 0}</div>
+        </div>
+        <div className="cohort-stat">
+          <div className="cs-label">MTD Calls</div>
+          <div className="cs-value">{fmtInt(summary.total_mtd_calls)}</div>
+        </div>
+        <div className="cohort-stat">
+          <div className="cs-label">Avg Deflection</div>
+          <div className="cs-value">{fmtPct(summary.weighted_deflection_rate)}</div>
+        </div>
+        {sb['Strong'] > 0 && <div className="cohort-stat">
+          <div className="cs-label">Strong</div>
+          <div className="cs-value adopt-strong">{sb['Strong']}</div>
+        </div>}
+        {sb['On Track'] > 0 && <div className="cohort-stat">
+          <div className="cs-label">On Track</div>
+          <div className="cs-value adopt-ontrack">{sb['On Track']}</div>
+        </div>}
+        {sb['Slow'] > 0 && <div className="cohort-stat">
+          <div className="cs-label">Slow</div>
+          <div className="cs-value adopt-slow">{sb['Slow']}</div>
+        </div>}
+        {sb['At Risk'] > 0 && <div className="cohort-stat">
+          <div className="cs-label">At Risk</div>
+          <div className="cs-value adopt-atrisk">{sb['At Risk']}</div>
+        </div>}
+      </div>
+
+      <table className="cohort-table">
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Go-Live</th>
+            <th>Days Live</th>
+            <th>Stage</th>
+            <th>Adoption</th>
+            <th>MTD Calls</th>
+            <th>Daily Avg</th>
+            <th>Deflection</th>
+            <th>Transfer</th>
+            <th>Error</th>
+            <th>CSAT</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {companies.map(c => (
+            <tr key={c.company}>
+              <td style={{ fontWeight: 600 }}>{c.company}</td>
+              <td>{c.go_live_date}</td>
+              <td>{c.days_live}d ({c.weeks_live}w)</td>
+              <td><span className={`stage-badge ${stageClass(c.stage)}`}>{c.stage}</span></td>
+              <td><span className={adoptClass(c.adoption_status)}>{c.adoption_status}</span></td>
+              <td>{fmtInt(c.mtd_calls)}</td>
+              <td>{fmt(c.daily_avg)}</td>
+              <td style={{ color: c.deflection_rate >= 0.55 ? 'var(--green)' : c.deflection_rate >= 0.40 ? 'var(--amber)' : 'var(--red)' }}>{fmtPct(c.deflection_rate)}</td>
+              <td style={{ color: c.transfer_rate <= 0.35 ? 'var(--green)' : c.transfer_rate <= 0.50 ? 'var(--amber)' : 'var(--red)' }}>{fmtPct(c.transfer_rate)}</td>
+              <td style={{ color: c.error_rate <= 0.05 ? 'var(--green)' : 'var(--red)' }}>{fmtPct(c.error_rate)}</td>
+              <td>{c.avg_csat != null ? fmt(c.avg_csat) : '\u2014'}</td>
+              <td>{fmtInt(c.action_items)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+// ═══════════════════════════════════════════════════════════════════════
 // APP
 // ═══════════════════════════════════════════════════════════════════════
 const App = () => {
   const reportDate = DAILY_DATA.report_date || '';
   const generatedAt = DAILY_DATA.generated_at || '';
+  const [activeTab, setActiveTab] = useState('portfolio');
+  const cohortCount = (DAILY_DATA.onboarding_cohort?.companies || []).length;
 
   return (
     <div>
       <header>
         <div className="container">
-          <h1>HOAi Daily Dashboard</h1>
+          <div>
+            <h1>HOAi Daily Dashboard</h1>
+            {cohortCount > 0 && (
+              <div className="tab-nav">
+                <button className={`tab-btn ${activeTab === 'portfolio' ? 'active' : ''}`} onClick={() => setActiveTab('portfolio')}>All Customers</button>
+                <button className={`tab-btn ${activeTab === 'cohort' ? 'active' : ''}`} onClick={() => setActiveTab('cohort')}>New Customers<span className="tab-badge">{cohortCount}</span></button>
+              </div>
+            )}
+          </div>
           <div className="meta">
             {reportDate} &bull; Generated {generatedAt ? new Date(generatedAt).toLocaleString() : ''}
           </div>
@@ -1044,7 +1189,8 @@ const App = () => {
 
       <main className="container">
         <ActionQueue reportDate={reportDate} />
-        <UnifiedTable />
+        {activeTab === 'portfolio' && <UnifiedTable />}
+        {activeTab === 'cohort' && <OnboardingCohort />}
       </main>
 
       <footer>

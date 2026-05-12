@@ -272,5 +272,26 @@
   "test_companies": [
     "Test Company",
     "Vantaca Internal"
-  ]
+  ],
+
+  "go_live_dates": {
+    "_comment": "Override auto-detected first-call dates. Use YYYY-MM-DD format. Companies not listed here use their earliest call_logs entry as the go-live date."
+  },
+
+  "onboarding_cohort": {
+    "_comment": "Settings for the new-customer cohort analysis panel.",
+    "lookback_days": 90,
+    "maturity_benchmarks": {
+      "week_1":  { "min_calls_per_day": 1,  "label": "Week 1 (Activation)" },
+      "week_2_4": { "min_calls_per_day": 3, "label": "Weeks 2-4 (Ramp)" },
+      "month_2":  { "min_calls_per_day": 5, "label": "Month 2 (Adoption)" },
+      "month_3":  { "min_calls_per_day": 5, "label": "Month 3 (Steady State)" }
+    }
+  },
+
+  "notion": {
+    "page_id": "35ef5765-5f79-81a3-b2c4-f14b76716cb1",
+    "parent_page_id": "310f5765-5f79-80c3-8065-df6dfb66d196",
+    "page_title": "HOAi Voice Usage Report - Latest"
+  }
 }

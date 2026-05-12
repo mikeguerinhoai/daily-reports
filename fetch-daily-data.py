@@ -1133,6 +1133,148 @@ def _fetch_historical_trends(report_date, company_filter=None):
     }
 
 
+# ── Onboarding Cohort ──────────────────────────────────────────────────────
+
+def _fetch_onboarding_cohort(report_date, voice_data, company_filter=None):
+    """Build onboarding cohort analysis for companies that went live in the
+    past N days (default 90).  Uses the earliest call_logs entry per company
+    as the go-live proxy, with config overrides via go_live_dates."""
+
+    lookback_days = CONFIG.get('onboarding_cohort', {}).get('lookback_days', 90)
+    go_live_overrides = CONFIG.get('go_live_dates', {})
+    cutoff = report_date - timedelta(days=lookback_days)
+
+    # Query Supabase for first-call date per company
+    first_calls = {}
+    try:
+        with get_cursor() as cur:
+            cur.execute("""
+                SELECT mc.name AS company_name,
+                       MIN(cl.created_at)::date AS first_call_date
+                FROM call_logs cl
+                JOIN management_company mc ON mc.id = cl.management_company_id
+                WHERE mc.deleted_at IS NULL
+                  AND cl.created_at >= '2025-01-01'
+                  AND (cl.channel IS NULL OR cl.channel != 'sms')
+                GROUP BY mc.name
+                ORDER BY first_call_date DESC
+            """)
+            for row in cur.fetchall():
+                name = row['company_name']
+                if name in TEST_COMPANIES:
+                    continue
+                if company_filter and company_filter.lower() not in name.lower():
+                    continue
+                # Apply config override if present
+                if name in go_live_overrides and not name.startswith('_'):
+                    first_calls[name] = date.fromisoformat(go_live_overrides[name])
+                else:
+                    first_calls[name] = row['first_call_date']
+    except Exception as e:
+        print(f"  WARNING: Could not fetch first-call dates: {e}")
+        return {'companies': [], 'cohort_window': str(cutoff)}
+
+    # Filter to companies within the cohort window
+    cohort = []
+    for name, go_live in first_calls.items():
+        if isinstance(go_live, str):
+            go_live = date.fromisoformat(go_live)
+        if go_live < cutoff:
+            continue
+
+        days_live = (report_date - go_live).days
+        weeks_live = max(1, days_live // 7)
+        vd = voice_data.get(name, {})
+        total_calls = _safe(vd.get('total_calls', 0))
+        days_elapsed = _safe(vd.get('days_elapsed', 1)) or 1
+
+        # Compute adoption metrics
+        daily_avg = round(total_calls / days_elapsed, 1) if days_elapsed else 0
+        deflection_rate = _safe(vd.get('deflection_rate', 0))
+        transfer_rate = _safe(vd.get('transfer_rate', 0))
+        error_rate = _safe(vd.get('error_rate_actionable', 0))
+        avg_csat = vd.get('avg_csat')
+        action_items = _safe(vd.get('action_items_created', 0))
+
+        # Maturity stage based on days live
+        if days_live <= 7:
+            stage = 'Activation'
+        elif days_live <= 30:
+            stage = 'Ramp'
+        elif days_live <= 60:
+            stage = 'Adoption'
+        else:
+            stage = 'Steady State'
+
+        # Adoption health: compare daily avg to maturity benchmarks
+        benchmarks = CONFIG.get('onboarding_cohort', {}).get('maturity_benchmarks', {})
+        if days_live <= 7:
+            bench_key = 'week_1'
+        elif days_live <= 30:
+            bench_key = 'week_2_4'
+        elif days_live <= 60:
+            bench_key = 'month_2'
+        else:
+            bench_key = 'month_3'
+        min_calls = benchmarks.get(bench_key, {}).get('min_calls_per_day', 3)
+
+        if daily_avg >= min_calls * 1.5:
+            adoption_status = 'Strong'
+        elif daily_avg >= min_calls:
+            adoption_status = 'On Track'
+        elif daily_avg >= min_calls * 0.5:
+            adoption_status = 'Slow'
+        else:
+            adoption_status = 'At Risk'
+
+        cohort.append({
+            'company': name,
+            'go_live_date': str(go_live),
+            'days_live': days_live,
+            'weeks_live': weeks_live,
+            'stage': stage,
+            'adoption_status': adoption_status,
+            'mtd_calls': total_calls,
+            'daily_avg': daily_avg,
+            'deflection_rate': deflection_rate,
+            'transfer_rate': transfer_rate,
+            'error_rate': error_rate,
+            'avg_csat': avg_csat,
+            'action_items': action_items,
+            'included_calls': (vd.get('revenue_intel', {}) or {}).get('included', 0),
+        })
+
+    # Sort by go-live date (newest first)
+    cohort.sort(key=lambda x: x['go_live_date'], reverse=True)
+
+    # Cohort-level aggregates
+    if cohort:
+        total_mtd = sum(c['mtd_calls'] for c in cohort)
+        avg_defl = _pct(
+            sum(c['deflection_rate'] * c['mtd_calls'] for c in cohort if c['mtd_calls']),
+            total_mtd
+        ) / 100 if total_mtd else 0
+        status_counts = {}
+        for c in cohort:
+            status_counts[c['adoption_status']] = status_counts.get(c['adoption_status'], 0) + 1
+    else:
+        total_mtd = 0
+        avg_defl = 0
+        status_counts = {}
+
+    return {
+        'companies': cohort,
+        'cohort_window': str(cutoff),
+        'lookback_days': lookback_days,
+        'summary': {
+            'count': len(cohort),
+            'total_mtd_calls': total_mtd,
+            'weighted_deflection_rate': round(avg_defl, 4),
+            'status_breakdown': status_counts,
+        }
+    }
+
+
 # ── Main ───────────────────────────────────────────────────────────────────
 
 def main():
@@ -1181,13 +1323,19 @@ def main():
     print(f"  Cross-channel: {len(cross_channel)} companies")
     print(f"  Revenue flags: {len(revenue_intel)}")
 
-    print("[7/7] Fetching historical trends (4-week WoW + 4-month MoM)...")
+    print("[7/8] Fetching historical trends (4-week WoW + 4-month MoM)...")
     historical_trends = _fetch_historical_trends(report_date, args.company)
     trend_count = sum(
         1 for co in historical_trends.get('per_company', {}).values()
         for ch in co.values() if ch is not None
     )
     print(f"  Trends: {trend_count} company-channel combinations")
+
+    print("[8/8] Building onboarding cohort analysis...")
+    voice_for_cohort = {k: v for k, v in voice.items() if not k.startswith('_')}
+    onboarding_cohort = _fetch_onboarding_cohort(report_date, voice_for_cohort, args.company)
+    cohort_count = onboarding_cohort.get('summary', {}).get('count', 0)
+    print(f"  Cohort: {cohort_count} companies onboarded in last {onboarding_cohort.get('lookback_days', 90)} days")
 
     # Assemble payload
     payload = {
@@ -1216,6 +1364,7 @@ def main():
         'revenue_intelligence': revenue_intel,
         'repeat_callers': repeat_callers,
         'historical_trends': historical_trends,
+        'onboarding_cohort': onboarding_cohort,
     }
 
     # Write JSON

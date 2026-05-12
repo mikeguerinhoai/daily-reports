@@ -293,5 +293,10 @@
     "page_id": "35ef5765-5f79-81a3-b2c4-f14b76716cb1",
     "parent_page_id": "310f5765-5f79-80c3-8065-df6dfb66d196",
     "page_title": "HOAi Voice Usage Report - Latest"
+  },
+
+  "github_pages": {
+    "base_url": "https://mikeguerinhoai.github.io/daily-reports",
+    "deploy_branch": "gh-pages"
   }
 }

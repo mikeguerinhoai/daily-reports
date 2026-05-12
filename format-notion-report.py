@@ -3,9 +3,14 @@
 Reads a daily-report JSON and outputs Notion-flavored Markdown suitable for
 pushing to a Notion page via the MCP update-page tool (replace_content).
 
+Two output formats:
+  --format embed  (default): Single embed block pointing to GitHub Pages hosted dashboard
+  --format tables:           Static tables (KPI row, action queue, unified company table)
+
 Usage:
     python daily-reports/format-notion-report.py --date 2026-05-10
-    python daily-reports/format-notion-report.py                     # Latest JSON
+    python daily-reports/format-notion-report.py --format tables     # Static fallback
+    python daily-reports/format-notion-report.py                     # Latest JSON, embed
 
 Output:
     daily-reports/output/notion-report-{date}.md  (also prints to stdout)
@@ -24,17 +29,15 @@ OUTPUT_DIR = os.path.join(SCRIPT_DIR, 'output')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── Helpers ──────────────────────────────────────────────────────────────────
+# -- Helpers ------------------------------------------------------------------
 
 def pct(v, decimals=1):
-    """Format a 0-1 float as a percentage string."""
     if v is None:
         return '-'
     return f"{v * 100:.{decimals}f}%"
 
 
 def dollar(v):
-    """Format a number as $X,XXX.XX (negative shown as -$X,XXX.XX)."""
     if v is None:
         return '-'
     if v < 0:
@@ -43,21 +46,18 @@ def dollar(v):
 
 
 def comma(v):
-    """Format an integer with commas."""
     if v is None:
         return '-'
     return f"{v:,}"
 
 
 def num1(v):
-    """Format a float to 1 decimal."""
     if v is None:
         return '-'
     return f"{v:.1f}"
 
 
 def sign_pct(v):
-    """Format a signed percentage (e.g. +2.3% or -5.1%)."""
     if v is None:
         return '-'
     val = v * 100
@@ -66,14 +66,11 @@ def sign_pct(v):
 
 
 def notion_table(headers, rows):
-    """Build a Notion-flavored Markdown table with <table> tags."""
     lines = ['<table fit-page-width="true" header-row="true">']
-    # Header row
     lines.append('<tr>')
     for h in headers:
         lines.append(f'<td>**{h}**</td>')
     lines.append('</tr>')
-    # Data rows
     for row in rows:
         lines.append('<tr>')
         for cell in row:
@@ -83,7 +80,7 @@ def notion_table(headers, rows):
     return '\n'.join(lines)
 
 
-# ── Section Builders ─────────────────────────────────────────────────────────
+# -- Section Builders ---------------------------------------------------------
 
 def build_header(data):
     report_date = data['report_date']
@@ -99,61 +96,106 @@ def build_header(data):
     )
 
 
-def build_platform_summary(vs):
-    rows = [
-        ['Calls MTD', comma(vs.get('total_calls'))],
-        ['Daily Average', num1(vs.get('total_calls', 0) / max(vs.get('days_elapsed', 1), 1))],
-        ['Deflection Rate', pct(vs.get('deflection_rate'))],
-        ['Transfer Rate', pct(vs.get('transfer_rate'))],
-        ['Avg CSAT', num1(vs.get('avg_csat'))],
-        ['Error Rate (Actionable)', pct(vs.get('error_rate_actionable'))],
-        ['Hours Saved', f"{vs.get('hours_saved', 0):.1f}h"],
-        ['Dollar Value Saved', dollar(vs.get('dollar_saved'))],
-        ['Active Companies', str(vs.get('active_companies', 0))],
+def build_kpi_row(vs):
+    """Build a column-list KPI summary bar matching the HTML portfolio bar."""
+    total = vs.get('total_calls', 0)
+    days = max(vs.get('days_elapsed', 1), 1)
+    daily_avg = total / days
+
+    kpis = [
+        (comma(vs.get('active_companies', 0)), 'Active Companies'),
+        (comma(total), 'Calls MTD'),
+        (num1(daily_avg), 'Daily Average'),
+        (pct(vs.get('deflection_rate')), 'Deflection Rate'),
+        (pct(vs.get('transfer_rate')), 'Transfer Rate'),
+        (num1(vs.get('avg_csat')), 'Avg CSAT'),
+        (f"{vs.get('hours_saved', 0):.1f}h", 'Hours Saved'),
+        (dollar(vs.get('margin_dollar')), 'Margin MTD'),
     ]
-    return notion_table(['Metric', 'Value'], rows)
+
+    lines = ['<column-list>']
+    for value, label in kpis:
+        lines.append('<column>')
+        lines.append(f'**{value}**')
+        lines.append(label)
+        lines.append('</column>')
+    lines.append('</column-list>')
+    return '\n'.join(lines)
 
 
-def build_revenue_margin(vs):
-    margin_dollar = vs.get('margin_dollar', 0)
-    margin_pct_val = vs.get('margin_pct', 0)
-    margin_str = f"{dollar(margin_dollar)} ({pct(margin_pct_val)})" if margin_pct_val else dollar(margin_dollar)
-    rows = [
-        ['Revenue', dollar(vs.get('revenue_total'))],
-        ['COGS', dollar(vs.get('cogs_total'))],
-        ['Margin', margin_str],
-    ]
-    return notion_table(['Metric', 'Value'], rows)
+def build_action_queue(alerts_list, ri_list, voice_data):
+    """Merge alerts + revenue intel into one prioritized action table."""
+    actions = []
 
+    # High-severity Voice alerts first (sorted by call volume desc)
+    voice_alerts = [a for a in alerts_list
+                    if a.get('severity') == 'high' and a.get('channel', 'Voice') == 'Voice']
+    for a in voice_alerts:
+        company = a.get('company', '')
+        calls = voice_data.get(company, {}).get('total_calls', 0)
+        threshold = str(a.get('threshold', '')).replace('<', '\\<').replace('>', '\\>')
+        actions.append({
+            'sort_key': (0, -calls),
+            'company': company,
+            'type': 'Alert',
+            'detail': f"{a.get('metric', '')}: {a.get('value', '')} ({threshold})",
+            'action': 'Investigate',
+        })
 
-def build_revenue_intel(ri_list):
-    # Filter to Voice channel, sort by pace% descending
+    # Revenue intel flags: Overage, then Upsell, then Under-Use
+    flag_order = {'Overage': 1, 'Upsell': 2, 'Under-Use': 3}
     voice_ri = [r for r in ri_list if r.get('channel', 'Voice') == 'Voice']
-    voice_ri.sort(key=lambda r: (0 if r.get('flag') == 'Overage' else 1, -(r.get('pace_pct') or 0)))
-
-    rows = []
     for r in voice_ri:
-        rows.append([
-            r.get('company', ''),
-            r.get('flag', ''),
-            comma(r.get('included')),
-            comma(r.get('mtd')),
-            f"{r.get('pace_pct', 0):.1f}%",
-            comma(r.get('projected_eom')),
-            r.get('action', ''),
-        ])
-    return notion_table(
-        ['Company', 'Flag', 'Included', 'MTD', 'Pace%', 'Projected', 'Action'],
-        rows
-    )
+        flag = r.get('flag', '')
+        actions.append({
+            'sort_key': (flag_order.get(flag, 4), -(r.get('pace_pct') or 0)),
+            'company': r.get('company', ''),
+            'type': flag,
+            'detail': f"{r.get('pace_pct', 0):.1f}% pace, proj {comma(r.get('projected_eom'))}",
+            'action': r.get('action', ''),
+        })
 
+    actions.sort(key=lambda x: x['sort_key'])
 
-def build_company_performance(voice_data, top_n=20):
-    # Sort by total_calls descending
-    companies = sorted(voice_data.items(), key=lambda x: x[1].get('total_calls', 0), reverse=True)
+    if not actions:
+        return '*No actions queued.*'
 
     rows = []
-    for name, v in companies[:top_n]:
+    for i, a in enumerate(actions, 1):
+        rows.append([
+            str(i),
+            a['company'],
+            a['type'],
+            a['detail'],
+            a['action'],
+        ])
+
+    return notion_table(['#', 'Company', 'Type', 'Detail', 'Action'], rows)
+
+
+def build_unified_table(voice_data, ri_list, alerts_list):
+    """Single table with one row per company and all key metrics."""
+    # Build lookup maps for usage flags and alert counts
+    ri_map = {}
+    for r in ri_list:
+        if r.get('channel', 'Voice') == 'Voice':
+            ri_map[r['company']] = r.get('flag', '')
+
+    alert_counts = {}
+    for a in alerts_list:
+        if a.get('severity') == 'high' and a.get('channel', 'Voice') == 'Voice':
+            alert_counts[a['company']] = alert_counts.get(a['company'], 0) + 1
+
+    # Sort by total_calls descending
+    companies = sorted(voice_data.items(),
+                       key=lambda x: x[1].get('total_calls', 0), reverse=True)
+
+    rows = []
+    for name, v in companies:
+        usage = ri_map.get(name, 'On Track')
+        alert_ct = alert_counts.get(name, 0)
+        alert_str = str(alert_ct) if alert_ct > 0 else '-'
+
         rows.append([
             name,
             comma(v.get('total_calls')),
@@ -163,34 +205,48 @@ def build_company_performance(voice_data, top_n=20):
             pct(v.get('error_rate_actionable')),
             num1(v.get('daily_avg')),
             sign_pct(v.get('vs_prior_month')),
+            usage,
+            alert_str,
         ])
+
     return notion_table(
-        ['Company', 'Calls', 'Defl%', 'Xfer%', 'CSAT', 'Err%', 'Daily Avg', 'vs Prior Mo'],
+        ['Company', 'Calls', 'Defl%', 'Xfer%', 'CSAT', 'Err%', 'Daily Avg', 'MoM', 'Usage', 'Alerts'],
         rows
     )
 
 
-def build_alerts(alerts_list):
-    # Filter to high severity Voice alerts
-    high = [a for a in alerts_list if a.get('severity') == 'high' and a.get('channel', 'Voice') == 'Voice']
-    if not high:
-        return '*No high-severity alerts.*'
+# -- Embed Builder ------------------------------------------------------------
 
-    rows = []
-    for a in high:
-        # Escape < and > to avoid breaking Notion's XML-style table tags
-        threshold = str(a.get('threshold', '')).replace('<', '\\<').replace('>', '\\>')
-        rows.append([
-            a.get('company', ''),
-            a.get('metric', ''),
-            str(a.get('value', '')),
-            threshold,
-            a.get('severity', ''),
-        ])
-    return notion_table(['Company', 'Metric', 'Value', 'Threshold', 'Severity'], rows)
+DEFAULT_PAGES_URL = 'https://mikeguerinhoai.github.io/daily-reports'
+
+def load_config():
+    config_path = os.path.join(SCRIPT_DIR, 'daily-report-config.json')
+    if os.path.exists(config_path):
+        with open(config_path) as f:
+            return json.load(f)
+    return {}
 
 
-# ── Main ─────────────────────────────────────────────────────────────────────
+def build_embed(data, base_url):
+    """Build a Notion embed block pointing to the hosted dashboard."""
+    report_date = data['report_date']
+    generated = data.get('generated_at', '')[:19].replace('T', ' ')
+    vs = data['platform']['voice_summary']
+    days = vs.get('days_elapsed', 1)
+    dt = datetime.strptime(report_date, '%Y-%m-%d')
+    month_name = dt.strftime('%B')
+    url = f"{base_url}/latest.html"
+
+    return '\n'.join([
+        f"**HOAi Voice Usage Report** | {report_date} | "
+        f"{month_name} 1 - {dt.day} ({days} days MTD) | "
+        f"Generated: {generated}",
+        '---',
+        f'<embed url="{url}" />',
+    ])
+
+
+# -- Main ---------------------------------------------------------------------
 
 def find_latest_json():
     files = sorted(glob.glob(os.path.join(DATA_DIR, 'daily-report-*.json')))
@@ -201,6 +257,8 @@ def main():
     parser = argparse.ArgumentParser(description='Format daily report JSON as Notion Markdown')
     parser.add_argument('--date', help='Report date (YYYY-MM-DD)')
     parser.add_argument('--json', help='Path to JSON file (overrides --date)')
+    parser.add_argument('--format', choices=['embed', 'tables'], default='embed',
+                        help='Output format: embed (GitHub Pages iframe) or tables (static Notion tables)')
     args = parser.parse_args()
 
     if args.json:
@@ -217,42 +275,39 @@ def main():
     with open(json_path) as f:
         data = json.load(f)
 
-    vs = data['platform']['voice_summary']
-    ri_list = data.get('revenue_intelligence', [])
-    voice_data = data.get('voice', {})
-    alerts_list = data.get('alerts', [])
-    ri_count = len([r for r in ri_list if r.get('channel', 'Voice') == 'Voice'])
-    alert_count = len([a for a in alerts_list if a.get('severity') == 'high' and a.get('channel', 'Voice') == 'Voice'])
+    if args.format == 'embed':
+        config = load_config()
+        base_url = config.get('github_pages', {}).get('base_url', DEFAULT_PAGES_URL)
+        markdown = build_embed(data, base_url)
+    else:
+        # Tables fallback
+        vs = data['platform']['voice_summary']
+        ri_list = data.get('revenue_intelligence', [])
+        voice_data = data.get('voice', {})
+        alerts_list = data.get('alerts', [])
 
-    # Build the full Notion Markdown
-    sections = [
-        build_header(data),
-        '---',
-        '## Platform Summary',
-        build_platform_summary(vs),
-        '---',
-        '## Revenue & Margin',
-        build_revenue_margin(vs),
-        '---',
-        f'## Revenue Intelligence ({ri_count} flags)',
-        build_revenue_intel(ri_list),
-        '---',
-        f'## Company Performance (top 20 by volume)',
-        build_company_performance(voice_data, top_n=20),
-        '---',
-        f'## Active Alerts ({alert_count} high severity)',
-        build_alerts(alerts_list),
-    ]
+        voice_alerts = [a for a in alerts_list if a.get('severity') == 'high' and a.get('channel', 'Voice') == 'Voice']
+        voice_ri = [r for r in ri_list if r.get('channel', 'Voice') == 'Voice']
+        action_count = len(voice_alerts) + len(voice_ri)
 
-    markdown = '\n'.join(sections)
+        sections = [
+            build_header(data),
+            '---',
+            build_kpi_row(vs),
+            '---',
+            f'## Action Queue ({action_count} items)',
+            build_action_queue(alerts_list, ri_list, voice_data),
+            '---',
+            f'## Company Performance ({len(voice_data)} companies)',
+            build_unified_table(voice_data, ri_list, alerts_list),
+        ]
+        markdown = '\n'.join(sections)
 
-    # Write to file
     report_date = data['report_date']
     out_path = os.path.join(OUTPUT_DIR, f'notion-report-{report_date}.md')
     with open(out_path, 'w', encoding='utf-8') as f:
         f.write(markdown)
 
-    # Also print to stdout
     print(markdown)
     print(f"\n[Written to {out_path}]", file=sys.stderr)
 
